@@ -1,4 +1,4 @@
-secretdata.txt
-lib
-backup
-test
+**/secretdata.txt
+**/lib
+**/backup
+**/test
