@@ -73,7 +73,7 @@ begin
   response := TJSONObject(vkapi.call(
     'messages.getById',
     TParams.Create
-      .add('message_ids','ids')
+      .add('message_ids',ids)
       .add('extended','0') //потом мб понадобится
   ));
 
