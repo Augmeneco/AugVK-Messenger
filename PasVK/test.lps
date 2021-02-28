@@ -8,8 +8,8 @@
         <Filename Value="test.lpr"/>
         <IsPartOfProject Value="True"/>
         <EditorIndex Value="1"/>
-        <CursorPos X="19" Y="5"/>
-        <UsageCount Value="189"/>
+        <CursorPos Y="13"/>
+        <UsageCount Value="191"/>
         <Loaded Value="True"/>
       </Unit>
       <Unit>
@@ -18,7 +18,7 @@
         <UnitName Value="augvkapi"/>
         <EditorIndex Value="-1"/>
         <CursorPos X="14"/>
-        <UsageCount Value="189"/>
+        <UsageCount Value="191"/>
       </Unit>
       <Unit>
         <Filename Value="augrequests.pas"/>
@@ -40,8 +40,9 @@
       </Unit>
       <Unit>
         <Filename Value="fprequests.pas"/>
-        <CursorPos X="51" Y="15"/>
-        <UsageCount Value="35"/>
+        <TopLine Value="130"/>
+        <CursorPos X="55" Y="119"/>
+        <UsageCount Value="36"/>
         <Loaded Value="True"/>
       </Unit>
       <Unit>
@@ -55,13 +56,34 @@
         <Filename Value="augvkapi.pas"/>
         <IsVisibleTab Value="True"/>
         <EditorIndex Value="2"/>
-        <TopLine Value="157"/>
-        <CursorPos X="33" Y="173"/>
-        <UsageCount Value="11"/>
+        <TopLine Value="155"/>
+        <CursorPos X="24" Y="170"/>
+        <UsageCount Value="12"/>
         <Loaded Value="True"/>
       </Unit>
     </Units>
-    <JumpHistory HistoryIndex="-1"/>
+    <JumpHistory HistoryIndex="4">
+      <Position>
+        <Filename Value="augvkapi.pas"/>
+        <Caret Line="125" Column="55" TopLine="98"/>
+      </Position>
+      <Position>
+        <Filename Value="test.lpr"/>
+        <Caret Line="14"/>
+      </Position>
+      <Position>
+        <Filename Value="augvkapi.pas"/>
+        <Caret Line="85" TopLine="68"/>
+      </Position>
+      <Position>
+        <Filename Value="augvkapi.pas"/>
+        <Caret Line="86" TopLine="68"/>
+      </Position>
+      <Position>
+        <Filename Value="augvkapi.pas"/>
+        <Caret Line="194" Column="3" TopLine="182"/>
+      </Position>
+    </JumpHistory>
     <RunParams>
       <FormatVersion Value="2"/>
       <Modes ActiveMode=""/>

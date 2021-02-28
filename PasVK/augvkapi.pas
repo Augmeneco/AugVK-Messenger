@@ -122,7 +122,7 @@ begin
       end
       else
       begin
-        Result[index].name := 'test';
+        Result[index].name := getUser(Result[index].id).name;
       end;
 
       Result[index].previewMsg := parseMsg(chatObject.Objects['last_message']);
@@ -156,6 +156,7 @@ end;
 
 function TAugVKAPI.getUser(id: Integer): TUser;
 begin
+  writeln('dive');
   Result := getUsers([id])[0];
 end;
 
@@ -165,7 +166,8 @@ var
   id, index: Integer;
   user: TUser;
   jsonEnum: TJSONEnum;
-  response, userObject: TJSONObject;
+  userObject: TJSONObject;
+  response: TJSONArray;
 begin
   idsStr := '';
 
@@ -183,14 +185,16 @@ begin
     end;
   end;
 
-  response := TJSONObject(Self.call(
+  response := TJSONArray(Self.call(
     'users.get',
     TParams.Create
       .add('user_ids',idsStr)
       .add('fields','photo_50, last_seen')
   ));
 
-  for jsonEnum in response.Arrays['items'] do
+  writeln(response.FormatJSON());
+
+  for jsonEnum in response do
   begin
     userObject := TJSONObject(jsonEnum.Value);
 
