@@ -8,19 +8,17 @@
         <Filename Value="test.lpr"/>
         <IsPartOfProject Value="True"/>
         <EditorIndex Value="1"/>
-        <CursorPos X="32" Y="7"/>
-        <UsageCount Value="185"/>
+        <CursorPos X="19" Y="5"/>
+        <UsageCount Value="189"/>
         <Loaded Value="True"/>
       </Unit>
       <Unit>
         <Filename Value="pasvk.pas"/>
         <IsPartOfProject Value="True"/>
-        <IsVisibleTab Value="True"/>
-        <EditorIndex Value="2"/>
-        <TopLine Value="88"/>
-        <CursorPos X="116" Y="210"/>
-        <UsageCount Value="185"/>
-        <Loaded Value="True"/>
+        <UnitName Value="augvkapi"/>
+        <EditorIndex Value="-1"/>
+        <CursorPos X="14"/>
+        <UsageCount Value="189"/>
       </Unit>
       <Unit>
         <Filename Value="augrequests.pas"/>
@@ -42,9 +40,8 @@
       </Unit>
       <Unit>
         <Filename Value="fprequests.pas"/>
-        <TopLine Value="103"/>
-        <CursorPos X="44" Y="129"/>
-        <UsageCount Value="33"/>
+        <CursorPos X="51" Y="15"/>
+        <UsageCount Value="35"/>
         <Loaded Value="True"/>
       </Unit>
       <Unit>
@@ -54,113 +51,17 @@
         <CursorPos X="8" Y="48"/>
         <UsageCount Value="8"/>
       </Unit>
+      <Unit>
+        <Filename Value="augvkapi.pas"/>
+        <IsVisibleTab Value="True"/>
+        <EditorIndex Value="2"/>
+        <TopLine Value="157"/>
+        <CursorPos X="33" Y="173"/>
+        <UsageCount Value="11"/>
+        <Loaded Value="True"/>
+      </Unit>
     </Units>
-    <JumpHistory HistoryIndex="25">
-      <Position>
-        <Filename Value="pasvk.pas"/>
-        <Caret Line="5" Column="16"/>
-      </Position>
-      <Position>
-        <Filename Value="pasvk.pas"/>
-        <Caret Line="17" Column="4"/>
-      </Position>
-      <Position>
-        <Filename Value="test.lpr"/>
-        <Caret Line="16" Column="61"/>
-      </Position>
-      <Position>
-        <Filename Value="pasvk.pas"/>
-        <Caret Line="27" Column="10"/>
-      </Position>
-      <Position>
-        <Filename Value="pasvk.pas"/>
-        <Caret Line="26" Column="14"/>
-      </Position>
-      <Position>
-        <Filename Value="pasvk.pas"/>
-        <Caret Line="8" Column="22"/>
-      </Position>
-      <Position>
-        <Filename Value="pasvk.pas"/>
-        <Caret Line="51" Column="22" TopLine="31"/>
-      </Position>
-      <Position>
-        <Filename Value="pasvk.pas"/>
-        <Caret Line="29" Column="22" TopLine="16"/>
-      </Position>
-      <Position>
-        <Filename Value="pasvk.pas"/>
-        <Caret Line="8" Column="55"/>
-      </Position>
-      <Position>
-        <Filename Value="pasvk.pas"/>
-        <Caret Line="38" Column="52" TopLine="26"/>
-      </Position>
-      <Position>
-        <Filename Value="pasvk.pas"/>
-        <Caret Line="50" Column="34" TopLine="26"/>
-      </Position>
-      <Position>
-        <Filename Value="test.lpr"/>
-        <Caret Line="13" Column="6"/>
-      </Position>
-      <Position>
-        <Filename Value="test.lpr"/>
-        <Caret Line="16" Column="16"/>
-      </Position>
-      <Position>
-        <Filename Value="pasvk.pas"/>
-        <Caret Line="51" Column="34" TopLine="17"/>
-      </Position>
-      <Position>
-        <Filename Value="pasvk.pas"/>
-        <Caret Line="16" Column="26" TopLine="2"/>
-      </Position>
-      <Position>
-        <Filename Value="pasvk.pas"/>
-        <Caret Line="12" Column="43" TopLine="8"/>
-      </Position>
-      <Position>
-        <Filename Value="pasvk.pas"/>
-        <Caret Line="26" Column="23" TopLine="2"/>
-      </Position>
-      <Position>
-        <Filename Value="pasvk.pas"/>
-        <Caret Line="27" Column="33" TopLine="5"/>
-      </Position>
-      <Position>
-        <Filename Value="pasvk.pas"/>
-        <Caret Line="28" Column="5" TopLine="9"/>
-      </Position>
-      <Position>
-        <Filename Value="pasvk.pas"/>
-        <Caret Line="48" Column="36" TopLine="37"/>
-      </Position>
-      <Position>
-        <Filename Value="pasvk.pas"/>
-        <Caret Line="58" Column="16" TopLine="45"/>
-      </Position>
-      <Position>
-        <Filename Value="pasvk.pas"/>
-        <Caret Line="129" Column="36" TopLine="107"/>
-      </Position>
-      <Position>
-        <Filename Value="pasvk.pas"/>
-        <Caret Line="90" Column="56" TopLine="72"/>
-      </Position>
-      <Position>
-        <Filename Value="pasvk.pas"/>
-        <Caret Line="83" Column="30" TopLine="68"/>
-      </Position>
-      <Position>
-        <Filename Value="pasvk.pas"/>
-        <Caret Line="89" Column="7" TopLine="75"/>
-      </Position>
-      <Position>
-        <Filename Value="pasvk.pas"/>
-        <Caret Line="91" Column="10" TopLine="77"/>
-      </Position>
-    </JumpHistory>
+    <JumpHistory HistoryIndex="-1"/>
     <RunParams>
       <FormatVersion Value="2"/>
       <Modes ActiveMode=""/>

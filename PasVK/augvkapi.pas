@@ -1,4 +1,4 @@
-unit pasvk;
+unit augvkapi;
 
 {$mode ObjFPC}{$H+}
 
@@ -31,8 +31,7 @@ type
   TUser = class
     name: String;
     id: Integer;
-    online: Boolean;
-    onlineTime: Integer;
+    //onlineTime: Integer;
 end;
 type TUsersArray = array of TUser;
 
@@ -45,7 +44,7 @@ end;
 type TChatsArray = array of TChat;
 
 type
-  TVKAPI = class
+  TAugVKAPI = class
   private
     requests: TRequests;
     config: TConfig;
@@ -53,12 +52,16 @@ type
     //function getUserFromCache(id: Integer): TUser;
     //function getUsersFromCache(ids: array of Integer): TUsersArray;
 
+    function parseMsg(data: TJSONObject): TMSG;
+    function parseUser(data: TJSONObject): TUser;
+
   public
     function call(method: String; params: TParams): TJSONData;
 
     function getMSGById(msgId: Integer): TMSG;
     function getMSGsById(msgsId: array of Integer): TMSGsArray;
 
+    procedure addUser(user: TUser);
     function getUser(id: Integer): TUser;
     function getUsers(ids: array of Integer): TUsersArray;
 
@@ -67,54 +70,118 @@ type
     constructor Create;
 end;
 
+var
+  knownUsers: TUsersArray;
+
 implementation
 
-function TVKAPI.getChats: TChatsArray;
+function TAugVKAPI.getChats: TChatsArray;
 var
-  chatsArray: TJSONArray;
-  chatObject: TJSONObject;
+  chatsArray, profilesArray: TJSONArray;
+  chatObject, profileObject, response: TJSONObject;
   jsonEnum: TJSONEnum;
-  offset: Integer;
+  offset, index: Integer;
+  previewMsg: TMSG;
 begin
   offset := 0;
 
   while True do
   begin
-    chatObject := TJSONObject(Self.call(
+    response := TJSONObject(Self.call(
        'messages.getConversations',
        TParams.Create
           .add('offset', offset)
           .add('count', 200)
           .add('extended', 1)
     ));
-    if chatObject['count'].AsInteger <= 200 then break
-    else offset += 200;
 
-    chatsArray := chatObject.Arrays['items'];
+    chatsArray := response.Arrays['items'];
     if chatsArray.Count = 0 then break;
 
+    profilesArray := response.Arrays['profiles'];
 
+    for jsonEnum in profilesArray do
+    begin
+      profileObject := TJSONObject(jsonEnum.Value);
+      parseUser(profileObject);
+    end;
+
+    for jsonEnum in chatsArray do
+    begin
+      SetLength(Result,Length(Result)+1);
+      index := Length(Result)-1;
+
+      chatObject := TJSONObject(jsonEnum.Value);
+
+      Result[index] := TChat.Create;
+      Result[index].id := chatObject.GetPath('conversation.peer.id').AsInteger;
+
+      if chatObject.GetPath('conversation.peer.type').AsString = 'chat' then
+      begin
+        Result[index].name := chatObject.GetPath('conversation.chat_settings.title').AsString;
+      end
+      else
+      begin
+        Result[index].name := 'test';
+      end;
+
+      Result[index].previewMsg := parseMsg(chatObject.Objects['last_message']);
+    end;
+
+    if chatObject['count'].AsInteger <= 200 then break
+    else offset += 200;
   end;
-
-
 end;
 
-function TVKAPI.getUser(id: Integer): TUser;
+function TAugVKAPI.parseUser(data: TJSONObject): TUser;
+begin
+  Result := TUser.Create;
+  Result.id := data['id'].AsInteger;
+  Result.name := data['first_name'].AsString + ' ' +
+                 data['last_name'].AsString;
+
+  addUser(Result);
+end;
+
+procedure TAugVKAPI.addUser(user: TUser);
+var
+  i: TUser;
+begin
+  for i in knownUsers do
+     if i.id = user.id then break;
+
+  SetLength(knownUsers,Length(knownUsers)+1);
+  knownUsers[Length(knownUsers)-1] := user;
+end;
+
+function TAugVKAPI.getUser(id: Integer): TUser;
 begin
   Result := getUsers([id])[0];
 end;
 
-function TVKAPI.getUsers(ids: array of Integer): TUsersArray;
+function TAugVKAPI.getUsers(ids: array of Integer): TUsersArray;
 var
   idsStr: String;
   id, index: Integer;
+  user: TUser;
   jsonEnum: TJSONEnum;
   response, userObject: TJSONObject;
 begin
   idsStr := '';
 
   for id in ids do
-    idsStr += IntToStr(id)+',';
+  begin
+    for user in knownUsers do
+    begin
+       if user.id = id then
+       begin
+         SetLength(Result,Length(Result)+1);
+         Result[Length(Result)-1] := user;
+       end
+       else
+         idsStr += IntToStr(id)+',';
+    end;
+  end;
 
   response := TJSONObject(Self.call(
     'users.get',
@@ -130,21 +197,16 @@ begin
     SetLength(Result,Length(Result)+1);
     index := Length(Result)-1;
 
-    Result[index] := TUser.Create;
-    //Result[index].id := userObject['id'].AsInteger;
-    //Result[index].text := userObject['text'].AsString;
-    //Result[index].fromId := userObject['from_id'].AsInteger;
-    //Result[index].peerId := userObject['peer_id'].AsInteger;
-    //Result[index].date := userObject['date'].AsInteger;
+    Result[index] := parseUser(userObject);
   end;
 end;
 
-function TVKAPI.getMSGById(msgId: Integer): TMSG;
+function TAugVKAPI.getMSGById(msgId: Integer): TMSG;
 begin
   Result := getMSGsById([msgId])[0];
 end;
 
-function TVKAPI.getMSGsById(msgsId: array of Integer): TMSGsArray;
+function TAugVKAPI.getMSGsById(msgsId: array of Integer): TMSGsArray;
 var
   ids: String;
   id, index: Integer;
@@ -160,7 +222,7 @@ begin
     'messages.getById',
     TParams.Create
       .add('message_ids',ids)
-      .add('extended','0') //потом мб понадобится
+      .add('extended',1)
   ));
 
   for jsonEnum in response.Arrays['items'] do
@@ -170,16 +232,21 @@ begin
     SetLength(Result,Length(Result)+1);
     index := Length(Result)-1;
 
-    Result[index] := TMSG.Create;
-    Result[index].id := msgObject['id'].AsInteger;
-    Result[index].text := msgObject['text'].AsString;
-    Result[index].fromId := msgObject['from_id'].AsInteger;
-    Result[index].peerId := msgObject['peer_id'].AsInteger;
-    Result[index].date := msgObject['date'].AsInteger;
+    Result[index] := parseMsg(msgObject);
   end;
 end;
 
-function TVKAPI.call(method: String; params: TParams): TJSONData;
+function TAugVKAPI.parseMsg(data: TJSONObject): TMSG;
+begin
+  Result := TMSG.Create;
+  Result.id := data['id'].AsInteger;
+  Result.text := data['text'].AsString;
+  Result.fromId := data['from_id'].AsInteger;
+  Result.peerId := data['peer_id'].AsInteger;
+  Result.date := data['date'].AsInteger;
+end;
+
+function TAugVKAPI.call(method: String; params: TParams): TJSONData;
 var
   response: TJSONObject;
 begin
@@ -204,7 +271,7 @@ begin
   Result := response['response'];
 end;
 
-constructor TVKAPI.Create;
+constructor TAugVKAPI.Create;
 begin
   requests := TRequests.Create;
   config.access_token := 'b2f8dccd59bc5fc95a7d273ae0986e62fbe5edb6a019f0653006eead69fabb06fc158e8852dd4efb88d21';

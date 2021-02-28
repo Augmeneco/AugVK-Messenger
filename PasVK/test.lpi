@@ -31,6 +31,7 @@
       <Unit>
         <Filename Value="pasvk.pas"/>
         <IsPartOfProject Value="True"/>
+        <UnitName Value="augvkapi"/>
       </Unit>
     </Units>
   </ProjectOptions>
@@ -43,6 +44,12 @@
       <IncludeFiles Value="$(ProjOutDir)"/>
       <UnitOutputDirectory Value="lib/$(TargetCPU)-$(TargetOS)"/>
     </SearchPaths>
+    <CodeGeneration>
+      <SmartLinkUnit Value="True"/>
+    </CodeGeneration>
+    <Linking>
+      <LinkSmart Value="True"/>
+    </Linking>
   </CompilerOptions>
   <Debugging>
     <Exceptions>
