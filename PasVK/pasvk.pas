@@ -41,24 +41,23 @@ type
     requests: TRequests;
   public
     function call(method: String; params: TParams): TJSONData;
+    function getMSGById(msgId: Integer): TMSG;
+    function getMSGsById(msgsId: array of Integer): TMSGsArray;
+
     constructor Create;
 end;
 
-function getMSGById(msgId: Integer): TMSG;
-function getMSGsById(msgsId: array of Integer): TMSGsArray;
-
 var
   config: TConfig;
-  vkapi: TVKAPI;
 
 implementation
 
-function getMSGById(msgId: Integer): TMSG;
+function TVKAPI.getMSGById(msgId: Integer): TMSG;
 begin
   Result := getMSGsById([msgId])[0];
 end;
 
-function getMSGsById(msgsId: array of Integer): TMSGsArray;
+function TVKAPI.getMSGsById(msgsId: array of Integer): TMSGsArray;
 var
   ids: String;
   id, index: Integer;
@@ -70,7 +69,7 @@ begin
   for id in msgsId do
     ids += IntToStr(id)+',';
 
-  response := TJSONObject(vkapi.call(
+  response := TJSONObject(Self.call(
     'messages.getById',
     TParams.Create
       .add('message_ids',ids)
@@ -127,7 +126,6 @@ initialization
 begin
   {$include secretdata.txt}
   config.version := '5.130';
-  vkapi := TVKAPI.Create;
 end;
 
 end.
