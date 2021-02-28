@@ -136,7 +136,7 @@ var
   x: integer;
   sBuff: string;
 const
-  SafeMask = ['A'..'Z', '0'..'9', 'a'..'z', '*', '@', '.', '_', '-'];
+  SafeMask = ['A'..'Z', '0'..'9', 'a'..'z', '*', '@', '.', '_', '-', ','];
 begin
   //Init
   sBuff := '';
