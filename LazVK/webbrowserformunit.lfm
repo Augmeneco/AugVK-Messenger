@@ -1,0 +1,35 @@
+object WebBrowserForm: TWebBrowserForm
+  Left = 293
+  Height = 240
+  Top = 250
+  Width = 320
+  Caption = 'WebBrowserForm'
+  ClientHeight = 240
+  ClientWidth = 320
+  LCLVersion = '2.1.0.0'
+  object IpHtmlPanel1: TIpHtmlPanel
+    Left = 0
+    Height = 240
+    Top = 0
+    Width = 320
+    Align = alClient
+    DataProvider = IpHttpDataProvider1
+    FixedTypeface = 'Courier'
+    DefaultTypeFace = 'default'
+    DefaultFontSize = 12
+    FlagErrors = False
+    PrintSettings.MarginLeft = 0.5
+    PrintSettings.MarginTop = 0.5
+    PrintSettings.MarginRight = 0.5
+    PrintSettings.MarginBottom = 0.5
+    PrintSettings.Preview.Left = 480
+    PrintSettings.Preview.Top = 270
+    PrintSettings.Preview.Width = 1440
+    PrintSettings.Preview.Height = 810
+    TabOrder = 0
+    OnDocumentOpen = IpHtmlPanel1DocumentOpen
+  end
+  object IpHttpDataProvider1: TIpHttpDataProvider
+    Left = 264
+  end
+end
