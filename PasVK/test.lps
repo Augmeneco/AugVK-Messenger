@@ -7,44 +7,44 @@
       <Unit>
         <Filename Value="test.lpr"/>
         <IsPartOfProject Value="True"/>
-        <CursorPos X="26" Y="13"/>
-        <UsageCount Value="179"/>
+        <EditorIndex Value="1"/>
+        <CursorPos X="32" Y="7"/>
+        <UsageCount Value="185"/>
         <Loaded Value="True"/>
       </Unit>
       <Unit>
         <Filename Value="pasvk.pas"/>
         <IsPartOfProject Value="True"/>
         <IsVisibleTab Value="True"/>
-        <EditorIndex Value="1"/>
-        <TopLine Value="34"/>
-        <CursorPos X="23" Y="70"/>
-        <UsageCount Value="179"/>
+        <EditorIndex Value="2"/>
+        <TopLine Value="88"/>
+        <CursorPos X="116" Y="210"/>
+        <UsageCount Value="185"/>
         <Loaded Value="True"/>
       </Unit>
       <Unit>
         <Filename Value="augrequests.pas"/>
         <EditorIndex Value="-1"/>
         <CursorPos X="6"/>
-        <UsageCount Value="65"/>
+        <UsageCount Value="64"/>
       </Unit>
       <Unit>
         <Filename Value="../../fpcupdeluxe/fpcsrc/packages/openssl/src/openssl.pas"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="352"/>
-        <UsageCount Value="6"/>
+        <UsageCount Value="5"/>
       </Unit>
       <Unit>
         <Filename Value="requests.pas"/>
         <EditorIndex Value="-1"/>
         <CursorPos X="16"/>
-        <UsageCount Value="7"/>
+        <UsageCount Value="6"/>
       </Unit>
       <Unit>
         <Filename Value="fprequests.pas"/>
-        <EditorIndex Value="2"/>
-        <TopLine Value="82"/>
-        <CursorPos X="26" Y="120"/>
-        <UsageCount Value="30"/>
+        <TopLine Value="103"/>
+        <CursorPos X="44" Y="129"/>
+        <UsageCount Value="33"/>
         <Loaded Value="True"/>
       </Unit>
       <Unit>
@@ -52,10 +52,10 @@
         <EditorIndex Value="-1"/>
         <TopLine Value="34"/>
         <CursorPos X="8" Y="48"/>
-        <UsageCount Value="9"/>
+        <UsageCount Value="8"/>
       </Unit>
     </Units>
-    <JumpHistory HistoryIndex="20">
+    <JumpHistory HistoryIndex="25">
       <Position>
         <Filename Value="pasvk.pas"/>
         <Caret Line="5" Column="16"/>
@@ -139,6 +139,26 @@
       <Position>
         <Filename Value="pasvk.pas"/>
         <Caret Line="58" Column="16" TopLine="45"/>
+      </Position>
+      <Position>
+        <Filename Value="pasvk.pas"/>
+        <Caret Line="129" Column="36" TopLine="107"/>
+      </Position>
+      <Position>
+        <Filename Value="pasvk.pas"/>
+        <Caret Line="90" Column="56" TopLine="72"/>
+      </Position>
+      <Position>
+        <Filename Value="pasvk.pas"/>
+        <Caret Line="83" Column="30" TopLine="68"/>
+      </Position>
+      <Position>
+        <Filename Value="pasvk.pas"/>
+        <Caret Line="89" Column="7" TopLine="75"/>
+      </Position>
+      <Position>
+        <Filename Value="pasvk.pas"/>
+        <Caret Line="91" Column="10" TopLine="77"/>
       </Position>
     </JumpHistory>
     <RunParams>
