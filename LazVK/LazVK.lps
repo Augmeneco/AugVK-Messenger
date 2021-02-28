@@ -1,0 +1,266 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CONFIG>
+  <ProjectSession>
+    <Version Value="12"/>
+    <BuildModes Active="Default"/>
+    <Units>
+      <Unit>
+        <Filename Value="LazVK.lpr"/>
+        <IsPartOfProject Value="True"/>
+        <CursorPos Y="17"/>
+        <UsageCount Value="248"/>
+        <Loaded Value="True"/>
+      </Unit>
+      <Unit>
+        <Filename Value="mainformunit.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="MainForm"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Form"/>
+        <UnitName Value="MainFormUnit"/>
+        <IsVisibleTab Value="True"/>
+        <EditorIndex Value="1"/>
+        <CursorPos X="19" Y="9"/>
+        <UsageCount Value="248"/>
+        <Loaded Value="True"/>
+        <LoadedDesigner Value="True"/>
+      </Unit>
+      <Unit>
+        <Filename Value="chatframeunit.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="ChatFrame"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Frame"/>
+        <UnitName Value="ChatFrameUnit"/>
+        <EditorIndex Value="-1"/>
+        <CursorPos Y="19"/>
+        <UsageCount Value="220"/>
+      </Unit>
+      <Unit>
+        <Filename Value="chatlistframeunit.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="ChatListFrame"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Frame"/>
+        <UnitName Value="ChatListFrameUnit"/>
+        <EditorIndex Value="-1"/>
+        <CursorPos X="21" Y="12"/>
+        <UsageCount Value="220"/>
+      </Unit>
+      <Unit>
+        <Filename Value="vklongpoll.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="VkLongpoll"/>
+        <EditorIndex Value="2"/>
+        <TopLine Value="41"/>
+        <CursorPos X="3" Y="53"/>
+        <UsageCount Value="220"/>
+        <Loaded Value="True"/>
+      </Unit>
+      <Unit>
+        <Filename Value="vkontakteapi.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="VkontakteApi"/>
+        <EditorIndex Value="3"/>
+        <TopLine Value="66"/>
+        <CursorPos X="5" Y="83"/>
+        <UsageCount Value="200"/>
+        <Loaded Value="True"/>
+      </Unit>
+      <Unit>
+        <Filename Value="webbrowserformunit.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="WebBrowserForm"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Form"/>
+        <UnitName Value="WebBrowserFormUnit"/>
+        <EditorIndex Value="5"/>
+        <TopLine Value="8"/>
+        <CursorPos X="44" Y="27"/>
+        <UsageCount Value="263"/>
+        <Loaded Value="True"/>
+        <LoadedDesigner Value="True"/>
+      </Unit>
+      <Unit>
+        <Filename Value="utils.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="Utils"/>
+        <EditorIndex Value="4"/>
+        <CursorPos X="11"/>
+        <UsageCount Value="139"/>
+        <Loaded Value="True"/>
+      </Unit>
+      <Unit>
+        <Filename Value="vkapi.pas"/>
+        <UnitName Value="VkApi"/>
+        <EditorIndex Value="-1"/>
+        <CursorPos X="36" Y="11"/>
+        <UsageCount Value="23"/>
+      </Unit>
+      <Unit>
+        <Filename Value="../KBot6Laz/longpoll.pas"/>
+        <UnitName Value="Longpoll"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="18"/>
+        <CursorPos X="7" Y="35"/>
+        <UsageCount Value="99"/>
+      </Unit>
+      <Unit>
+        <Filename Value="/home/lanode/Applications/fpcup/fpcupdeluxe/lazarus/lcl/interfaces/gtk3/gtk3winapi.inc"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="3208"/>
+        <CursorPos Y="3226"/>
+        <UsageCount Value="0"/>
+      </Unit>
+      <Unit>
+        <Filename Value="/home/lanode/Applications/fpcup/fpcupdeluxe/lazarus/lcl/extctrls.pp"/>
+        <UnitName Value="ExtCtrls"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="1043"/>
+        <CursorPos X="3" Y="1061"/>
+        <UsageCount Value="0"/>
+      </Unit>
+      <Unit>
+        <Filename Value="/home/lanode/Applications/fpcup/fpcupdeluxe/lazarus/lcl/forms.pp"/>
+        <UnitName Value="Forms"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="547"/>
+        <CursorPos X="15" Y="564"/>
+        <UsageCount Value="0"/>
+      </Unit>
+      <Unit>
+        <Filename Value="/home/lanode/Applications/fpcup/fpcupdeluxe/lazarus/lcl/include/customform.inc"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="2713"/>
+        <CursorPos X="3" Y="2719"/>
+        <UsageCount Value="0"/>
+      </Unit>
+    </Units>
+    <JumpHistory HistoryIndex="29">
+      <Position>
+        <Filename Value="webbrowserformunit.pas"/>
+        <Caret Line="27" Column="44" TopLine="8"/>
+      </Position>
+      <Position>
+        <Filename Value="vkontakteapi.pas"/>
+        <Caret Line="72" Column="9" TopLine="52"/>
+      </Position>
+      <Position>
+        <Filename Value="vkontakteapi.pas"/>
+        <Caret Line="68" Column="32" TopLine="51"/>
+      </Position>
+      <Position>
+        <Filename Value="vkontakteapi.pas"/>
+        <Caret Line="83" Column="5" TopLine="66"/>
+      </Position>
+      <Position>
+        <Filename Value="vklongpoll.pas"/>
+        <Caret Line="59" Column="3" TopLine="36"/>
+      </Position>
+      <Position>
+        <Filename Value="LazVK.lpr"/>
+        <Caret Line="15" Column="41"/>
+      </Position>
+      <Position>
+        <Filename Value="mainformunit.pas"/>
+        <Caret Line="9" Column="64"/>
+      </Position>
+      <Position>
+        <Filename Value="mainformunit.pas"/>
+        <Caret Line="19" Column="11"/>
+      </Position>
+      <Position>
+        <Filename Value="mainformunit.pas"/>
+        <Caret Line="19" Column="11"/>
+      </Position>
+      <Position>
+        <Filename Value="mainformunit.pas"/>
+        <Caret Line="20" Column="11"/>
+      </Position>
+      <Position>
+        <Filename Value="mainformunit.pas"/>
+        <Caret Line="8" Column="75"/>
+      </Position>
+      <Position>
+        <Filename Value="mainformunit.pas"/>
+        <Caret Line="35" Column="3" TopLine="4"/>
+      </Position>
+      <Position>
+        <Filename Value="mainformunit.pas"/>
+        <Caret Line="36" Column="3" TopLine="4"/>
+      </Position>
+      <Position>
+        <Filename Value="mainformunit.pas"/>
+        <Caret Line="37" Column="3" TopLine="4"/>
+      </Position>
+      <Position>
+        <Filename Value="mainformunit.pas"/>
+        <Caret Line="36" Column="3" TopLine="4"/>
+      </Position>
+      <Position>
+        <Filename Value="mainformunit.pas"/>
+        <Caret Line="35" Column="3" TopLine="4"/>
+      </Position>
+      <Position>
+        <Filename Value="mainformunit.pas"/>
+        <Caret Line="36" Column="3" TopLine="4"/>
+      </Position>
+      <Position>
+        <Filename Value="mainformunit.pas"/>
+        <Caret Line="37" Column="3" TopLine="4"/>
+      </Position>
+      <Position>
+        <Filename Value="mainformunit.pas"/>
+        <Caret Line="38" Column="3" TopLine="4"/>
+      </Position>
+      <Position>
+        <Filename Value="mainformunit.pas"/>
+        <Caret Line="39" Column="3" TopLine="4"/>
+      </Position>
+      <Position>
+        <Filename Value="mainformunit.pas"/>
+        <Caret Line="38" Column="3" TopLine="4"/>
+      </Position>
+      <Position>
+        <Filename Value="mainformunit.pas"/>
+        <Caret Line="37" Column="3" TopLine="4"/>
+      </Position>
+      <Position>
+        <Filename Value="mainformunit.pas"/>
+        <Caret Line="38" Column="3" TopLine="4"/>
+      </Position>
+      <Position>
+        <Filename Value="mainformunit.pas"/>
+        <Caret Line="39" Column="3" TopLine="4"/>
+      </Position>
+      <Position>
+        <Filename Value="mainformunit.pas"/>
+        <Caret Line="40" Column="3" TopLine="5"/>
+      </Position>
+      <Position>
+        <Filename Value="mainformunit.pas"/>
+        <Caret Line="41" Column="3" TopLine="6"/>
+      </Position>
+      <Position>
+        <Filename Value="mainformunit.pas"/>
+        <Caret Line="42" Column="3" TopLine="7"/>
+      </Position>
+      <Position>
+        <Filename Value="mainformunit.pas"/>
+        <Caret Line="41" Column="3" TopLine="7"/>
+      </Position>
+      <Position>
+        <Filename Value="mainformunit.pas"/>
+        <Caret Line="42" Column="3" TopLine="7"/>
+      </Position>
+      <Position>
+        <Filename Value="mainformunit.pas"/>
+        <Caret Line="43" Column="3" TopLine="8"/>
+      </Position>
+    </JumpHistory>
+    <RunParams>
+      <FormatVersion Value="2"/>
+      <Modes ActiveMode=""/>
+    </RunParams>
+  </ProjectSession>
+</CONFIG>
