@@ -1,16 +1,18 @@
 program test;
 
-uses pasvk, fprequests, fpjson;
+uses augvkapi, fprequests, fpjson;
 var
-  vkapi: TVKAPI;
+  vkapi: TAugVKAPI;
 
 begin
-  vkapi := TVKAPI.Create;
+  vkapi := TAugVKAPI.Create;
 
-  writeln(TJSONArray(vkapi.call('users.get',
+  writeln('Ur name: '+TJSONArray(vkapi.call('users.get',
      TParams.Create
-       .add('user_ids','1')
   )).GetPath('[0].first_name').AsString);
+
+  writeln(vkapi.getChats[0].name);
+
 
 end.
 
