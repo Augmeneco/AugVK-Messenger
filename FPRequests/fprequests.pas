@@ -21,7 +21,8 @@ type
   private
     params: array of array of String;
   public
-    function add(name: String; key: String): TParams;
+    function add(key: String; value: String): TParams; overload;
+    function add(key: String; value: Integer): TParams; overload;
     function buildUrl(): String;
     function buildPost(): TStringList;
 end;
@@ -114,10 +115,18 @@ begin
         ]));
 end;
 
-function TParams.add(name: String; key: String): TParams;
+function TParams.add(key: String; value: String): TParams; overload;
 begin
   SetLength(params,Length(params)+1,2);
-  params[Length(params)-1] := [name,key];
+  params[Length(params)-1] := [key,value];
+
+  Result := Self;
+end;
+
+function TParams.add(key: String; value: Integer): TParams; overload;
+begin
+  SetLength(params,Length(params)+1,2);
+  params[Length(params)-1] := [key,IntToStr(value)];
 
   Result := Self;
 end;
