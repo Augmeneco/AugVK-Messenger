@@ -5,7 +5,8 @@ unit augvkapi;
 interface
 
 uses
-  Classes, SysUtils, fprequests, fpjson, jsonparser;
+  Classes, SysUtils, fprequests, fpjson, jsonparser, utils, TypeUtils,
+  vkontakteapi;
 type
   TConfig = record
     version: String;
@@ -48,6 +49,7 @@ type
   private
     requests: TRequests;
     config: TConfig;
+    vkapi: TVKAPI;
 
     //function getUserFromCache(id: Integer): TUser;
     //function getUsersFromCache(ids: array of Integer): TUsersArray;
@@ -56,8 +58,6 @@ type
     function parseUser(data: TJSONObject): TUser;
 
   public
-    function call(method: String; params: TParams): TJSONData;
-
     function getMSGById(msgId: Integer): TMSG;
     function getMSGsById(msgsId: array of Integer): TMSGsArray;
 
@@ -70,10 +70,9 @@ type
     constructor Create;
 end;
 
+implementation
 var
   knownUsers: TUsersArray;
-
-implementation
 
 function TAugVKAPI.getChats: TChatsArray;
 var
@@ -87,7 +86,7 @@ begin
 
   while True do
   begin
-    response := TJSONObject(Self.call(
+    response := TJSONObject(vkapi.call(
        'messages.getConversations',
        TParams.Create
           .add('offset', offset)
@@ -105,6 +104,8 @@ begin
       profileObject := TJSONObject(jsonEnum.Value);
       parseUser(profileObject);
     end;
+
+    writeln( ToStr(knownUsers, TypeInfo(knownUsers)) );
 
     for jsonEnum in chatsArray do
     begin
@@ -148,7 +149,7 @@ var
   i: TUser;
 begin
   for i in knownUsers do
-     if i.id = user.id then break;
+     if i.id = user.id then exit;
 
   SetLength(knownUsers,Length(knownUsers)+1);
   knownUsers[Length(knownUsers)-1] := user;
@@ -156,7 +157,6 @@ end;
 
 function TAugVKAPI.getUser(id: Integer): TUser;
 begin
-  writeln('dive');
   Result := getUsers([id])[0];
 end;
 
@@ -168,31 +168,35 @@ var
   jsonEnum: TJSONEnum;
   userObject: TJSONObject;
   response: TJSONArray;
+  exists: Boolean;
 begin
   idsStr := '';
 
   for id in ids do
   begin
+    exists := False;
     for user in knownUsers do
     begin
        if user.id = id then
        begin
          SetLength(Result,Length(Result)+1);
          Result[Length(Result)-1] := user;
-       end
-       else
-         idsStr += IntToStr(id)+',';
+         exists := True;
+         break;
+       end;
     end;
+    if not exists then
+       idsStr += IntToStr(id)+',';
   end;
 
-  response := TJSONArray(Self.call(
+  if idsStr = '' then exit;
+
+  response := TJSONArray(vkapi.call(
     'users.get',
     TParams.Create
       .add('user_ids',idsStr)
       .add('fields','photo_50, last_seen')
   ));
-
-  writeln(response.FormatJSON());
 
   for jsonEnum in response do
   begin
@@ -222,7 +226,7 @@ begin
   for id in msgsId do
     ids += IntToStr(id)+',';
 
-  response := TJSONObject(Self.call(
+  response := TJSONObject(vkapi.call(
     'messages.getById',
     TParams.Create
       .add('message_ids',ids)
@@ -250,36 +254,12 @@ begin
   Result.date := data['date'].AsInteger;
 end;
 
-function TAugVKAPI.call(method: String; params: TParams): TJSONData;
-var
-  response: TJSONObject;
-begin
-  response := TJSONObject(
-     requests.post(
-         Format('https://api.vk.com/method/%s',[method]),
-         params
-           .add('v',config.version)
-           .add('access_token',config.access_token)
-     ).json()
-  );
-
-  if response.IndexOfName('error') <> -1 then
-  begin
-    raise Exception.create(
-    format('VK ERROR #%d: "%s"'#13#10'PARAMS: %s',
-       [response.getPath('error.error_code').asInteger,
-        response.getPath('error.error_msg').asString,
-        response.getPath('error.request_params').asJSON]
-    ));
-  end;
-  Result := response['response'];
-end;
-
 constructor TAugVKAPI.Create;
 begin
   requests := TRequests.Create;
-  config.access_token := 'b2f8dccd59bc5fc95a7d273ae0986e62fbe5edb6a019f0653006eead69fabb06fc158e8852dd4efb88d21';
-  config.version := '5.130';
+  vkapi := TVKAPI.Create;
+  vkapi.access_token := 'b2f8dccd59bc5fc95a7d273ae0986e62fbe5edb6a019f0653006eead69fabb06fc158e8852dd4efb88d21';
+  vkapi.version := '5.130';
 end;
 
 initialization
