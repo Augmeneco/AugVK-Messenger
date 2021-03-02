@@ -7,7 +7,6 @@
       <Unit>
         <Filename Value="LazVK.lpr"/>
         <IsPartOfProject Value="True"/>
-        <CursorPos Y="17"/>
         <UsageCount Value="248"/>
         <Loaded Value="True"/>
       </Unit>
@@ -18,9 +17,9 @@
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
         <UnitName Value="MainFormUnit"/>
-        <IsVisibleTab Value="True"/>
         <EditorIndex Value="1"/>
-        <CursorPos X="19" Y="9"/>
+        <TopLine Value="15"/>
+        <CursorPos Y="43"/>
         <UsageCount Value="248"/>
         <Loaded Value="True"/>
         <LoadedDesigner Value="True"/>
@@ -48,35 +47,14 @@
         <UsageCount Value="220"/>
       </Unit>
       <Unit>
-        <Filename Value="vklongpoll.pas"/>
-        <IsPartOfProject Value="True"/>
-        <UnitName Value="VkLongpoll"/>
-        <EditorIndex Value="2"/>
-        <TopLine Value="41"/>
-        <CursorPos X="3" Y="53"/>
-        <UsageCount Value="220"/>
-        <Loaded Value="True"/>
-      </Unit>
-      <Unit>
-        <Filename Value="vkontakteapi.pas"/>
-        <IsPartOfProject Value="True"/>
-        <UnitName Value="VkontakteApi"/>
-        <EditorIndex Value="3"/>
-        <TopLine Value="66"/>
-        <CursorPos X="5" Y="83"/>
-        <UsageCount Value="200"/>
-        <Loaded Value="True"/>
-      </Unit>
-      <Unit>
         <Filename Value="webbrowserformunit.pas"/>
         <IsPartOfProject Value="True"/>
         <ComponentName Value="WebBrowserForm"/>
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
         <UnitName Value="WebBrowserFormUnit"/>
-        <EditorIndex Value="5"/>
-        <TopLine Value="8"/>
-        <CursorPos X="44" Y="27"/>
+        <EditorIndex Value="3"/>
+        <CursorPos X="69" Y="36"/>
         <UsageCount Value="263"/>
         <Loaded Value="True"/>
         <LoadedDesigner Value="True"/>
@@ -85,17 +63,34 @@
         <Filename Value="utils.pas"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="Utils"/>
-        <EditorIndex Value="4"/>
-        <CursorPos X="11"/>
-        <UsageCount Value="139"/>
+        <EditorIndex Value="2"/>
+        <TopLine Value="54"/>
+        <CursorPos Y="89"/>
+        <UsageCount Value="173"/>
         <Loaded Value="True"/>
+      </Unit>
+      <Unit>
+        <Filename Value="vklongpoll.pas"/>
+        <UnitName Value="VkLongpoll"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="35"/>
+        <CursorPos X="3" Y="53"/>
+        <UsageCount Value="218"/>
+      </Unit>
+      <Unit>
+        <Filename Value="vkontakteapi.pas"/>
+        <UnitName Value="VkontakteApi"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="70"/>
+        <CursorPos X="17" Y="87"/>
+        <UsageCount Value="198"/>
       </Unit>
       <Unit>
         <Filename Value="vkapi.pas"/>
         <UnitName Value="VkApi"/>
         <EditorIndex Value="-1"/>
         <CursorPos X="36" Y="11"/>
-        <UsageCount Value="23"/>
+        <UsageCount Value="20"/>
       </Unit>
       <Unit>
         <Filename Value="../KBot6Laz/longpoll.pas"/>
@@ -103,14 +98,14 @@
         <EditorIndex Value="-1"/>
         <TopLine Value="18"/>
         <CursorPos X="7" Y="35"/>
-        <UsageCount Value="99"/>
+        <UsageCount Value="96"/>
       </Unit>
       <Unit>
         <Filename Value="/home/lanode/Applications/fpcup/fpcupdeluxe/lazarus/lcl/interfaces/gtk3/gtk3winapi.inc"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="3208"/>
         <CursorPos Y="3226"/>
-        <UsageCount Value="0"/>
+        <UsageCount Value="7"/>
       </Unit>
       <Unit>
         <Filename Value="/home/lanode/Applications/fpcup/fpcupdeluxe/lazarus/lcl/extctrls.pp"/>
@@ -118,144 +113,216 @@
         <EditorIndex Value="-1"/>
         <TopLine Value="1043"/>
         <CursorPos X="3" Y="1061"/>
-        <UsageCount Value="0"/>
+        <UsageCount Value="7"/>
       </Unit>
       <Unit>
         <Filename Value="/home/lanode/Applications/fpcup/fpcupdeluxe/lazarus/lcl/forms.pp"/>
         <UnitName Value="Forms"/>
         <EditorIndex Value="-1"/>
-        <TopLine Value="547"/>
-        <CursorPos X="15" Y="564"/>
-        <UsageCount Value="0"/>
+        <TopLine Value="1846"/>
+        <CursorPos X="3" Y="1864"/>
+        <UsageCount Value="8"/>
       </Unit>
       <Unit>
         <Filename Value="/home/lanode/Applications/fpcup/fpcupdeluxe/lazarus/lcl/include/customform.inc"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="2713"/>
         <CursorPos X="3" Y="2719"/>
-        <UsageCount Value="0"/>
+        <UsageCount Value="7"/>
+      </Unit>
+      <Unit>
+        <Filename Value="../PasVK/vklongpoll.pas"/>
+        <UnitName Value="VkLongpoll"/>
+        <IsVisibleTab Value="True"/>
+        <EditorIndex Value="4"/>
+        <TopLine Value="63"/>
+        <CursorPos X="37" Y="72"/>
+        <UsageCount Value="26"/>
+        <Loaded Value="True"/>
+      </Unit>
+      <Unit>
+        <Filename Value="/home/lanode/Applications/fpcup/fpcupdeluxe/fpcsrc/packages/fcl-json/src/jsonconf.pp"/>
+        <UnitName Value="jsonConf"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="208"/>
+        <CursorPos Y="235"/>
+        <UsageCount Value="9"/>
+      </Unit>
+      <Unit>
+        <Filename Value="../PasVK/utils.pas"/>
+        <EditorIndex Value="-1"/>
+        <UsageCount Value="7"/>
+      </Unit>
+      <Unit>
+        <Filename Value="../PasVK/vkontakteapi.pas"/>
+        <UnitName Value="VkontakteApi"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="36"/>
+        <CursorPos Y="36"/>
+        <UsageCount Value="26"/>
+      </Unit>
+      <Unit>
+        <Filename Value="/home/lanode/Applications/fpcup/fpcupdeluxe/fpcsrc/rtl/inc/objpash.inc"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="190"/>
+        <CursorPos X="23" Y="208"/>
+        <UsageCount Value="8"/>
+      </Unit>
+      <Unit>
+        <Filename Value="../PasVK/fprequests.pas"/>
+        <EditorIndex Value="-1"/>
+        <CursorPos X="3" Y="20"/>
+        <UsageCount Value="8"/>
+      </Unit>
+      <Unit>
+        <Filename Value="/home/lanode/Applications/fpcup/fpcupdeluxe/fpcsrc/packages/fcl-json/src/fpjson.pp"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="1477"/>
+        <CursorPos X="3" Y="1492"/>
+        <UsageCount Value="9"/>
+      </Unit>
+      <Unit>
+        <Filename Value="/home/lanode/Applications/fpcup/fpcupdeluxe/lazarus/lcl/interfaces/gtk3/gtk3object.inc"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="217"/>
+        <CursorPos Y="235"/>
+        <UsageCount Value="10"/>
+      </Unit>
+      <Unit>
+        <Filename Value="../PasVK/TypeUtils.pas"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="19"/>
+        <CursorPos X="3" Y="28"/>
+        <UsageCount Value="10"/>
+      </Unit>
+      <Unit>
+        <Filename Value="/home/lanode/Applications/fpcup/fpcupdeluxe/fpcsrc/rtl/objpas/fgl.pp"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="324"/>
+        <CursorPos X="14" Y="340"/>
+        <UsageCount Value="10"/>
       </Unit>
     </Units>
     <JumpHistory HistoryIndex="29">
       <Position>
-        <Filename Value="webbrowserformunit.pas"/>
-        <Caret Line="27" Column="44" TopLine="8"/>
+        <Filename Value="../PasVK/vklongpoll.pas"/>
+        <Caret Line="77" TopLine="67"/>
       </Position>
       <Position>
-        <Filename Value="vkontakteapi.pas"/>
-        <Caret Line="72" Column="9" TopLine="52"/>
+        <Filename Value="../PasVK/vklongpoll.pas"/>
+        <Caret Line="87" TopLine="66"/>
       </Position>
       <Position>
-        <Filename Value="vkontakteapi.pas"/>
-        <Caret Line="68" Column="32" TopLine="51"/>
+        <Filename Value="../PasVK/vklongpoll.pas"/>
+        <Caret Line="89" TopLine="66"/>
       </Position>
       <Position>
-        <Filename Value="vkontakteapi.pas"/>
-        <Caret Line="83" Column="5" TopLine="66"/>
+        <Filename Value="../PasVK/vklongpoll.pas"/>
+        <Caret Line="90" TopLine="66"/>
       </Position>
       <Position>
-        <Filename Value="vklongpoll.pas"/>
-        <Caret Line="59" Column="3" TopLine="36"/>
+        <Filename Value="../PasVK/vklongpoll.pas"/>
+        <Caret Line="92" TopLine="66"/>
       </Position>
       <Position>
-        <Filename Value="LazVK.lpr"/>
-        <Caret Line="15" Column="41"/>
+        <Filename Value="../PasVK/vklongpoll.pas"/>
+        <Caret Line="74" TopLine="67"/>
       </Position>
       <Position>
-        <Filename Value="mainformunit.pas"/>
-        <Caret Line="9" Column="64"/>
+        <Filename Value="../PasVK/vklongpoll.pas"/>
+        <Caret Line="75" TopLine="67"/>
       </Position>
       <Position>
-        <Filename Value="mainformunit.pas"/>
-        <Caret Line="19" Column="11"/>
+        <Filename Value="../PasVK/vklongpoll.pas"/>
+        <Caret Line="76" TopLine="67"/>
       </Position>
       <Position>
-        <Filename Value="mainformunit.pas"/>
-        <Caret Line="19" Column="11"/>
+        <Filename Value="../PasVK/vklongpoll.pas"/>
+        <Caret Line="80" Column="3" TopLine="57"/>
       </Position>
       <Position>
-        <Filename Value="mainformunit.pas"/>
-        <Caret Line="20" Column="11"/>
+        <Filename Value="../PasVK/vklongpoll.pas"/>
+        <Caret Line="71" TopLine="57"/>
       </Position>
       <Position>
-        <Filename Value="mainformunit.pas"/>
-        <Caret Line="8" Column="75"/>
+        <Filename Value="../PasVK/vklongpoll.pas"/>
+        <Caret Line="88" TopLine="59"/>
       </Position>
       <Position>
-        <Filename Value="mainformunit.pas"/>
-        <Caret Line="35" Column="3" TopLine="4"/>
+        <Filename Value="../PasVK/vklongpoll.pas"/>
+        <Caret Line="90" TopLine="61"/>
       </Position>
       <Position>
-        <Filename Value="mainformunit.pas"/>
-        <Caret Line="36" Column="3" TopLine="4"/>
+        <Filename Value="../PasVK/vklongpoll.pas"/>
+        <Caret Line="91" TopLine="62"/>
       </Position>
       <Position>
-        <Filename Value="mainformunit.pas"/>
-        <Caret Line="37" Column="3" TopLine="4"/>
+        <Filename Value="../PasVK/vklongpoll.pas"/>
+        <Caret Line="82" TopLine="62"/>
       </Position>
       <Position>
-        <Filename Value="mainformunit.pas"/>
-        <Caret Line="36" Column="3" TopLine="4"/>
+        <Filename Value="../PasVK/vklongpoll.pas"/>
+        <Caret Line="84" TopLine="62"/>
       </Position>
       <Position>
-        <Filename Value="mainformunit.pas"/>
-        <Caret Line="35" Column="3" TopLine="4"/>
+        <Filename Value="../PasVK/vklongpoll.pas"/>
+        <Caret Line="85" TopLine="62"/>
       </Position>
       <Position>
-        <Filename Value="mainformunit.pas"/>
-        <Caret Line="36" Column="3" TopLine="4"/>
+        <Filename Value="../PasVK/vklongpoll.pas"/>
+        <Caret Line="86" TopLine="62"/>
       </Position>
       <Position>
-        <Filename Value="mainformunit.pas"/>
-        <Caret Line="37" Column="3" TopLine="4"/>
+        <Filename Value="../PasVK/vklongpoll.pas"/>
+        <Caret Line="87" TopLine="62"/>
       </Position>
       <Position>
-        <Filename Value="mainformunit.pas"/>
-        <Caret Line="38" Column="3" TopLine="4"/>
+        <Filename Value="../PasVK/vklongpoll.pas"/>
+        <Caret Line="71" TopLine="63"/>
       </Position>
       <Position>
-        <Filename Value="mainformunit.pas"/>
-        <Caret Line="39" Column="3" TopLine="4"/>
+        <Filename Value="../PasVK/vklongpoll.pas"/>
+        <Caret Line="88" TopLine="63"/>
       </Position>
       <Position>
-        <Filename Value="mainformunit.pas"/>
-        <Caret Line="38" Column="3" TopLine="4"/>
+        <Filename Value="../PasVK/vklongpoll.pas"/>
+        <Caret Line="90" TopLine="66"/>
       </Position>
       <Position>
-        <Filename Value="mainformunit.pas"/>
-        <Caret Line="37" Column="3" TopLine="4"/>
+        <Filename Value="../PasVK/vklongpoll.pas"/>
+        <Caret Line="91" TopLine="67"/>
       </Position>
       <Position>
-        <Filename Value="mainformunit.pas"/>
-        <Caret Line="38" Column="3" TopLine="4"/>
+        <Filename Value="../PasVK/vklongpoll.pas"/>
+        <Caret Line="82" TopLine="67"/>
       </Position>
       <Position>
-        <Filename Value="mainformunit.pas"/>
-        <Caret Line="39" Column="3" TopLine="4"/>
+        <Filename Value="../PasVK/vklongpoll.pas"/>
+        <Caret Line="84" TopLine="67"/>
       </Position>
       <Position>
-        <Filename Value="mainformunit.pas"/>
-        <Caret Line="40" Column="3" TopLine="5"/>
+        <Filename Value="../PasVK/vklongpoll.pas"/>
+        <Caret Line="85" TopLine="67"/>
       </Position>
       <Position>
-        <Filename Value="mainformunit.pas"/>
-        <Caret Line="41" Column="3" TopLine="6"/>
+        <Filename Value="../PasVK/vklongpoll.pas"/>
+        <Caret Line="86" TopLine="67"/>
       </Position>
       <Position>
-        <Filename Value="mainformunit.pas"/>
-        <Caret Line="42" Column="3" TopLine="7"/>
+        <Filename Value="../PasVK/vklongpoll.pas"/>
+        <Caret Line="87" Column="89" TopLine="65"/>
       </Position>
       <Position>
-        <Filename Value="mainformunit.pas"/>
-        <Caret Line="41" Column="3" TopLine="7"/>
+        <Filename Value="../PasVK/vklongpoll.pas"/>
+        <Caret Line="85" Column="6" TopLine="58"/>
       </Position>
       <Position>
-        <Filename Value="mainformunit.pas"/>
-        <Caret Line="42" Column="3" TopLine="7"/>
+        <Filename Value="../PasVK/vklongpoll.pas"/>
+        <Caret Line="72" TopLine="58"/>
       </Position>
       <Position>
-        <Filename Value="mainformunit.pas"/>
-        <Caret Line="43" Column="3" TopLine="8"/>
+        <Filename Value="../PasVK/vklongpoll.pas"/>
+        <Caret Line="86" TopLine="62"/>
       </Position>
     </JumpHistory>
     <RunParams>

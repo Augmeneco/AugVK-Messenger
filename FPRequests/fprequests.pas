@@ -8,7 +8,7 @@ uses
   Classes, SysUtils, fphttpclient, openssl, jsonparser, fpjson, opensslsockets;
 
 type
-  TResponse = class
+  TResponse = class (TInterfacedObject)
     text: String;
     code: Integer;
     data: array of Byte;

@@ -1,4 +1,4 @@
-unit vkontakteapi;
+unit VkontakteApi;
 
 {$mode ObjFPC}{$H+}
 
@@ -7,19 +7,25 @@ interface
 uses
   Classes, SysUtils, fprequests, jsonparser, fpjson;
 
+const
+  DEFAULT_API_VERSION = '5.130';
+
 type
-  TVKAPI = class
-    private
-      requests: TRequests;
 
-    public
-      access_token: String;
-      version: String;
+	{ TVKAPI }
 
-      function call(method: String; params: TParams): TJSONData;
-      constructor Create;
+  TVKAPI = class (TInterfacedObject)
+  private
+    requests: TRequests;
 
-end;
+  public
+    access_token: String;
+    version: String;
+
+    function call(method: String; params: TParams): TJSONData;
+    constructor Create;
+    constructor Create(AToken: String);
+  end;
 
 implementation
 
@@ -51,7 +57,15 @@ end;
 constructor TVKAPI.Create;
 begin
   requests := TRequests.Create;
-  version := '5.130';
+  version := DEFAULT_API_VERSION;
+
+  inherited Create;
+end;
+
+constructor TVKAPI.Create(AToken: String);
+begin
+  Self.Create;
+  access_token := AToken;
 end;
 
 end.

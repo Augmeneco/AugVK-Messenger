@@ -67,16 +67,6 @@
         <UnitName Value="ChatListFrameUnit"/>
       </Unit>
       <Unit>
-        <Filename Value="vklongpoll.pas"/>
-        <IsPartOfProject Value="True"/>
-        <UnitName Value="VkLongpoll"/>
-      </Unit>
-      <Unit>
-        <Filename Value="vkontakteapi.pas"/>
-        <IsPartOfProject Value="True"/>
-        <UnitName Value="VkontakteApi"/>
-      </Unit>
-      <Unit>
         <Filename Value="webbrowserformunit.pas"/>
         <IsPartOfProject Value="True"/>
         <ComponentName Value="WebBrowserForm"/>
@@ -94,11 +84,12 @@
   <CompilerOptions>
     <Version Value="11"/>
     <Target>
-      <Filename Value="LazVK"/>
+      <Filename Value="build/$(TargetCPU)-$(TargetOS)-$(BuildMode)/AugVK"/>
     </Target>
     <SearchPaths>
       <IncludeFiles Value="$(ProjOutDir)"/>
-      <UnitOutputDirectory Value="lib/$(TargetCPU)-$(TargetOS)"/>
+      <OtherUnitFiles Value="../PasVK;../FPRequests"/>
+      <UnitOutputDirectory Value="precompile/$(TargetCPU)-$(TargetOS)"/>
     </SearchPaths>
     <Linking>
       <Options>
@@ -108,17 +99,4 @@
       </Options>
     </Linking>
   </CompilerOptions>
-  <Debugging>
-    <Exceptions>
-      <Item>
-        <Name Value="EAbort"/>
-      </Item>
-      <Item>
-        <Name Value="ECodetoolError"/>
-      </Item>
-      <Item>
-        <Name Value="EFOpenError"/>
-      </Item>
-    </Exceptions>
-  </Debugging>
 </CONFIG>

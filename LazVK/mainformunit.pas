@@ -6,7 +6,7 @@ interface
 
 uses
   Classes, SysUtils, Forms, Controls, Graphics, Dialogs, ExtCtrls, Buttons,
-	StdCtrls, IpHtml;
+	StdCtrls, IpHtml, VkLongpoll, fpjson;
 
 type
 
@@ -23,7 +23,7 @@ type
 		 Panel5: TPanel;
 		 SpeedButton1: TSpeedButton;
 		 Splitter1: TSplitter;
-			procedure FormCreate(Sender: TObject);
+		 procedure FormCreate(Sender: TObject);
    private
 
    public
@@ -37,11 +37,17 @@ implementation
 
 {$R *.lfm}
 
+procedure NewMessageHandler(Event: TJSONArray);
+begin
+  writeln(Event.Strings[5]);
+  MainForm.ListBox2.AddItem(Event.Strings[5], nil);
+end;
+
 { TMainForm }
 
 procedure TMainForm.FormCreate(Sender: TObject);
 begin
-
+  LongpollThread.RegisterEventHandler(4, @NewMessageHandler);
 end;
 
 end.

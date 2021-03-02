@@ -5,10 +5,10 @@ unit VkLongpoll;
 interface
 
 uses
-  Classes, SysUtils, Contnrs, fpjson, fgl, VkontakteApi;
+  Classes, SysUtils, Contnrs, fpjson, fgl, VkontakteApi, fprequests, Utils, TypeUtils;
 
 type
-  TEventHandler = procedure(Event: TJSONObject);
+  TEventHandler = procedure(Event: TJSONArray);
 
   TEventHandlerMap = specialize TFPGMap<Integer, TEventHandler>;
 
@@ -18,7 +18,10 @@ type
   private
     // need initilize in create
     EventHandlerMap: TEventHandlerMap;
-    VkApi: TVkApi;
+    VkApi: TVKAPI;
+
+    LpServer, LpKey: String;
+    LpTS: Integer;
 
     EventTypeToHandle: Integer;
     EventToHandle: TJSONArray;
@@ -26,69 +29,88 @@ type
     procedure Execute; override;
     procedure ExecuteHandler;
   public
-    constructor Create;
-    procedure RegisterEventHandler(Handler: TEventHandler);
+    constructor Create(AToken: String);
+    procedure UpdateLPInfo;
+    procedure RegisterEventHandler(EventType: Integer; Handler: TEventHandler);
   end;
+
+var
+  LongpollThread: TLongpollThread;
 
 implementation
 
 uses fphttpclient, jsonparser;
 
-{ Important: Methods and properties of objects in visual components can only be
-  used in a method called using Synchronize, for example,
-
-      Synchronize(UpdateCaption);
-
-  and UpdateCaption could look like,
-
-    procedure MyThread.UpdateCaption;
-    begin
-      Form1.Caption := 'Updated in a thread';
-    end; }
-
-{ TLongpollThread }
-
-procedure updateLPInfo();
+procedure TLongpollThread.UpdateLPInfo;
+var
+  lpInfo: TJSONObject;
 begin
-  lpInfo := TJSONObject(callVkApi('groups.getLongPollServer', ['group_id', config['group_id'].AsString]));
+  lpInfo := TJSONObject(
+              VkApi.call('messages.getLongPollServer',
+                TParams.Create
+	                .add('lp_version', 3)
+              )
+            );
+  LpServer := lpInfo.Strings['server'];
+  LpKey := lpInfo.Strings['key'];
+  LpTS := lpInfo.Integers['ts'];
+
   logWrite('New longpoll info received');
 end;
 
 procedure TLongpollThread.Execute;
 var
-  LpURL, LpKey: String;
-  LpTS: Integer;
   LpResult: TJSONObject;
   Event: TJSONEnum;
 begin
-
+  UpdateLPInfo;
 
   while True do
   begin
     LpResult := TJSONObject(GetJSON(TFPHTTPClient.SimpleGet(
-      Format('https://%s?act=a_check&key=%s&ts=%s&wait=25&mode=2&version=2', [LpURL, LpKey, LpTS]))));
+      Format('https://%s?act=a_check&key=%s&ts=%d&wait=25&mode=2&version=3', [LpServer, LpKey, LpTS]))));
+    LpTS := LpResult.Integers['ts'];
     for Event in LpResult.Arrays['updates'] do
     begin
       EventTypeToHandle := TJSONArray(Event.Value).Integers[0];
       EventToHandle := TJSONArray(Event.Value);
+      writeln(EventTypeToHandle, ' ',  EventToHandle.AsJSON);
       Synchronize(@ExecuteHandler);
 		end;
 	end;
 end;
 
 procedure TLongpollThread.ExecuteHandler;
+var
+  Handler: TEventHandler;
 begin
-  EventHandlerMap.KeyData[EventTypeToHandle](EventToHandle);
+  if EventHandlerMap.IndexOf(EventTypeToHandle) <> -1 then
+  begin
+	  Handler := EventHandlerMap.KeyData[EventTypeToHandle];
+	  Handler(EventToHandle);
+	end;
 end;
 
-constructor TLongpollThread.Create;
+constructor TLongpollThread.Create(AToken: String);
 begin
   EventHandlerMap := TEventHandlerMap.Create;
+  VkApi := TVKAPI.Create(AToken);
+
+  inherited Create(True);
 end;
 
-procedure TLongpollThread.RegisterEventHandler(Handler: TEventHandler);
+procedure TLongpollThread.RegisterEventHandler(EventType: Integer; Handler: TEventHandler);
 begin
-  EventHandlerMap.AddOrSetData(HandlerType, Handler);
+  EventHandlerMap.AddOrSetData(EventType, Handler);
+end;
+
+var
+  token: String;
+initialization
+begin
+  token := Config.GetPath(Format('accounts[%d].token', [Config.Integers['active_account']])).AsString;
+  LongpollThread := TLongpollThread.Create(token);
+  LongpollThread.Start;
 end;
 
 end.
