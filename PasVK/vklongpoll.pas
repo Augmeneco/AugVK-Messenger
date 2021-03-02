@@ -28,6 +28,7 @@ type
   protected
     procedure Execute; override;
     procedure ExecuteHandler;
+    procedure ProcessEvent(Event: TJSONArray);
   public
     constructor Create(AToken: String);
     procedure UpdateLPInfo;
@@ -68,13 +69,16 @@ begin
       Format('https://%s?act=a_check&key=%s&ts=%d&wait=25&mode=2&version=3', [LpServer, LpKey, LpTS]))));
     LpTS := LpResult.Integers['ts'];
     for Event in LpResult.Arrays['updates'] do
-    begin
-      EventTypeToHandle := TJSONArray(Event.Value).Integers[0];
-      EventToHandle := TJSONArray(Event.Value);
-      writeln(EventTypeToHandle, ' ',  EventToHandle.AsJSON);
-      Synchronize(@ExecuteHandler);
-		end;
+      ProcessEvent(TJSONArray(Event.Value));
 	end;
+end;
+
+procedure TLongpollThread.ProcessEvent(Event: TJSONArray);
+begin
+  EventTypeToHandle := Event.Integers[0];
+  EventToHandle := Event;
+  writeln(EventTypeToHandle, ' ',  EventToHandle.AsJSON);
+  Synchronize(@ExecuteHandler);
 end;
 
 procedure TLongpollThread.ExecuteHandler;
