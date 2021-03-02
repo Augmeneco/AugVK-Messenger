@@ -6,7 +6,7 @@ interface
 
 uses
   Classes, SysUtils, Forms, Controls, Graphics, Dialogs, ExtCtrls, Buttons,
-	StdCtrls, IpHtml, VkLongpoll, fpjson;
+	StdCtrls, IpHtml, VkLongpoll, fpjson, Utils;
 
 type
 
@@ -32,6 +32,7 @@ type
 
 var
   MainForm: TMainForm;
+  LongpollThread: TLongpollThread;
 
 implementation
 
@@ -46,8 +47,14 @@ end;
 { TMainForm }
 
 procedure TMainForm.FormCreate(Sender: TObject);
+var
+  token: String;
 begin
+  token := Config.GetPath(Format('accounts[%d].token', [Config.Integers['active_account']])).AsString;
+  LongpollThread := TLongpollThread.Create(token);
   LongpollThread.RegisterEventHandler(4, @NewMessageHandler);
+
+  LongpollThread.Start;
 end;
 
 end.

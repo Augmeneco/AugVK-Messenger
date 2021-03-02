@@ -5,7 +5,7 @@ unit VkLongpoll;
 interface
 
 uses
-  Classes, SysUtils, Contnrs, fpjson, fgl, VkontakteApi, fprequests, Utils, TypeUtils;
+  Classes, SysUtils, Contnrs, fpjson, fgl, VkontakteApi, fprequests;
 
 type
   TEventHandler = procedure(Event: TJSONArray);
@@ -34,9 +34,6 @@ type
     procedure RegisterEventHandler(EventType: Integer; Handler: TEventHandler);
   end;
 
-var
-  LongpollThread: TLongpollThread;
-
 implementation
 
 uses fphttpclient, jsonparser;
@@ -55,7 +52,7 @@ begin
   LpKey := lpInfo.Strings['key'];
   LpTS := lpInfo.Integers['ts'];
 
-  logWrite('New longpoll info received');
+  writeln('New longpoll info received');
 end;
 
 procedure TLongpollThread.Execute;
@@ -102,15 +99,6 @@ end;
 procedure TLongpollThread.RegisterEventHandler(EventType: Integer; Handler: TEventHandler);
 begin
   EventHandlerMap.AddOrSetData(EventType, Handler);
-end;
-
-var
-  token: String;
-initialization
-begin
-  token := Config.GetPath(Format('accounts[%d].token', [Config.Integers['active_account']])).AsString;
-  LongpollThread := TLongpollThread.Create(token);
-  LongpollThread.Start;
 end;
 
 end.
