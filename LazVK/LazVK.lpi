@@ -79,6 +79,11 @@
         <IsPartOfProject Value="True"/>
         <UnitName Value="Utils"/>
       </Unit>
+      <Unit>
+        <Filename Value="../PasVK/cachedlongpoll.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="CachedLongpoll"/>
+      </Unit>
     </Units>
   </ProjectOptions>
   <CompilerOptions>

@@ -12,7 +12,7 @@ uses
    {$ENDIF}
    Interfaces, // this includes the LCL widgetset
    Forms, MainFormUnit, Net, ChatFrameUnit, ChatListFrameUnit, {VkontakteApi,
-	 VkLongpoll,} WebBrowserFormUnit, Utils
+	 VkLongpoll,} WebBrowserFormUnit, Utils, unit1
    { you can add units after this };
 
 {$R *.res}
