@@ -12,16 +12,16 @@ uses
    {$ENDIF}
    Interfaces, // this includes the LCL widgetset
    Forms, MainFormUnit, Net, ChatFrameUnit, ChatListFrameUnit, {VkontakteApi,
-	 VkLongpoll,} WebBrowserFormUnit, Utils, unit1
+	 VkLongpoll,} {WebBrowserFormUnit,} Utils
    { you can add units after this };
 
 {$R *.res}
 
 begin
    RequireDerivedFormResource:=True;
-	Application.Scaled:=True;
+  Application.Scaled:=True;
    Application.Initialize;
-	 Application.CreateForm(TMainForm, MainForm);
+   Application.CreateForm(TMainForm, MainForm);
    Application.Run;
 end.
 

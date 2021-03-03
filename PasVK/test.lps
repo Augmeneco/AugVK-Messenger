@@ -7,9 +7,7 @@
       <Unit>
         <Filename Value="test.lpr"/>
         <IsPartOfProject Value="True"/>
-        <IsVisibleTab Value="True"/>
-        <EditorIndex Value="1"/>
-        <CursorPos X="13" Y="7"/>
+        <CursorPos X="52" Y="12"/>
         <UsageCount Value="204"/>
         <Loaded Value="True"/>
       </Unit>
@@ -25,60 +23,82 @@
         <Filename Value="augrequests.pas"/>
         <EditorIndex Value="-1"/>
         <CursorPos X="6"/>
-        <UsageCount Value="61"/>
+        <UsageCount Value="59"/>
       </Unit>
       <Unit>
         <Filename Value="../../fpcupdeluxe/fpcsrc/packages/openssl/src/openssl.pas"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="352"/>
-        <UsageCount Value="2"/>
+        <UsageCount Value="10"/>
       </Unit>
       <Unit>
         <Filename Value="requests.pas"/>
         <EditorIndex Value="-1"/>
         <CursorPos X="16"/>
-        <UsageCount Value="3"/>
+        <UsageCount Value="1"/>
       </Unit>
       <Unit>
         <Filename Value="fprequests.pas"/>
-        <CursorPos X="41" Y="22"/>
-        <UsageCount Value="50"/>
-        <Loaded Value="True"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="117"/>
+        <CursorPos X="29" Y="25"/>
+        <UsageCount Value="55"/>
       </Unit>
       <Unit>
         <Filename Value="../../fpcupdeluxe/fpcsrc/rtl/objpas/objpas.pp"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="34"/>
         <CursorPos X="8" Y="48"/>
-        <UsageCount Value="5"/>
+        <UsageCount Value="3"/>
       </Unit>
       <Unit>
         <Filename Value="augvkapi.pas"/>
-        <EditorIndex Value="2"/>
-        <TopLine Value="213"/>
-        <CursorPos X="32" Y="229"/>
-        <UsageCount Value="26"/>
+        <EditorIndex Value="1"/>
+        <CursorPos X="89" Y="106"/>
+        <UsageCount Value="37"/>
         <Loaded Value="True"/>
       </Unit>
       <Unit>
         <Filename Value="utils.pas"/>
         <EditorIndex Value="-1"/>
         <CursorPos X="5" Y="9"/>
-        <UsageCount Value="17"/>
+        <UsageCount Value="15"/>
       </Unit>
       <Unit>
         <Filename Value="vkontakteapi.pas"/>
-        <EditorIndex Value="3"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="19"/>
         <CursorPos X="27" Y="7"/>
-        <UsageCount Value="11"/>
+        <UsageCount Value="9"/>
+      </Unit>
+      <Unit>
+        <Filename Value="vklongpoll.pas"/>
+        <UnitName Value="VkLongpoll"/>
+        <EditorIndex Value="2"/>
+        <TopLine Value="74"/>
+        <CursorPos X="91" Y="91"/>
+        <UsageCount Value="15"/>
         <Loaded Value="True"/>
       </Unit>
+      <Unit>
+        <Filename Value="cachedlongpoll.pas"/>
+        <UnitName Value="CachedLongpoll"/>
+        <IsVisibleTab Value="True"/>
+        <EditorIndex Value="3"/>
+        <UsageCount Value="13"/>
+        <Loaded Value="True"/>
+      </Unit>
+      <Unit>
+        <Filename Value="../../../fpcupdeluxe/config_lazarus/onlinepackagemanager/packages/HtmlViewer/source/htmlview.pas"/>
+        <UnitName Value="HtmlView"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="4509"/>
+        <CursorPos X="30" Y="4511"/>
+        <UsageCount Value="10"/>
+        <DefaultSyntaxHighlighter Value="Delphi"/>
+      </Unit>
     </Units>
-    <JumpHistory HistoryIndex="23">
-      <Position>
-        <Filename Value="augvkapi.pas"/>
-        <Caret Line="125" Column="55" TopLine="98"/>
-      </Position>
+    <JumpHistory HistoryIndex="28">
       <Position>
         <Filename Value="test.lpr"/>
         <Caret Line="14"/>
@@ -136,22 +156,6 @@
         <Caret Line="9" Column="11"/>
       </Position>
       <Position>
-        <Filename Value="vkontakteapi.pas"/>
-        <Caret Line="19" Column="31" TopLine="7"/>
-      </Position>
-      <Position>
-        <Filename Value="vkontakteapi.pas"/>
-        <Caret Line="52" Column="33"/>
-      </Position>
-      <Position>
-        <Filename Value="vkontakteapi.pas"/>
-        <Caret Line="34" Column="32" TopLine="18"/>
-      </Position>
-      <Position>
-        <Filename Value="vkontakteapi.pas"/>
-        <Caret Line="7" Column="27"/>
-      </Position>
-      <Position>
         <Filename Value="augvkapi.pas"/>
         <Caret Line="262" Column="29" TopLine="240"/>
       </Position>
@@ -170,6 +174,46 @@
       <Position>
         <Filename Value="augvkapi.pas"/>
         <Caret Line="229" Column="32" TopLine="213"/>
+      </Position>
+      <Position>
+        <Filename Value="augvkapi.pas"/>
+        <Caret Line="107" Column="7" TopLine="82"/>
+      </Position>
+      <Position>
+        <Filename Value="augvkapi.pas"/>
+        <Caret Line="45" Column="25" TopLine="30"/>
+      </Position>
+      <Position>
+        <Filename Value="test.lpr"/>
+        <Caret Line="10" Column="28"/>
+      </Position>
+      <Position>
+        <Filename Value="augvkapi.pas"/>
+        <Caret Line="126" TopLine="82"/>
+      </Position>
+      <Position>
+        <Filename Value="augvkapi.pas"/>
+        <Caret Line="132" Column="25" TopLine="118"/>
+      </Position>
+      <Position>
+        <Filename Value="augvkapi.pas"/>
+        <Caret Line="88" Column="22" TopLine="72"/>
+      </Position>
+      <Position>
+        <Filename Value="augvkapi.pas"/>
+        <Caret Line="93" Column="24" TopLine="72"/>
+      </Position>
+      <Position>
+        <Filename Value="augvkapi.pas"/>
+        <Caret Line="135" Column="21" TopLine="106"/>
+      </Position>
+      <Position>
+        <Filename Value="augvkapi.pas"/>
+        <Caret Line="130" Column="9" TopLine="113"/>
+      </Position>
+      <Position>
+        <Filename Value="vklongpoll.pas"/>
+        <Caret Line="91" Column="84" TopLine="74"/>
       </Position>
     </JumpHistory>
     <RunParams>

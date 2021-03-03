@@ -6,33 +6,34 @@ interface
 
 uses
   Classes, SysUtils, Forms, Controls, Graphics, Dialogs, ExtCtrls, Buttons,
-	StdCtrls, IpHtml, VkLongpoll, fpjson, Utils;
+  StdCtrls, {IpHtml,} VkLongpoll, fpjson, Utils, CachedLongpoll, augvkapi;
 
 type
 
-	 { TMainForm }
+{ TMainForm }
 
-   TMainForm = class(TForm)
-		 ListBox1: TListBox;
-		 ListBox2: TListBox;
-		 Memo1: TMemo;
-		 Panel1: TPanel;
-		 Panel2: TPanel;
-		 Panel3: TPanel;
-		 Panel4: TPanel;
-		 Panel5: TPanel;
-		 SpeedButton1: TSpeedButton;
-		 Splitter1: TSplitter;
-		 procedure FormCreate(Sender: TObject);
-   private
+ TMainForm = class(TForm)
+   ListBox1: TListBox;
+   ListBox2: TListBox;
+   Memo1: TMemo;
+   Panel1: TPanel;
+   Panel2: TPanel;
+   Panel3: TPanel;
+   Panel4: TPanel;
+   Panel5: TPanel;
+   SpeedButton1: TSpeedButton;
+   Splitter1: TSplitter;
+   procedure FormCreate(Sender: TObject);
+ private
 
-   public
+ public
 
-   end;
+ end;
 
 var
   MainForm: TMainForm;
-  LongpollThread: TLongpollThread;
+  LongpollThread: TCachedLongpoll;
+  augvk: TAugVKAPI;
 
 implementation
 
@@ -51,7 +52,8 @@ var
   token: String;
 begin
   token := Config.GetPath(Format('accounts[%d].token', [Config.Integers['active_account']])).AsString;
-  LongpollThread := TLongpollThread.Create(token);
+
+  LongpollThread := TCachedLongpoll.Create(token);
   LongpollThread.RegisterEventHandler(4, @NewMessageHandler);
 
   LongpollThread.Start;

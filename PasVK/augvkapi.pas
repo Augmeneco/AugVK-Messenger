@@ -7,13 +7,9 @@ interface
 uses
   Classes, SysUtils, fprequests, fpjson, jsonparser, utils, TypeUtils,
   vkontakteapi;
-type
-  TConfig = record
-    version: String;
-    access_token: String;
-end;
 
 type TMSG = class;
+type TUser = class;
 
 type TMSGsArray = array of TMSG;
 
@@ -23,7 +19,7 @@ type
     text: String;
     date: Integer;
     peerId: Integer;
-    fromId: Integer;
+    fromId: TUser;
     //attachments: TAttachmentsArray;
     reply: TMSGsArray;
 end;
@@ -48,7 +44,6 @@ type
   TAugVKAPI = class
   private
     requests: TRequests;
-    config: TConfig;
     vkapi: TVKAPI;
 
     //function getUserFromCache(id: Integer): TUser;
@@ -56,6 +51,7 @@ type
 
     function parseMsg(data: TJSONObject): TMSG;
     function parseUser(data: TJSONObject): TUser;
+    function parseGroup(data: TJSONObject): TUser;
 
   public
     function getMSGById(msgId: Integer): TMSG;
@@ -67,12 +63,12 @@ type
 
     function getChats: TChatsArray;
 
-    constructor Create;
+    constructor Create(token: String);
 end;
 
 implementation
 var
-  knownUsers: TUsersArray;
+  usersCache: TUsersArray;
 
 function TAugVKAPI.getChats: TChatsArray;
 var
@@ -97,15 +93,19 @@ begin
     chatsArray := response.Arrays['items'];
     if chatsArray.Count = 0 then break;
 
-    profilesArray := response.Arrays['profiles'];
-
+    profilesArray := response.Arrays['profiles'];   //юзеры
     for jsonEnum in profilesArray do
     begin
       profileObject := TJSONObject(jsonEnum.Value);
       parseUser(profileObject);
     end;
 
-    writeln( ToStr(knownUsers, TypeInfo(knownUsers)) );
+    profilesArray := response.Arrays['groups'];     //группы
+    for jsonEnum in profilesArray do
+    begin
+      profileObject := TJSONObject(jsonEnum.Value);
+      parseGroup(profileObject);
+    end;
 
     for jsonEnum in chatsArray do
     begin
@@ -129,7 +129,7 @@ begin
       Result[index].previewMsg := parseMsg(chatObject.Objects['last_message']);
     end;
 
-    if chatObject['count'].AsInteger <= 200 then break
+    if response['count'].AsInteger <= 200 then break
     else offset += 200;
   end;
 end;
@@ -144,15 +144,28 @@ begin
   addUser(Result);
 end;
 
+function TAugVKAPI.parseGroup(data: TJSONObject): TUser;
+begin
+  if (data['type'].AsString = 'group') or
+     (data['type'].AsString = 'page') then
+  begin
+    Result := TUser.Create;
+    Result.id := data['id'].AsInteger * -1;
+    Result.name := data['name'].AsString;
+
+    addUser(Result);
+  end;
+end;
+
 procedure TAugVKAPI.addUser(user: TUser);
 var
   i: TUser;
 begin
-  for i in knownUsers do
+  for i in usersCache do
      if i.id = user.id then exit;
 
-  SetLength(knownUsers,Length(knownUsers)+1);
-  knownUsers[Length(knownUsers)-1] := user;
+  SetLength(usersCache,Length(usersCache)+1);
+  usersCache[Length(usersCache)-1] := user;
 end;
 
 function TAugVKAPI.getUser(id: Integer): TUser;
@@ -162,7 +175,7 @@ end;
 
 function TAugVKAPI.getUsers(ids: array of Integer): TUsersArray;
 var
-  idsStr: String;
+  userIds: String;
   id, index: Integer;
   user: TUser;
   jsonEnum: TJSONEnum;
@@ -170,12 +183,12 @@ var
   response: TJSONArray;
   exists: Boolean;
 begin
-  idsStr := '';
+  userIds := '';
 
   for id in ids do
   begin
     exists := False;
-    for user in knownUsers do
+    for user in usersCache do
     begin
        if user.id = id then
        begin
@@ -186,26 +199,27 @@ begin
        end;
     end;
     if not exists then
-       idsStr += IntToStr(id)+',';
+      userIds += IntToStr(id)+','
   end;
 
-  if idsStr = '' then exit;
-
-  response := TJSONArray(vkapi.call(
-    'users.get',
-    TParams.Create
-      .add('user_ids',idsStr)
-      .add('fields','photo_50, last_seen')
-  ));
-
-  for jsonEnum in response do
+  if userIds <> '' then
   begin
-    userObject := TJSONObject(jsonEnum.Value);
+    response := TJSONArray(vkapi.call(
+      'users.get',
+      TParams.Create
+        .add('user_ids',userIds)
+        .add('fields','photo_50, last_seen')
+    ));
 
-    SetLength(Result,Length(Result)+1);
-    index := Length(Result)-1;
+    for jsonEnum in response do
+    begin
+      userObject := TJSONObject(jsonEnum.Value);
 
-    Result[index] := parseUser(userObject);
+      SetLength(Result,Length(Result)+1);
+      index := Length(Result)-1;
+
+      Result[index] := parseUser(userObject);
+    end;
   end;
 end;
 
@@ -249,16 +263,16 @@ begin
   Result := TMSG.Create;
   Result.id := data['id'].AsInteger;
   Result.text := data['text'].AsString;
-  Result.fromId := data['from_id'].AsInteger;
+  Result.fromId := getUser(data['from_id'].AsInteger);
   Result.peerId := data['peer_id'].AsInteger;
   Result.date := data['date'].AsInteger;
 end;
 
-constructor TAugVKAPI.Create;
+constructor TAugVKAPI.Create(token: String);
 begin
   requests := TRequests.Create;
   vkapi := TVKAPI.Create;
-  vkapi.access_token := 'b2f8dccd59bc5fc95a7d273ae0986e62fbe5edb6a019f0653006eead69fabb06fc158e8852dd4efb88d21';
+  vkapi.access_token := token;
   vkapi.version := '5.130';
 end;
 

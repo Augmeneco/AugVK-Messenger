@@ -28,7 +28,7 @@ type
   protected
     procedure Execute; override;
     procedure ExecuteHandler;
-    procedure ProcessEvent(Event: TJSONArray);
+    procedure ProcessEvent(Event: TJSONArray); virtual;
   public
     constructor Create(AToken: String);
     procedure UpdateLPInfo;
@@ -70,7 +70,7 @@ begin
     LpTS := LpResult.Integers['ts'];
     for Event in LpResult.Arrays['updates'] do
       ProcessEvent(TJSONArray(Event.Value));
-	end;
+    end;
 end;
 
 procedure TLongpollThread.ProcessEvent(Event: TJSONArray);
