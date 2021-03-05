@@ -1,3 +1,4 @@
+{%RunFlags MESSAGES+}
 unit augvkapi;
 
 {$mode ObjFPC}{$H+}
@@ -37,6 +38,7 @@ type
     id: Integer;
     name: String;
     previewMsg: TMSG;
+    type_: String;
 end;
 type TChatsArray = array of TChat;
 
@@ -46,14 +48,11 @@ type
     requests: TRequests;
     vkapi: TVKAPI;
 
-    //function getUserFromCache(id: Integer): TUser;
-    //function getUsersFromCache(ids: array of Integer): TUsersArray;
-
+  public
     function parseMsg(data: TJSONObject): TMSG;
     function parseUser(data: TJSONObject): TUser;
     function parseGroup(data: TJSONObject): TUser;
 
-  public
     function getMSGById(msgId: Integer): TMSG;
     function getMSGsById(msgsId: array of Integer): TMSGsArray;
 
@@ -62,6 +61,10 @@ type
     function getUsers(ids: array of Integer): TUsersArray;
 
     function getChats: TChatsArray;
+    function getChat(id: Integer): TChat;
+    function getChatsById(ids: array of Integer): TChatsArray;
+
+    function getHistory(peerId: Integer; count: Integer; offset: Integer = 0): TMSGsArray;
 
     constructor Create(token: String);
 end;
@@ -70,6 +73,80 @@ implementation
 var
   usersCache: TUsersArray;
 
+function TAugVKAPI.getHistory(peerId: Integer; count: Integer; offset: Integer = 0): TMSGsArray;
+var
+  response: TJSONObject;
+  jsonEnum: TJSONEnum;
+  items, profilesArray: TJSONArray;
+  item: TJSONObject;
+  userType: String;
+  index: Integer;
+begin
+  response := TJSONObject(vkapi.call('messages.getHistory',
+    TParams.Create
+      .add('count',count)
+      .add('offset',offset)
+      .add('peer_id',peerId)
+      .add('extended',1)
+  ));
+
+  for userType in ['profiles','groups'] do
+  begin
+    if response.IndexOfName(userType) = -1 then continue;
+
+    profilesArray := response.Arrays[userType];
+    for jsonEnum in profilesArray do
+      parseUser(TJSONObject(jsonEnum.Value));
+  end;
+
+  items := response.Arrays['items'];
+  for jsonEnum in items do
+  begin
+    SetLength(Result,Length(Result)+1);
+    index := Length(Result)-1;
+
+    item := TJSONObject(jsonEnum.Value);
+    Result[index] := parseMsg(item);
+  end;
+
+end;
+
+function TAugVKAPI.getChat(id: Integer): TChat;
+begin
+  Result := getChatsById([id])[0];
+end;
+
+function TAugVKAPI.getChatsById(ids: array of Integer): TChatsArray;
+var
+  response: TJSONArray;
+  chat: TJSONObject;
+  jsonEnum: TJSONEnum;
+  idsstr: String;
+  id, index: Integer;
+begin
+  idsstr := '';
+  for id in ids do
+    idsstr += IntToStr(id-2000000000)+',';
+
+  response := TJSONArray(vkapi.call('messages.getChat',
+    TParams.Create
+      .add('chat_ids',idsstr)
+  ));
+  for jsonEnum in response do
+  begin
+    SetLength(Result,Length(Result)+1);
+    index := Length(Result)-1;
+
+    chat := TJSONObject(jsonEnum.Value);
+    Result[index] := TChat.Create;
+    Result[index].name := chat.Strings['title'];
+    Result[index].type_ := chat.Strings['type'];
+    Result[index].id := chat.Integers['id'];
+    Result[index].previewMsg := nil;
+  end;
+
+end;
+
 function TAugVKAPI.getChats: TChatsArray;
 var
   chatsArray, profilesArray: TJSONArray;
@@ -77,6 +154,7 @@ var
   jsonEnum: TJSONEnum;
   offset, index: Integer;
   previewMsg: TMSG;
+  userType: String;
 begin
   offset := 0;
 
@@ -93,18 +171,16 @@ begin
     chatsArray := response.Arrays['items'];
     if chatsArray.Count = 0 then break;
 
-    profilesArray := response.Arrays['profiles'];   //юзеры
-    for jsonEnum in profilesArray do
+    for userType in ['profiles','groups'] do
     begin
-      profileObject := TJSONObject(jsonEnum.Value);
-      parseUser(profileObject);
-    end;
+      if response.IndexOfName(userType) = -1 then continue;
 
-    profilesArray := response.Arrays['groups'];     //группы
-    for jsonEnum in profilesArray do
-    begin
-      profileObject := TJSONObject(jsonEnum.Value);
-      parseGroup(profileObject);
+      profilesArray := response.Arrays[userType];
+      for jsonEnum in profilesArray do
+      begin
+        profileObject := TJSONObject(jsonEnum.Value);
+        parseUser(profileObject);
+      end;
     end;
 
     for jsonEnum in chatsArray do
@@ -138,6 +214,14 @@ function TAugVKAPI.parseUser(data: TJSONObject): TUser;
 begin
   Result := TUser.Create;
   Result.id := data['id'].AsInteger;
+
+  if data.IndexOfName('type') <> -1 then
+    if data['type'].AsString = 'group' then
+    begin
+      Result := parseGroup(data);
+      Exit;
+    end;
+
   Result.name := data['first_name'].AsString + ' ' +
                  data['last_name'].AsString;
 

@@ -138,25 +138,20 @@ var
 const
   SafeMask = ['A'..'Z', '0'..'9', 'a'..'z', '*', '@', '.', '_', '-', ','];
 begin
-  //Init
   sBuff := '';
 
   for x := 1 to Length(url) do
   begin
-    //Check if we have a safe char
     if url[x] in SafeMask then
     begin
-      //Append all other chars
       sBuff := sBuff + url[x];
     end
     else if url[x] = ' ' then
     begin
-      //Append space
       sBuff := sBuff + '+';
     end
     else
     begin
-      //Convert to hex
       sBuff := sBuff + '%' + IntToHex(Ord(url[x]), 2);
     end;
   end;

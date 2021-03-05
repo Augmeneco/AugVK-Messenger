@@ -90,7 +90,11 @@
       <OtherUnitFiles Value="../PasVK;../FPRequests"/>
       <UnitOutputDirectory Value="precompile/$(TargetCPU)-$(TargetOS)"/>
     </SearchPaths>
+    <CodeGeneration>
+      <SmartLinkUnit Value="True"/>
+    </CodeGeneration>
     <Linking>
+      <LinkSmart Value="True"/>
       <Options>
         <Win32>
           <GraphicApplication Value="True"/>

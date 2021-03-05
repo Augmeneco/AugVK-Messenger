@@ -77,7 +77,7 @@ procedure TLongpollThread.ProcessEvent(Event: TJSONArray);
 begin
   EventTypeToHandle := Event.Integers[0];
   EventToHandle := Event;
-  writeln(EventTypeToHandle, ' ',  EventToHandle.AsJSON);
+  //writeln(EventTypeToHandle, ' ',  EventToHandle.AsJSON);
   Synchronize(@ExecuteHandler);
 end;
 
