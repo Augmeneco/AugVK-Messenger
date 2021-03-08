@@ -6,7 +6,7 @@ unit augvkapi;
 interface
 
 uses
-  Classes, SysUtils, fprequests, fpjson, jsonparser, utils, TypeUtils,
+  Classes, SysUtils, fprequests, fpjson, jsonparser, utils, TypeUtils, fgl,
   vkontakteapi;
 
 type TMSG = class;
@@ -21,7 +21,6 @@ type
     date: Integer;
     peerId: Integer;
     fromId: TUser;
-    //attachments: TAttachmentsArray;
     reply: TMSGsArray;
 end;
 
@@ -29,7 +28,6 @@ type
   TUser = class
     name: String;
     id: Integer;
-    //onlineTime: Integer;
 end;
 type TUsersArray = array of TUser;
 
@@ -41,6 +39,7 @@ type
     type_: String;
 end;
 type TChatsArray = array of TChat;
+type TChatsList = specialize TFPGList<TChat>;
 
 type
   TAugVKAPI = class
@@ -66,12 +65,47 @@ type
 
     function getHistory(peerId: Integer; count: Integer; offset: Integer = 0): TMSGsArray;
 
+    function updateChatsPosition(peerId: Integer): TChatsArray;
+    function getChatsForDraw: TChatsArray;
+
     constructor Create(token: String);
 end;
 
 implementation
 var
   usersCache: TUsersArray;
+  drawedChats: TChatsList;
+
+function TAugVKAPI.updateChatsPosition(peerId: Integer): TChatsArray;
+var
+  chat: TChat;
+begin
+  for chat in drawedChats do
+    if chat.id = peerId then
+    begin
+      writeln(drawedChats.IndexOf(chat));
+      drawedChats.Move(
+        drawedChats.IndexOf(chat),0);
+      Exit;
+    end;
+
+  Result := getChatsForDraw;
+end;
+
+function TAugVKAPI.getChatsForDraw: TChatsArray;
+var
+  chat: TChat;
+begin
+  if drawedChats.Count = 0 then
+    for chat in getChats do
+      drawedChats.Add(chat);
+
+  for chat in drawedChats do
+  begin
+    SetLength(Result,Length(Result)+1);
+    Result[Length(Result)-1] := chat;
+  end;
+end;
 
 function TAugVKAPI.getHistory(peerId: Integer; count: Integer; offset: Integer = 0): TMSGsArray;
 var
@@ -216,7 +250,8 @@ begin
   Result.id := data['id'].AsInteger;
 
   if data.IndexOfName('type') <> -1 then
-    if data['type'].AsString = 'group' then
+    if (data['type'].AsString = 'group') or
+       (data['type'].AsString = 'page') then
     begin
       Result := parseGroup(data);
       Exit;
@@ -362,7 +397,7 @@ end;
 
 initialization
 begin
-  //
+  drawedChats := TChatsList.Create;
 end;
 
 end.

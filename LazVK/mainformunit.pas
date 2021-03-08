@@ -24,6 +24,7 @@ type
    SpeedButton1: TSpeedButton;
    Splitter1: TSplitter;
    procedure FormCreate(Sender: TObject);
+   procedure FormShow(Sender: TObject);
  private
 
  public
@@ -33,16 +34,23 @@ type
 var
   MainForm: TMainForm;
   LongpollThread: TCachedLongpoll;
-  augvk: TAugVKAPI;
 
 implementation
+var
+  augvk: TAugVKAPI;
 
 {$R *.lfm}
 
 procedure NewMessageHandler(Event: TJSONArray);
+var
+  chat: TChat;
 begin
-  writeln(Event.Strings[5]);
   MainForm.ListBox2.AddItem(Event.Strings[5], nil);
+
+  augvk.updateChatsPosition(Event.Integers[3]);
+  MainForm.ListBox1.Items.Clear;
+  for chat in augvk.getChatsForDraw do
+    MainForm.ListBox1.Items.Add(chat.name);
 end;
 
 { TMainForm }
@@ -52,11 +60,20 @@ var
   token: String;
 begin
   token := Config.GetPath(Format('accounts[%d].token', [Config.Integers['active_account']])).AsString;
+  augvk := TAugVKAPI.Create(token);
 
   LongpollThread := TCachedLongpoll.Create(token);
   LongpollThread.RegisterEventHandler(4, @NewMessageHandler);
 
   LongpollThread.Start;
+end;
+
+procedure TMainForm.FormShow(Sender: TObject);
+var
+  chat: TChat;
+begin
+  for chat in augvk.getChatsForDraw do
+    MainForm.ListBox1.Items.Add(chat.name);
 end;
 
 end.

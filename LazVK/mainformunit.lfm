@@ -7,7 +7,7 @@ object MainForm: TMainForm
   ClientHeight = 431
   ClientWidth = 772
   OnCreate = FormCreate
-  LCLVersion = '2.1.0.0'
+  OnShow = FormShow
   object Panel1: TPanel
     Left = 0
     Height = 431
