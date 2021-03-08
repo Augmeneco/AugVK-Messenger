@@ -32,6 +32,7 @@ object MainForm: TMainForm
       Width = 185
       Align = alClient
       ItemHeight = 0
+      OnClick = ListBox1Click
       TabOrder = 1
     end
   end
@@ -82,9 +83,6 @@ object MainForm: TMainForm
         Top = 1
         Width = 538
         Align = alClient
-        Lines.Strings = (
-          'Memo1'
-        )
         TabOrder = 0
       end
       object SpeedButton1: TSpeedButton

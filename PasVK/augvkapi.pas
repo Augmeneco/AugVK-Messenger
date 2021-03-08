@@ -67,6 +67,7 @@ type
 
     function updateChatsPosition(peerId: Integer): TChatsArray;
     function getChatsForDraw: TChatsArray;
+    function getChatByIndex(index: Integer): TChat;
 
     constructor Create(token: String);
 end;
@@ -75,6 +76,11 @@ implementation
 var
   usersCache: TUsersArray;
   drawedChats: TChatsList;
+
+function TAugVKAPI.getChatByIndex(index: Integer): TChat;
+begin
+  Result := drawedChats[index];
+end;
 
 function TAugVKAPI.updateChatsPosition(peerId: Integer): TChatsArray;
 var

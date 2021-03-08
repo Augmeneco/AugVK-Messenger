@@ -25,6 +25,7 @@ type
    Splitter1: TSplitter;
    procedure FormCreate(Sender: TObject);
    procedure FormShow(Sender: TObject);
+   procedure ListBox1Click(Sender: TObject);
  private
 
  public
@@ -74,6 +75,20 @@ var
 begin
   for chat in augvk.getChatsForDraw do
     MainForm.ListBox1.Items.Add(chat.name);
+end;
+
+procedure TMainForm.ListBox1Click(Sender: TObject);
+var
+  chat: TChat;
+  msg: TMSG;
+begin
+  if ListBox1.ItemIndex = -1 then exit;
+
+  MainForm.ListBox2.Items.Clear;
+  chat := augvk.getChatByIndex(ListBox1.ItemIndex);
+
+  for msg in augvk.getHistory(chat.id,30) do
+    MainForm.ListBox2.Items.Insert(0,msg.text);
 end;
 
 end.
