@@ -18,50 +18,80 @@ type
   protected
     procedure ProcessEvent(Event: TJSONArray); override;
   public
+    function GetCache(PeerId: Integer): TMSGsArray;
+    function GetCache(PeerId: Integer; Count: Integer): TMSGsArray; overload;
     constructor Create(AToken: String);
 end;
 
 implementation
 var
-  cachedMsgs: TCachedMsgs;
-  augvk: TAugVKAPI;
+  CachedMsgs: TCachedMsgs;
+  Augvk: TAugVKAPI;
 
 { TCachedLongpoll }
 
+function TCachedLongpoll.GetCache(PeerId: Integer; Count: Integer): TMSGsArray; overload;
+var
+  Msgs: TMSGsArray;
+  Count_: Integer;
+  I: Integer;
+begin
+  Count_ := 0;
+
+  Msgs := GetCache(PeerId);
+  for I:=Length(Msgs)-1 downto 0 do
+  begin
+    if Count_ = Count then Break;
+
+    SetLength(Result,Length(Result)+1);
+    Result[Length(Result)-1] := Msgs[I];
+    Count_ += 1;
+  end;
+end;
+
+function TCachedLongpoll.GetCache(PeerId: Integer): TMSGsArray;
+begin
+  if CachedMsgs.IndexOf(PeerId) = -1 then
+    CachedMsgs.Add(
+      PeerId,
+      Augvk.GetHistory(PeerId,100)
+    );
+
+  Result := CachedMsgs.KeyData[PeerId];
+end;
+
 constructor TCachedLongpoll.Create(AToken: String);
 begin
-  augvk := TAugVKAPI.Create(AToken);
-  cachedMsgs := TCachedMsgs.Create;
+  Augvk := TAugVKAPI.Create(AToken);
+  CachedMsgs := TCachedMsgs.Create;
 
   inherited Create(AToken);
 end;
 
 procedure TCachedLongpoll.ProcessEvent(Event: TJSONArray);
 var
-  msg: TMSG;
-  msgs: TMSGsArray;
+  Msg: TMSG;
+  Msgs: TMSGsArray;
 begin
-  //тут твой кеширующий говнокод
-  //щас сосать заставлю тебя за гавнакод
-
   //writeln(Event.FormatJSON());
+
   if Event.Integers[0] <> 4 then Exit;
 
-  msg := augvk.getMSGById(Event.Integers[1]);
-  if cachedMsgs.IndexOf(msg.peerId) = -1 then
+  Msg := Augvk.GetMSGById(Event.Integers[1]);
+
+  if CachedMsgs.IndexOf(Msg.PeerId) = -1 then
   begin
-    cachedMsgs.Add(
-      msg.peerId,
-      augvk.getHistory(msg.peerId,30)
+    CachedMsgs.Add(
+      Msg.PeerId,
+      Augvk.GetHistory(Msg.PeerId,100)
     );
   end;
-  msgs := cachedMsgs.KeyData[msg.peerId];
-  SetLength(msgs,Length(msgs)+1);
-  msgs[Length(msgs)-1] := msg;
-  cachedMsgs.AddOrSetData(msg.peerId,msgs);
 
-  msgs := cachedMsgs.KeyData[msg.peerId];
+  Msgs := CachedMsgs.KeyData[Msg.PeerId];
+  Insert([Msg],Msgs,0);
+  CachedMsgs.AddOrSetData(Msg.PeerId,Msgs);
 
+  writeln(msg.text);
 
   inherited ProcessEvent(Event);
 end;

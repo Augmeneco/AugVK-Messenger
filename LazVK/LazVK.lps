@@ -7,9 +7,9 @@
       <Unit>
         <Filename Value="LazVK.lpr"/>
         <IsPartOfProject Value="True"/>
+        <EditorIndex Value="-1"/>
         <CursorPos X="28" Y="22"/>
         <UsageCount Value="248"/>
-        <Loaded Value="True"/>
       </Unit>
       <Unit>
         <Filename Value="mainformunit.pas"/>
@@ -19,9 +19,8 @@
         <ResourceBaseClass Value="Form"/>
         <UnitName Value="MainFormUnit"/>
         <IsVisibleTab Value="True"/>
-        <EditorIndex Value="1"/>
-        <TopLine Value="67"/>
-        <CursorPos X="59" Y="93"/>
+        <TopLine Value="85"/>
+        <CursorPos X="65" Y="110"/>
         <UsageCount Value="248"/>
         <Loaded Value="True"/>
         <LoadedDesigner Value="True"/>
@@ -63,19 +62,18 @@
         <Filename Value="utils.pas"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="Utils"/>
-        <EditorIndex Value="6"/>
+        <EditorIndex Value="-1"/>
         <CursorPos X="76" Y="20"/>
         <UsageCount Value="216"/>
-        <Loaded Value="True"/>
       </Unit>
       <Unit>
         <Filename Value="../PasVK/cachedlongpoll.pas"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="CachedLongpoll"/>
-        <EditorIndex Value="5"/>
-        <TopLine Value="30"/>
-        <CursorPos X="87" Y="43"/>
-        <UsageCount Value="103"/>
+        <EditorIndex Value="4"/>
+        <TopLine Value="74"/>
+        <CursorPos X="24" Y="91"/>
+        <UsageCount Value="115"/>
         <Loaded Value="True"/>
       </Unit>
       <Unit>
@@ -134,10 +132,10 @@
       <Unit>
         <Filename Value="../PasVK/vklongpoll.pas"/>
         <UnitName Value="VkLongpoll"/>
-        <EditorIndex Value="2"/>
-        <TopLine Value="59"/>
-        <CursorPos X="50" Y="55"/>
-        <UsageCount Value="76"/>
+        <EditorIndex Value="1"/>
+        <TopLine Value="76"/>
+        <CursorPos X="34" Y="27"/>
+        <UsageCount Value="81"/>
         <Loaded Value="True"/>
       </Unit>
       <Unit>
@@ -148,10 +146,10 @@
       <Unit>
         <Filename Value="../PasVK/vkontakteapi.pas"/>
         <UnitName Value="VkontakteApi"/>
-        <EditorIndex Value="4"/>
-        <TopLine Value="23"/>
-        <CursorPos X="5" Y="43"/>
-        <UsageCount Value="18"/>
+        <EditorIndex Value="3"/>
+        <TopLine Value="42"/>
+        <CursorPos Y="47"/>
+        <UsageCount Value="23"/>
         <Loaded Value="True"/>
       </Unit>
       <Unit>
@@ -186,10 +184,10 @@
       </Unit>
       <Unit>
         <Filename Value="../PasVK/augvkapi.pas"/>
-        <EditorIndex Value="3"/>
-        <TopLine Value="99"/>
-        <CursorPos X="11" Y="74"/>
-        <UsageCount Value="39"/>
+        <EditorIndex Value="2"/>
+        <TopLine Value="251"/>
+        <CursorPos X="26" Y="256"/>
+        <UsageCount Value="44"/>
         <Loaded Value="True"/>
       </Unit>
       <Unit>
@@ -223,124 +221,124 @@
     </Units>
     <JumpHistory HistoryIndex="29">
       <Position>
-        <Filename Value="../PasVK/augvkapi.pas"/>
-        <Caret Line="42" Column="30" TopLine="28"/>
+        <Filename Value="../PasVK/cachedlongpoll.pas"/>
+        <Caret Line="40" TopLine="35"/>
       </Position>
       <Position>
-        <Filename Value="../PasVK/augvkapi.pas"/>
-        <Caret Line="87" Column="26" TopLine="76"/>
+        <Filename Value="../PasVK/cachedlongpoll.pas"/>
+        <Caret Line="43" TopLine="35"/>
       </Position>
       <Position>
-        <Filename Value="mainformunit.pas"/>
-        <Caret Line="53" Column="46" TopLine="36"/>
+        <Filename Value="../PasVK/cachedlongpoll.pas"/>
+        <Caret Line="44" TopLine="35"/>
       </Position>
       <Position>
-        <Filename Value="../PasVK/augvkapi.pas"/>
-        <Caret Line="202" Column="8" TopLine="182"/>
+        <Filename Value="../PasVK/cachedlongpoll.pas"/>
+        <Caret Line="45" TopLine="35"/>
       </Position>
       <Position>
-        <Filename Value="../PasVK/augvkapi.pas"/>
-        <Caret Line="210" Column="31" TopLine="182"/>
+        <Filename Value="../PasVK/cachedlongpoll.pas"/>
+        <Caret Line="46" TopLine="35"/>
       </Position>
       <Position>
-        <Filename Value="../PasVK/augvkapi.pas"/>
-        <Caret Line="199" TopLine="182"/>
+        <Filename Value="../PasVK/cachedlongpoll.pas"/>
+        <Caret Line="40" TopLine="35"/>
       </Position>
       <Position>
-        <Filename Value="../PasVK/augvkapi.pas"/>
-        <Caret Line="200" TopLine="182"/>
+        <Filename Value="../PasVK/cachedlongpoll.pas"/>
+        <Caret Line="39" TopLine="35"/>
       </Position>
       <Position>
-        <Filename Value="../PasVK/augvkapi.pas"/>
-        <Caret Line="201" TopLine="182"/>
+        <Filename Value="../PasVK/cachedlongpoll.pas"/>
+        <Caret Line="40" TopLine="35"/>
       </Position>
       <Position>
-        <Filename Value="../PasVK/augvkapi.pas"/>
-        <Caret Line="202" TopLine="182"/>
+        <Filename Value="../PasVK/cachedlongpoll.pas"/>
+        <Caret Line="43" TopLine="35"/>
       </Position>
       <Position>
-        <Filename Value="../PasVK/augvkapi.pas"/>
-        <Caret Line="203" TopLine="182"/>
+        <Filename Value="../PasVK/cachedlongpoll.pas"/>
+        <Caret Line="44" TopLine="35"/>
       </Position>
       <Position>
-        <Filename Value="../PasVK/augvkapi.pas"/>
-        <Caret Line="197" TopLine="182"/>
+        <Filename Value="../PasVK/cachedlongpoll.pas"/>
+        <Caret Line="45" TopLine="35"/>
       </Position>
       <Position>
-        <Filename Value="../PasVK/augvkapi.pas"/>
-        <Caret Line="196" TopLine="182"/>
+        <Filename Value="../PasVK/cachedlongpoll.pas"/>
+        <Caret Line="40" TopLine="35"/>
       </Position>
       <Position>
-        <Filename Value="../PasVK/augvkapi.pas"/>
-        <Caret Line="199" TopLine="182"/>
+        <Filename Value="../PasVK/cachedlongpoll.pas"/>
+        <Caret Line="43" TopLine="35"/>
       </Position>
       <Position>
-        <Filename Value="../PasVK/augvkapi.pas"/>
-        <Caret Line="200" TopLine="182"/>
+        <Filename Value="../PasVK/cachedlongpoll.pas"/>
+        <Caret Line="40" TopLine="35"/>
       </Position>
       <Position>
-        <Filename Value="../PasVK/augvkapi.pas"/>
-        <Caret Line="201" TopLine="182"/>
+        <Filename Value="../PasVK/cachedlongpoll.pas"/>
+        <Caret Line="43" TopLine="35"/>
       </Position>
       <Position>
-        <Filename Value="../PasVK/augvkapi.pas"/>
-        <Caret Line="202" TopLine="182"/>
+        <Filename Value="../PasVK/cachedlongpoll.pas"/>
+        <Caret Line="44" TopLine="35"/>
       </Position>
       <Position>
-        <Filename Value="../PasVK/augvkapi.pas"/>
-        <Caret Line="203" TopLine="182"/>
+        <Filename Value="../PasVK/cachedlongpoll.pas"/>
+        <Caret Line="45" TopLine="35"/>
       </Position>
       <Position>
-        <Filename Value="../PasVK/vkontakteapi.pas"/>
-        <Caret Line="44" Column="34" TopLine="23"/>
+        <Filename Value="../PasVK/cachedlongpoll.pas"/>
+        <Caret Line="46" TopLine="35"/>
       </Position>
       <Position>
-        <Filename Value="../PasVK/augvkapi.pas"/>
-        <Caret Line="196" TopLine="182"/>
+        <Filename Value="../PasVK/cachedlongpoll.pas"/>
+        <Caret Line="40" TopLine="35"/>
       </Position>
       <Position>
-        <Filename Value="../PasVK/augvkapi.pas"/>
-        <Caret Line="199" TopLine="182"/>
+        <Filename Value="../PasVK/cachedlongpoll.pas"/>
+        <Caret Line="43" TopLine="35"/>
       </Position>
       <Position>
-        <Filename Value="../PasVK/augvkapi.pas"/>
-        <Caret Line="200" TopLine="182"/>
-      </Position>
-      <Position>
-        <Filename Value="../PasVK/augvkapi.pas"/>
-        <Caret Line="201" TopLine="182"/>
-      </Position>
-      <Position>
-        <Filename Value="../PasVK/augvkapi.pas"/>
-        <Caret Line="202" TopLine="182"/>
-      </Position>
-      <Position>
-        <Filename Value="../PasVK/augvkapi.pas"/>
-        <Caret Line="203" TopLine="182"/>
+        <Filename Value="../PasVK/cachedlongpoll.pas"/>
+        <Caret Line="48" TopLine="35"/>
       </Position>
       <Position>
         <Filename Value="mainformunit.pas"/>
-        <Caret Line="64" Column="21" TopLine="35"/>
+        <Caret Line="49" Column="69" TopLine="39"/>
       </Position>
       <Position>
-        <Filename Value="../PasVK/augvkapi.pas"/>
-        <Caret Line="37" Column="31" TopLine="31"/>
+        <Filename Value="../PasVK/cachedlongpoll.pas"/>
+        <Caret Line="83" Column="21" TopLine="67"/>
       </Position>
       <Position>
-        <Filename Value="../PasVK/augvkapi.pas"/>
-        <Caret Line="258" Column="34" TopLine="237"/>
-      </Position>
-      <Position>
-        <Filename Value="mainformunit.pas"/>
-        <Caret Line="69" Column="24" TopLine="41"/>
+        <Filename Value="../PasVK/cachedlongpoll.pas"/>
+        <Caret Line="96" Column="38" TopLine="77"/>
       </Position>
       <Position>
         <Filename Value="mainformunit.pas"/>
-        <Caret Line="48" Column="6" TopLine="38"/>
+        <Caret Line="55" Column="25" TopLine="42"/>
       </Position>
       <Position>
         <Filename Value="mainformunit.pas"/>
-        <Caret Line="83" Column="6" TopLine="58"/>
+        <Caret Line="54" Column="15" TopLine="42"/>
+      </Position>
+      <Position>
+        <Filename Value="mainformunit.pas"/>
+        <Caret Line="108" Column="44" TopLine="86"/>
+      </Position>
+      <Position>
+        <Filename Value="mainformunit.pas"/>
+        <Caret Line="100" Column="3" TopLine="86"/>
+      </Position>
+      <Position>
+        <Filename Value="mainformunit.pas"/>
+        <Caret Line="93" Column="15" TopLine="86"/>
+      </Position>
+      <Position>
+        <Filename Value="../PasVK/cachedlongpoll.pas"/>
+        <Caret Line="91" Column="24" TopLine="75"/>
       </Position>
     </JumpHistory>
     <RunParams>
@@ -348,4 +346,17 @@
       <Modes ActiveMode=""/>
     </RunParams>
   </ProjectSession>
+  <Debugging>
+    <Watches>
+      <Item>
+        <Expression Value="Msg"/>
+      </Item>
+      <Item>
+        <Expression Value="Count_"/>
+      </Item>
+      <Item>
+        <Expression Value="Result"/>
+      </Item>
+    </Watches>
+  </Debugging>
 </CONFIG>

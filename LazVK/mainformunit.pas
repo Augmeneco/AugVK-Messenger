@@ -38,32 +38,43 @@ var
 
 implementation
 var
-  augvk: TAugVKAPI;
+  AugVK: TAugVKAPI;
+  SelectedChat: Integer;
 
 {$R *.lfm}
 
 procedure NewMessageHandler(Event: TJSONArray);
 var
-  chat: TChat;
+  Chat: TChat;
 begin
-  MainForm.ListBox2.AddItem(Event.Strings[5], nil);
+  //MainForm.ListBox2.AddItem(Event.Strings[5], nil);
 
-  augvk.updateChatsPosition(Event.Integers[3]);
+  //writeln(MainForm.ListBox1.ItemIndex);
+
+  AugVK.UpdateChatsPosition(Event.Integers[3]);
   MainForm.ListBox1.Items.Clear;
-  for chat in augvk.getChatsForDraw do
-    MainForm.ListBox1.Items.Add(chat.name);
+  for Chat in AugVK.GetChatsForDraw do
+    MainForm.ListBox1.Items.Add(Chat.Name);
+
+  if (SelectedChat = -1) then Exit;
+
+  if SelectedChat = Event.Integers[3] then
+    MainForm.ListBox2.Items.Add(
+      LongpollThread.GetCache(Event.Integers[3],1)[0].text
+    );
 end;
 
 { TMainForm }
 
 procedure TMainForm.FormCreate(Sender: TObject);
 var
-  token: String;
+  Token: String;
 begin
-  token := Config.GetPath(Format('accounts[%d].token', [Config.Integers['active_account']])).AsString;
-  augvk := TAugVKAPI.Create(token);
+  Token := Config.GetPath(Format('accounts[%d].token', [Config.Integers['active_account']])).AsString;
+  AugVK := TAugVKAPI.Create(Token);
+  SelectedChat := -1;
 
-  LongpollThread := TCachedLongpoll.Create(token);
+  LongpollThread := TCachedLongpoll.Create(Token);
   LongpollThread.RegisterEventHandler(4, @NewMessageHandler);
 
   LongpollThread.Start;
@@ -71,24 +82,32 @@ end;
 
 procedure TMainForm.FormShow(Sender: TObject);
 var
-  chat: TChat;
+  Chat: TChat;
 begin
-  for chat in augvk.getChatsForDraw do
-    MainForm.ListBox1.Items.Add(chat.name);
+  for Chat in AugVK.GetChatsForDraw do
+    MainForm.ListBox1.Items.Add(Chat.Name);
 end;
 
 procedure TMainForm.ListBox1Click(Sender: TObject);
 var
-  chat: TChat;
-  msg: TMSG;
+  Chat: TChat;
+  Msgs: TMSGsArray;
+  I: Integer;
 begin
-  if ListBox1.ItemIndex = -1 then exit;
+  if ListBox1.ItemIndex = -1 then Exit;
 
   MainForm.ListBox2.Items.Clear;
-  chat := augvk.getChatByIndex(ListBox1.ItemIndex);
+  Chat := AugVK.GetChatByIndex(ListBox1.ItemIndex);
+  SelectedChat := Chat.Id;
 
-  for msg in augvk.getHistory(chat.id,30) do
-    MainForm.ListBox2.Items.Insert(0,msg.text);
+  Msgs := LongpollThread.GetCache(SelectedChat);
+
+  for I:=Length(Msgs)-1 downto 0 do
+  begin
+    MainForm.ListBox2.Items.Add(Msgs[I].Text);
+  end;
+
+  MainForm.ListBox2.ItemIndex := MainForm.ListBox2.Items.Count-1;
 end;
 
 end.

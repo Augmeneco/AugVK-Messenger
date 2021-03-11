@@ -89,7 +89,7 @@ begin
   for chat in drawedChats do
     if chat.id = peerId then
     begin
-      writeln(drawedChats.IndexOf(chat));
+      //writeln(drawedChats.IndexOf(chat));
       drawedChats.Move(
         drawedChats.IndexOf(chat),0);
       Exit;
@@ -257,7 +257,8 @@ begin
 
   if data.IndexOfName('type') <> -1 then
     if (data['type'].AsString = 'group') or
-       (data['type'].AsString = 'page') then
+       (data['type'].AsString = 'page') or
+       (data['id'].AsInteger < 0) then
     begin
       Result := parseGroup(data);
       Exit;
