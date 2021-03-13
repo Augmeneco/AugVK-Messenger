@@ -9,7 +9,6 @@
         <IsPartOfProject Value="True"/>
         <CursorPos Y="21"/>
         <UsageCount Value="248"/>
-        <Loaded Value="True"/>
       </Unit>
       <Unit>
         <Filename Value="mainformunit.pas"/>
@@ -66,7 +65,6 @@
         <EditorIndex Value="8"/>
         <CursorPos X="55" Y="20"/>
         <UsageCount Value="216"/>
-        <Loaded Value="True"/>
       </Unit>
       <Unit>
         <Filename Value="../PasVK/cachedlongpoll.pas"/>
@@ -309,4 +307,17 @@
       <Modes ActiveMode=""/>
     </RunParams>
   </ProjectSession>
+  <Debugging>
+    <Watches>
+      <Item>
+        <Expression Value="Msg"/>
+      </Item>
+      <Item>
+        <Expression Value="Count_"/>
+      </Item>
+      <Item>
+        <Expression Value="Result"/>
+      </Item>
+    </Watches>
+  </Debugging>
 </CONFIG>
