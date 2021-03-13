@@ -42,11 +42,8 @@ var
 
 implementation
 
-type
-
 var
   AugVK: TAugVKAPI;
-  SelectedChat: Integer;
 
 {$R *.lfm}
 
@@ -70,7 +67,6 @@ var
 begin
   Token := Config.GetPath(Format('accounts[%d].token', [Config.Integers['active_account']])).AsString;
   AugVK := TAugVKAPI.Create(Token);
-  SelectedChat := -1;
 
   LongpollThread := TCachedLongpoll.Create(Token);
   LongpollThread.RegisterEventHandler(4, @NewMessageHandler);
@@ -97,14 +93,6 @@ begin
 
   MainForm.ListBox2.Items.Clear;
   Chat := AugVK.GetChatByIndex(ListBox1.ItemIndex);
-  SelectedChat := Chat.Id;
-
-  Msgs := LongpollThread.GetCache(SelectedChat);
-
-  for I:=Length(Msgs)-1 downto 0 do
-  begin
-    MainForm.ListBox2.Items.Add(Msgs[I].Text);
-  end;
 
   i:=0;
   for msg in augvk.getHistory(chat.id,30) do

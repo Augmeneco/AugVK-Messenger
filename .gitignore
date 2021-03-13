@@ -2,6 +2,6 @@
 **/lib
 **/backup
 **/test
-LazVK/LazVK
+**/*.lps
 **/build
 **/precompile
