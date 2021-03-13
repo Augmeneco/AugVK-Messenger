@@ -1,0 +1,70 @@
+object MessageFrame: TMessageFrame
+  AnchorSideRight.Side = asrBottom
+  Left = 0
+  Height = 67
+  Top = 0
+  Width = 338
+  Anchors = []
+  BorderSpacing.InnerBorder = 10
+  ClientHeight = 67
+  ClientWidth = 338
+  OnMouseWheel = FrameMouseWheel
+  TabOrder = 0
+  DesignLeft = 273
+  DesignTop = -10
+  object AvatarImage: TImage
+    AnchorSideLeft.Control = Owner
+    AnchorSideTop.Control = Owner
+    Left = 10
+    Height = 50
+    Top = 10
+    Width = 50
+    BorderSpacing.Left = 10
+    BorderSpacing.Top = 10
+    Stretch = True
+  end
+  object NameLabel: TLabel
+    AnchorSideLeft.Control = AvatarImage
+    AnchorSideLeft.Side = asrBottom
+    AnchorSideRight.Control = Owner
+    AnchorSideRight.Side = asrBottom
+    AnchorSideBottom.Side = asrCenter
+    Left = 65
+    Height = 18
+    Top = 8
+    Width = 263
+    Anchors = [akTop, akLeft, akRight]
+    BorderSpacing.Left = 5
+    BorderSpacing.Right = 10
+    Caption = 'NameLabel'
+    ParentColor = False
+  end
+  object MessageTextLabel: TLabel
+    AnchorSideLeft.Control = AvatarImage
+    AnchorSideLeft.Side = asrBottom
+    AnchorSideTop.Control = NameLabel
+    AnchorSideTop.Side = asrBottom
+    AnchorSideRight.Control = Owner
+    AnchorSideRight.Side = asrBottom
+    Left = 65
+    Height = 28
+    Top = 26
+    Width = 263
+    Anchors = [akTop, akLeft, akRight]
+    AutoSize = False
+    BorderSpacing.Left = 5
+    BorderSpacing.Right = 10
+    Caption = 'MessageTextLabel'
+    ParentColor = False
+  end
+  object Bevel1: TBevel
+    Left = 10
+    Height = 2
+    Top = 65
+    Width = 318
+    Align = alBottom
+    BorderSpacing.Left = 10
+    BorderSpacing.Right = 10
+    Shape = bsBottomLine
+  end
+end

@@ -14,22 +14,26 @@ object MainForm: TMainForm
     Top = 0
     Width = 187
     Align = alLeft
+    BevelOuter = bvNone
     ClientHeight = 431
     ClientWidth = 187
+    ParentColor = False
     TabOrder = 0
     object Panel3: TPanel
-      Left = 1
+      Left = 0
       Height = 50
-      Top = 1
-      Width = 185
+      Top = 0
+      Width = 187
       Align = alTop
+      BevelOuter = bvNone
+      ParentColor = False
       TabOrder = 0
     end
     object ListBox1: TListBox
-      Left = 1
-      Height = 379
-      Top = 51
-      Width = 185
+      Left = 0
+      Height = 381
+      Top = 50
+      Width = 187
       Align = alClient
       ItemHeight = 0
       OnClick = ListBox1Click
@@ -40,61 +44,83 @@ object MainForm: TMainForm
     Left = 187
     Height = 431
     Top = 0
-    Width = 5
+    Width = 1
+    ParentColor = False
   end
   object Panel2: TPanel
-    Left = 192
+    Left = 188
     Height = 431
     Top = 0
-    Width = 580
+    Width = 584
     Align = alClient
+    BevelOuter = bvNone
     ClientHeight = 431
-    ClientWidth = 580
+    ClientWidth = 584
+    ParentColor = False
     TabOrder = 2
     object Panel4: TPanel
-      Left = 1
+      Left = 0
       Height = 50
-      Top = 1
-      Width = 578
+      Top = 0
+      Width = 584
       Align = alTop
+      BevelOuter = bvNone
+      ParentColor = False
       TabOrder = 0
     end
     object ListBox2: TListBox
-      Left = 1
-      Height = 341
-      Top = 51
-      Width = 578
-      Align = alClient
+      Left = 0
+      Height = 25
+      Top = 25
+      Width = 584
       ItemHeight = 0
       TabOrder = 1
+      Visible = False
     end
     object Panel5: TPanel
-      Left = 1
+      Left = 0
       Height = 38
-      Top = 392
-      Width = 578
+      Top = 393
+      Width = 584
       Align = alBottom
+      BevelOuter = bvNone
       ClientHeight = 38
-      ClientWidth = 578
+      ClientWidth = 584
+      ParentColor = False
       TabOrder = 2
       object Memo1: TMemo
-        Left = 1
-        Height = 36
-        Top = 1
-        Width = 538
+        Left = 0
+        Height = 38
+        Top = 0
+        Width = 546
         Align = alClient
         TabOrder = 0
       end
       object SpeedButton1: TSpeedButton
         Cursor = crHandPoint
-        Left = 539
-        Height = 36
-        Top = 1
+        Left = 546
+        Height = 38
+        Top = 0
         Width = 38
         Align = alRight
         AutoSize = True
         Caption = 'SEND'
       end
+    end
+    object ScrollBox1: TScrollBox
+      Left = 0
+      Height = 343
+      Top = 50
+      Width = 584
+      HorzScrollBar.Page = 1
+      HorzScrollBar.Visible = False
+      VertScrollBar.Increment = 1
+      VertScrollBar.Page = 1
+      VertScrollBar.Smooth = True
+      VertScrollBar.Tracking = True
+      Align = alClient
+      TabOrder = 3
+      OnMouseWheel = ScrollBox1MouseWheel
     end
   end
 end

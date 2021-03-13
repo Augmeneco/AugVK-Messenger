@@ -28,6 +28,9 @@
     </RunParams>
     <RequiredPackages>
       <Item>
+        <PackageName Value="bgracontrols"/>
+      </Item>
+      <Item>
         <PackageName Value="LCL"/>
       </Item>
     </RequiredPackages>
@@ -77,6 +80,14 @@
         <Filename Value="../PasVK/cachedlongpoll.pas"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="CachedLongpoll"/>
+      </Unit>
+      <Unit>
+        <Filename Value="messageframeunit.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="MessageFrame"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Frame"/>
+        <UnitName Value="MessageFrameUnit"/>
       </Unit>
     </Units>
   </ProjectOptions>
