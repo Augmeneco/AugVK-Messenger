@@ -13,10 +13,13 @@
       </XPManifest>
       <Icon Value="0"/>
     </General>
+    <MacroValues Count="1">
+      <Macro1 Name="LCLWidgetType" Value="qt5"/>
+    </MacroValues>
     <BuildModes>
       <Item Name="Default" Default="True"/>
       <SharedMatrixOptions Count="1">
-        <Item1 ID="019737078047" Type="IDEMacro" MacroName="LCLWidgetType" Value="gtk3"/>
+        <Item1 ID="583174017471" Modes="Default" Type="IDEMacro" MacroName="LCLWidgetType" Value="qt5"/>
       </SharedMatrixOptions>
     </BuildModes>
     <PublishOptions>
@@ -27,9 +30,6 @@
       <FormatVersion Value="2"/>
     </RunParams>
     <RequiredPackages>
-      <Item>
-        <PackageName Value="bgracontrols"/>
-      </Item>
       <Item>
         <PackageName Value="LCL"/>
       </Item>
