@@ -6,7 +6,7 @@ unit augvkapi;
 interface
 
 uses
-  Classes, SysUtils, fprequests, fpjson, jsonparser, utils, TypeUtils, fgl,
+  Classes, SysUtils, fprequests, fpjson, jsonparser, utils, fgl,
   vkontakteapi;
 
 type TMSG = class;

@@ -13,28 +13,28 @@ type
 
 { TMainForm }
 
-	TMainForm = class(TForm)
-		ListBox1: TListBox;
-		ListBox2: TListBox;
-		Memo1: TMemo;
-		Panel1: TPanel;
-		Panel2: TPanel;
-		Panel3: TPanel;
-		Panel4: TPanel;
-		Panel5: TPanel;
-		ScrollBox1: TScrollBox;
-		SpeedButton1: TSpeedButton;
-		Splitter1: TSplitter;
-		procedure FormCreate(Sender: TObject);
-		procedure FormShow(Sender: TObject);
-		procedure ListBox1Click(Sender: TObject);
-		procedure ScrollBox1MouseWheel(Sender: TObject; Shift: TShiftState;
-			WheelDelta: Integer; MousePos: TPoint; var Handled: Boolean);
-	private
+TMainForm = class(TForm)
+  ListBox1: TListBox;
+  ListBox2: TListBox;
+  Memo1: TMemo;
+  Panel1: TPanel;
+  Panel2: TPanel;
+  Panel3: TPanel;
+  Panel4: TPanel;
+  Panel5: TPanel;
+  ScrollBox1: TScrollBox;
+  SpeedButton1: TSpeedButton;
+  Splitter1: TSplitter;
+  procedure FormCreate(Sender: TObject);
+  procedure FormShow(Sender: TObject);
+  procedure ListBox1Click(Sender: TObject);
+  procedure ScrollBox1MouseWheel(Sender: TObject; Shift: TShiftState;
+  WheelDelta: Integer; MousePos: TPoint; var Handled: Boolean);
+private
 
-	public
+public
 
-	end;
+end;
 
 var
   MainForm: TMainForm;
@@ -46,24 +46,24 @@ type
 
   { TDrawnMsgsManager }
 
-	TDrawnMsgsManager = class
-	public
-	  type
-	    TItem = class
-	      Prev: TItem;
-	      Next: TItem;
-	      ApiMsg: TMSG;
-	      GuiMsg: TMessageFrame;
-	    end;
-	private
-	  FirstItem: TItem;
-    FCount: Integer;
-	public
-    function Add(Item: TItem): Integer;
-    function AddMsg(Msg: TMSG): Integer;
-	  function Get(Idx: Integer): TItem;
-    property Count: Integer read FCount;
-	end;
+  TDrawnMsgsManager = class
+  public
+    type
+      TItem = class
+        Prev: TItem;
+        Next: TItem;
+        ApiMsg: TMSG;
+        GuiMsg: TMessageFrame;
+      end;
+  private
+    FirstItem: TItem;
+  FCount: Integer;
+  public
+  function Add(Item: TItem): Integer;
+  function AddMsg(Msg: TMSG): Integer;
+    function Get(Idx: Integer): TItem;
+  property Count: Integer read FCount;
+  end;
 
 var
   AugVK: TAugVKAPI;
