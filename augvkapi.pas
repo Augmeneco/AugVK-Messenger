@@ -255,9 +255,17 @@ function TAugVKAPI.parseUser(data: TJSONObject): TUser;
 var
   TmpStream: TFileStream;
   FileName: String;
+  User: TUser;
 begin
   Result := TUser.Create;
   Result.id := data['id'].AsInteger;
+
+  for User in UsersCache do
+    if User.Id = Data.Integers['id'] then
+    begin
+       Result := User;
+       Exit;
+    end;
 
   if data.IndexOfName('type') <> -1 then
     if (data['type'].AsString = 'group') or
@@ -283,6 +291,7 @@ begin
     TmpStream.Free;
   end;
 
+  writeln('READING AVATAR '+inttostr(data['id'].AsInteger));
   TmpStream := TFileStream.Create(
    FileName,
    fmOpenReadWrite
