@@ -135,7 +135,8 @@ begin
   MsgFrame.AnchorSide[akRight].Control := MainForm.ScrollBox1;
   MsgFrame.AnchorSide[akRight].Side := asrRight;
 
-  MsgFrame.AvatarImage.Picture.LoadFromFile('logo.png');
+  //MsgFrame.AvatarImage.Picture.LoadFromFile('logo.png');
+  MsgFrame.AvatarImage.Picture := msg.fromId.Image;
   MsgFrame.NameLabel.Caption := msg.fromId.name;
   MsgFrame.MessageTextLabel.Caption := msg.text;
 
@@ -143,13 +144,13 @@ begin
   begin
     MsgFrame.AnchorSide[akBottom].Control := MainForm.ScrollBox1;
     MsgFrame.AnchorSide[akBottom].Side := asrBottom;
-	end
+  end
   else
   begin
     MsgFrame.AnchorSide[akBottom].Control := Get(FCount-1).GuiMsg;
     MsgFrame.AnchorSide[akBottom].Side := asrTop;
-	end;
-	MsgFrame.Parent := MainForm.ScrollBox1;
+  end;
+  MsgFrame.Parent := MainForm.ScrollBox1;
 
   Result := Add(Item);
 end;
@@ -198,13 +199,12 @@ var
 begin
   if ListBox1.ItemIndex = -1 then Exit;
 
-  MainForm.ListBox2.Items.Clear;
   Chat := AugVK.GetChatByIndex(ListBox1.ItemIndex);
 
   for msg in augvk.getHistory(chat.id,30) do
   begin
     DrawnMsgsManager.AddMsg(msg);
-	end;
+  end;
   ScrollBox1.VertScrollBar.Position := ScrollBox1.VertScrollBar.Range-ScrollBox1.VertScrollBar.Page;
 end;
 

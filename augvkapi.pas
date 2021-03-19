@@ -7,7 +7,7 @@ interface
 
 uses
   Classes, SysUtils, fprequests, fpjson, jsonparser, utils, fgl,
-  vkontakteapi;
+  vkontakteapi, Graphics;
 
 type TMSG = class;
 type TUser = class;
@@ -26,8 +26,9 @@ end;
 
 type
   TUser = class
-    name: String;
-    id: Integer;
+    Name: String;
+    Id: Integer;
+    Image: TPicture;
 end;
 type TUsersArray = array of TUser;
 
@@ -251,6 +252,9 @@ begin
 end;
 
 function TAugVKAPI.parseUser(data: TJSONObject): TUser;
+var
+  TmpStream: TFileStream;
+  FileName: String;
 begin
   Result := TUser.Create;
   Result.id := data['id'].AsInteger;
@@ -266,6 +270,26 @@ begin
 
   Result.name := data['first_name'].AsString + ' ' +
                  data['last_name'].AsString;
+
+  FileName := Format('data/%d.jpg',[data['id'].AsInteger]);
+
+  if not FileExists(FileName) then
+  begin
+    TmpStream := TFileStream.Create(
+       FileName,
+       fmCreate
+    );
+    requests.get(data['photo_50'].AsString, TmpStream);
+    TmpStream.Free;
+  end;
+
+  TmpStream := TFileStream.Create(
+   FileName,
+   fmOpenReadWrite
+  );
+  Result.Image := TPicture.Create;
+  Result.Image.LoadFromStream(TmpStream);
+  TmpStream.Free;
 
   addUser(Result);
 end;

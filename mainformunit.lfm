@@ -93,16 +93,16 @@ object MainForm: TMainForm
         Left = 0
         Height = 38
         Top = 0
-        Width = 546
+        Width = 551
         Align = alClient
         TabOrder = 0
       end
       object SpeedButton1: TSpeedButton
         Cursor = crHandPoint
-        Left = 546
+        Left = 551
         Height = 38
         Top = 0
-        Width = 38
+        Width = 33
         Align = alRight
         AutoSize = True
         Caption = 'SEND'
