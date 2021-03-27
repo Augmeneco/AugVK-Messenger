@@ -34,6 +34,8 @@ type
   public
     constructor Create;
     function get(URL: String; params: TParams): TResponse;
+    function get(URL: String): TResponse; overload;
+    procedure get(URL: String; stream: TStream); overload;
     function post(URL: String; params: TParams): TResponse;
 end;
 
@@ -46,6 +48,16 @@ var
 function TResponse.json(): TJSONData;
 begin
   Result := GetJSON(text);
+end;
+
+procedure TRequests.get(URL: String; stream: TStream); overload;
+begin
+  client.Get(URL,stream);
+end;
+
+function TRequests.get(URL: String): TResponse; overload;
+begin
+  Result := get(URL, TParams.Create);
 end;
 
 function TRequests.get(URL: String; params: TParams): TResponse;

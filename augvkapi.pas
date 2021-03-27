@@ -6,8 +6,8 @@ unit augvkapi;
 interface
 
 uses
-  Classes, SysUtils, fprequests, fpjson, jsonparser, utils, TypeUtils, fgl,
-  vkontakteapi;
+  Classes, SysUtils, fprequests, fpjson, jsonparser, utils, fgl,
+  vkontakteapi, Graphics;
 
 type TMSG = class;
 type TUser = class;
@@ -26,8 +26,9 @@ end;
 
 type
   TUser = class
-    name: String;
-    id: Integer;
+    Name: String;
+    Id: Integer;
+    Image: TPicture;
 end;
 type TUsersArray = array of TUser;
 
@@ -251,9 +252,20 @@ begin
 end;
 
 function TAugVKAPI.parseUser(data: TJSONObject): TUser;
+var
+  TmpStream: TFileStream;
+  FileName: String;
+  User: TUser;
 begin
   Result := TUser.Create;
   Result.id := data['id'].AsInteger;
+
+  for User in UsersCache do
+    if User.Id = Data.Integers['id'] then
+    begin
+       Result := User;
+       Exit;
+    end;
 
   if data.IndexOfName('type') <> -1 then
     if (data['type'].AsString = 'group') or
@@ -266,6 +278,27 @@ begin
 
   Result.name := data['first_name'].AsString + ' ' +
                  data['last_name'].AsString;
+
+  FileName := Format('data/%d.jpg',[data['id'].AsInteger]);
+
+  if not FileExists(FileName) then
+  begin
+    TmpStream := TFileStream.Create(
+       FileName,
+       fmCreate
+    );
+    requests.get(data['photo_50'].AsString, TmpStream);
+    TmpStream.Free;
+  end;
+
+  writeln('READING AVATAR '+inttostr(data['id'].AsInteger));
+  TmpStream := TFileStream.Create(
+   FileName,
+   fmOpenReadWrite
+  );
+  Result.Image := TPicture.Create;
+  Result.Image.LoadFromStream(TmpStream);
+  TmpStream.Free;
 
   addUser(Result);
 end;
