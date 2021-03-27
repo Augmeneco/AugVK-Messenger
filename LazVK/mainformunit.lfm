@@ -8,7 +8,6 @@ object MainForm: TMainForm
   ClientWidth = 772
   OnCreate = FormCreate
   OnShow = FormShow
-  LCLVersion = '2.1.0.0'
   object Panel1: TPanel
     Left = 0
     Height = 431
@@ -38,7 +37,9 @@ object MainForm: TMainForm
       Align = alClient
       ItemHeight = 0
       OnClick = ListBox1Click
+      ScrollWidth = 185
       TabOrder = 1
+      TopIndex = -1
     end
   end
   object Splitter1: TSplitter
@@ -75,7 +76,9 @@ object MainForm: TMainForm
       Top = 25
       Width = 584
       ItemHeight = 0
+      ScrollWidth = 582
       TabOrder = 1
+      TopIndex = -1
       Visible = False
     end
     object Panel5: TPanel
@@ -121,7 +124,6 @@ object MainForm: TMainForm
       VertScrollBar.Tracking = True
       Align = alClient
       TabOrder = 3
-      OnMouseWheel = ScrollBox1MouseWheel
     end
   end
 end

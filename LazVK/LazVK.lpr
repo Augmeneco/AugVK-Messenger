@@ -18,10 +18,10 @@ uses
 {$R *.res}
 
 begin
-   RequireDerivedFormResource:=True;
+  RequireDerivedFormResource:=True;
 	Application.Scaled:=True;
-   Application.Initialize;
-   Application.CreateForm(TMainForm, MainForm);
-   Application.Run;
+  Application.Initialize;
+  Application.CreateForm(TMainForm, MainForm);
+  Application.Run;
 end.
 

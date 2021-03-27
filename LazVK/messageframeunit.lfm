@@ -10,8 +10,8 @@ object MessageFrame: TMessageFrame
   ClientWidth = 338
   OnMouseWheel = FrameMouseWheel
   TabOrder = 0
-  DesignLeft = 273
-  DesignTop = -10
+  DesignLeft = 272
+  DesignTop = -11
   object AvatarImage: TImage
     AnchorSideLeft.Control = Owner
     AnchorSideTop.Control = Owner
@@ -30,7 +30,7 @@ object MessageFrame: TMessageFrame
     AnchorSideRight.Side = asrBottom
     AnchorSideBottom.Side = asrCenter
     Left = 65
-    Height = 18
+    Height = 19
     Top = 8
     Width = 263
     Anchors = [akTop, akLeft, akRight]
@@ -48,7 +48,7 @@ object MessageFrame: TMessageFrame
     AnchorSideRight.Side = asrBottom
     Left = 65
     Height = 28
-    Top = 26
+    Top = 27
     Width = 263
     Anchors = [akTop, akLeft, akRight]
     AutoSize = False

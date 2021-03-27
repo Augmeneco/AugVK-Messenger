@@ -28,8 +28,6 @@ type
 		procedure FormCreate(Sender: TObject);
 		procedure FormShow(Sender: TObject);
 		procedure ListBox1Click(Sender: TObject);
-		procedure ScrollBox1MouseWheel(Sender: TObject; Shift: TShiftState;
-			WheelDelta: Integer; MousePos: TPoint; var Handled: Boolean);
 	private
 
 	public
@@ -60,8 +58,10 @@ type
     FCount: Integer;
 	public
     function Add(Item: TItem): Integer;
-    function AddMsg(Msg: TMSG): Integer;
+    function Add(Msg: TMSG): Integer;
 	  function Get(Idx: Integer): TItem;
+    procedure Remove(Idx: Integer);
+    procedure Clear;
     property Count: Integer read FCount;
 	end;
 
@@ -84,6 +84,10 @@ begin
 end;
 
 { TDrawnMsgsManager }
+
+{ !!!!!!!!!!!!!
+  ВООБЩЕ НАФИГ ПЕРЕДЕЛАТЬ ОСНОВАВ СПИСОК НА ОСНОВЕ ФРЕЙМА
+  !!!!!!!!!!!!! }
 
 function TDrawnMsgsManager.Add(Item: TItem): Integer;
 var
@@ -112,7 +116,7 @@ begin
 	end;
 end;
 
-function TDrawnMsgsManager.AddMsg(Msg: TMSG): Integer;
+function TDrawnMsgsManager.Add(Msg: TMSG): Integer;
 var
   Item: TItem;
   MsgFrame: TMessageFrame;
@@ -155,15 +159,69 @@ begin
 end;
 
 function TDrawnMsgsManager.Get(Idx: Integer): TItem;
+var
+  i: Integer;
 begin
   if Assigned(FirstItem) or (Idx <= (FCount-1)) then
   begin
     Result := FirstItem;
-    while Assigned(Result.Next) do
+    i:=0;
+    while i<Idx do
+    begin
       Result := Result.Next;
- 	end
+      Inc(i);
+		end;
+	end
   else
     raise Exception.Create('No such index');
+end;
+
+procedure TDrawnMsgsManager.Remove(Idx: Integer);
+var
+  Item: TItem;
+begin
+  Item := Get(Idx);
+  // тут отсчет идет относительно Item
+
+  // если прошлый итем установлен то
+  if Assigned(Item.Prev) then
+  begin
+    // заменить прошлому Next на Next этого итема
+    Item.Prev.Next := Item.Next;
+	end
+	else
+  begin
+  // если прошлого итема нет значит это первый итем
+  // значит производим с ним отдельные операции
+    // значит меняем значение родительского класса на след. за этим итем
+    FirstItem := Item.Next;
+    // если след. за этим итем не нил - значит привязываем его к началу бокса
+    if Assigned(Item.Next) then
+      Item.Next.GuiMsg.AnchorSide[akBottom].Control := MainForm.ScrollBox1;
+	end;
+
+  // если след. итем установлен
+  if Assigned(Item.Next) then
+  begin
+    // заменить след. итему Prev на Prev этого итема
+    Item.Next.Prev := Item.Prev;
+	end;
+
+  // если след. итем не нил и пред. не нил
+  // то у след. итема меняем привязку на пред. итем
+  if Assigned(Item.Prev) then
+    Item.Next.GuiMsg.AnchorSide[akBottom].Control := Item.Prev.GuiMsg;
+
+  Dec(FCount);
+end;
+
+procedure TDrawnMsgsManager.Clear;
+var
+  i: Integer;
+begin
+  if FCount > 0 then
+	  for i:=0 to FCount-1 do
+	    Remove(0);
 end;
 
 { TMainForm }
@@ -201,17 +259,12 @@ begin
   MainForm.ListBox2.Items.Clear;
   Chat := AugVK.GetChatByIndex(ListBox1.ItemIndex);
 
+  DrawnMsgsManager.Clear;
   for msg in augvk.getHistory(chat.id,30) do
   begin
-    DrawnMsgsManager.AddMsg(msg);
+    DrawnMsgsManager.Add(msg);
 	end;
   ScrollBox1.VertScrollBar.Position := ScrollBox1.VertScrollBar.Range-ScrollBox1.VertScrollBar.Page;
-end;
-
-procedure TMainForm.ScrollBox1MouseWheel(Sender: TObject; Shift: TShiftState;
-	WheelDelta: Integer; MousePos: TPoint; var Handled: Boolean);
-begin
-  ScrollBox1.VertScrollBar.Position := ScrollBox1.VertScrollBar.Position + Sign(WheelDelta)
 end;
 
 end.
