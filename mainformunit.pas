@@ -68,6 +68,7 @@ type
 var
   AugVK: TAugVKAPI;
   DrawnMsgsManager: TDrawnMsgsManager;
+  SelectedChat: Integer;
 
 {$R *.lfm}
 
@@ -75,12 +76,18 @@ procedure NewMessageHandler(Event: TJSONArray);
 var
   Chat: TChat;
 begin
-  //MainForm.ListBox2.AddItem(Event.Strings[5], nil);
+  augvk.updateChatsPosition(Event.Integers[3]);
+  MainForm.ListBox1.Items.Clear;
 
-  //augvk.updateChatsPosition(Event.Integers[3]);
-  //MainForm.ListBox1.Items.Clear;
-  //for chat in augvk.getChatsForDraw do
-  //  MainForm.ListBox1.Items.Add(chat.name);
+  for chat in augvk.getChatsForDraw do
+    MainForm.ListBox1.Items.Add(chat.name);
+
+  if (SelectedChat = -1) then Exit;
+
+  if SelectedChat = Event.Integers[3] then
+    DrawnMsgsManager.Add(
+      LongpollThread.GetCache(Event.Integers[3],1)[0]
+    );
 end;
 
 { TDrawnMsgsManager }
@@ -258,9 +265,10 @@ begin
   if ListBox1.ItemIndex = -1 then Exit;
 
   Chat := AugVK.GetChatByIndex(ListBox1.ItemIndex);
+  SelectedChat := Chat.Id;
 
   DrawnMsgsManager.Clear;
-  for msg in augvk.getHistory(chat.id,30) do
+  for msg in augvk.getHistory(chat.id, 30) do
   begin
     DrawnMsgsManager.Add(msg);
 	end;

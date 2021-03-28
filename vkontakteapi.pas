@@ -44,6 +44,14 @@ begin
 
   if response.IndexOfName('error') <> -1 then
   begin
+    if response.getPath('error.error_code').asInteger = 6 then
+    begin
+      Sleep(1000);
+      writeln('Forced sleep');
+      Result := call(method,params);
+      Exit;
+    end;
+
     raise Exception.create(
     format('VK ERROR #%d: "%s"'#13#10'PARAMS: %s',
        [response.getPath('error.error_code').asInteger,

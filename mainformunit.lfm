@@ -39,7 +39,6 @@ object MainForm: TMainForm
       OnClick = ListBox1Click
       ScrollWidth = 185
       TabOrder = 1
-      TopIndex = -1
     end
   end
   object Splitter1: TSplitter
@@ -78,7 +77,6 @@ object MainForm: TMainForm
       ItemHeight = 0
       ScrollWidth = 582
       TabOrder = 1
-      TopIndex = -1
       Visible = False
     end
     object Panel5: TPanel

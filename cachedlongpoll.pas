@@ -39,7 +39,8 @@ begin
   Count_ := 0;
 
   Msgs := GetCache(PeerId);
-  for I:=Length(Msgs)-1 downto 0 do
+
+  for I:=0 to Length(Msgs) do
   begin
     if Count_ = Count then Break;
 
@@ -77,17 +78,22 @@ begin
 
   if Event.Integers[0] <> 4 then Exit;
 
-  Msg := Augvk.GetMSGById(Event.Integers[1]);
-
-  if CachedMsgs.IndexOf(Msg.PeerId) = -1 then
+  {Миша, не пытайся понять это, ты умрёшь}
+  if CachedMsgs.IndexOf(Event.Integers[3]) = -1 then
   begin
     CachedMsgs.Add(
-      Msg.PeerId,
-      Augvk.GetHistory(Msg.PeerId,100)
+      Event.Integers[3],
+      Augvk.GetHistory(Event.Integers[3],100)
     );
+    Msgs := CachedMsgs.KeyData[Event.Integers[3]];
+    Msg := Msgs[0]; //ммм костыли
+  end
+  else
+  begin
+    Msg := Augvk.GetMSGById(Event.Integers[1]);
+    Msgs := CachedMsgs.KeyData[Msg.PeerId];
   end;
 
-  Msgs := CachedMsgs.KeyData[Msg.PeerId];
   Insert([Msg],Msgs,0);
   CachedMsgs.AddOrSetData(Msg.PeerId,Msgs);
 

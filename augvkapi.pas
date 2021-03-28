@@ -90,7 +90,6 @@ begin
   for chat in drawedChats do
     if chat.id = peerId then
     begin
-      //writeln(drawedChats.IndexOf(chat));
       drawedChats.Move(
         drawedChats.IndexOf(chat),0);
       Exit;
@@ -209,6 +208,8 @@ begin
           .add('extended', 1)
     ));
 
+    writeln(Format('Loading chats %d / %d',[offset,response['count'].AsInteger]));
+
     chatsArray := response.Arrays['items'];
     if chatsArray.Count = 0 then break;
 
@@ -281,6 +282,22 @@ begin
 
   FileName := Format('data/%d.jpg',[data['id'].AsInteger]);
 
+  {Проверяем повреждено ли фото}
+  if FileExists(FileName) then
+  begin
+    TmpStream := TFileStream.Create(
+     FileName,
+     fmOpenReadWrite
+    );
+    if TmpStream.Size = 0 then
+    begin
+      TmpStream.Free;
+      DeleteFile(FileName);
+    end;
+    TmpStream.Free;
+  end;
+
+  {качаем фото}
   if not FileExists(FileName) then
   begin
     TmpStream := TFileStream.Create(
@@ -291,12 +308,14 @@ begin
     TmpStream.Free;
   end;
 
-  writeln('READING AVATAR '+inttostr(data['id'].AsInteger));
+  writeln('Loading avatar id'+inttostr(data['id'].AsInteger));
+
   TmpStream := TFileStream.Create(
    FileName,
    fmOpenReadWrite
   );
   Result.Image := TPicture.Create;
+
   Result.Image.LoadFromStream(TmpStream);
   TmpStream.Free;
 
