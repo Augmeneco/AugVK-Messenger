@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <CONFIG>
   <ProjectOptions>
-    <Version Value="11"/>
+    <Version Value="12"/>
     <General>
       <SessionStorage Value="InProjectDir"/>
       <Title Value="LazVK"/>
@@ -13,8 +13,8 @@
       </XPManifest>
       <Icon Value="0"/>
     </General>
-    <BuildModes Count="1">
-      <Item1 Name="Default" Default="True"/>
+    <BuildModes>
+      <Item Name="Default" Default="True"/>
       <SharedMatrixOptions Count="1">
         <Item1 ID="583174017471" Type="IDEMacro" MacroName="LCLWidgetType" Value="gtk2"/>
       </SharedMatrixOptions>
@@ -26,66 +26,66 @@
     <RunParams>
       <FormatVersion Value="2"/>
     </RunParams>
-    <RequiredPackages Count="1">
-      <Item1>
+    <RequiredPackages>
+      <Item>
         <PackageName Value="LCL"/>
-      </Item1>
+      </Item>
     </RequiredPackages>
-    <Units Count="8">
-      <Unit0>
+    <Units>
+      <Unit>
         <Filename Value="LazVK.lpr"/>
         <IsPartOfProject Value="True"/>
-      </Unit0>
-      <Unit1>
+      </Unit>
+      <Unit>
         <Filename Value="mainformunit.pas"/>
         <IsPartOfProject Value="True"/>
         <ComponentName Value="MainForm"/>
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
         <UnitName Value="MainFormUnit"/>
-      </Unit1>
-      <Unit2>
+      </Unit>
+      <Unit>
         <Filename Value="chatframeunit.pas"/>
         <IsPartOfProject Value="True"/>
         <ComponentName Value="ChatFrame"/>
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Frame"/>
         <UnitName Value="ChatFrameUnit"/>
-      </Unit2>
-      <Unit3>
+      </Unit>
+      <Unit>
         <Filename Value="chatlistframeunit.pas"/>
         <IsPartOfProject Value="True"/>
         <ComponentName Value="ChatListFrame"/>
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Frame"/>
         <UnitName Value="ChatListFrameUnit"/>
-      </Unit3>
-      <Unit4>
+      </Unit>
+      <Unit>
         <Filename Value="webbrowserformunit.pas"/>
         <IsPartOfProject Value="True"/>
         <ComponentName Value="WebBrowserForm"/>
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
         <UnitName Value="WebBrowserFormUnit"/>
-      </Unit4>
-      <Unit5>
+      </Unit>
+      <Unit>
         <Filename Value="utils.pas"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="Utils"/>
-      </Unit5>
-      <Unit6>
+      </Unit>
+      <Unit>
         <Filename Value="../PasVK/cachedlongpoll.pas"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="CachedLongpoll"/>
-      </Unit6>
-      <Unit7>
+      </Unit>
+      <Unit>
         <Filename Value="messageframeunit.pas"/>
         <IsPartOfProject Value="True"/>
         <ComponentName Value="MessageFrame"/>
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Frame"/>
         <UnitName Value="MessageFrameUnit"/>
-      </Unit7>
+      </Unit>
     </Units>
   </ProjectOptions>
   <CompilerOptions>
