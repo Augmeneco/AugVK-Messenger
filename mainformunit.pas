@@ -163,20 +163,13 @@ end;
 
 procedure TDrawnMsgsManager.Remove(Idx: Integer);
 begin
-  TMessageFrame(FList[Idx]).Parent := nil;
+  //TMessageFrame(FList[Idx]).Parent := nil;
   //TMessageFrame(FList[Idx]).Free;
-  FList.Delete(Idx);
+  //FList.Delete(Idx);
 end;
 
 procedure TDrawnMsgsManager.Clear;
-var
-  i: integer;
 begin
-  for i:=0 to GetCount-1 do
-  begin
-    Get(i).Parent := nil;
-    //Get(i).Free;
-  end;
   FList.Clear;
 end;
 
