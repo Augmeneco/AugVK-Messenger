@@ -5,7 +5,8 @@ unit MessageFrameUnit;
 interface
 
 uses
-  Classes, SysUtils, Forms, Controls, ExtCtrls, StdCtrls, Graphics, Types, Math;
+  Classes, SysUtils, Forms, Controls, ExtCtrls, StdCtrls, Graphics, Types, Math,
+  augvkapi;
 
 type
 
@@ -21,7 +22,8 @@ type
   private
 
   public
-
+    MessageObject: TMSG;
+    procedure Fill(Msg: TMSG);
   end;
 
 implementation
@@ -37,6 +39,14 @@ procedure TMessageFrame.FrameMouseWheel(Sender: TObject; Shift: TShiftState;
 begin
   MainForm.ScrollBox1.VertScrollBar.Position :=
     MainForm.ScrollBox1.VertScrollBar.Position + (-Sign(WheelDelta)*15)
+end;
+
+procedure TMessageFrame.Fill(Msg: TMSG);
+begin
+  AvatarImage.Picture := Msg.fromId.Image;
+  NameLabel.Caption := Msg.fromId.Name;
+  MessageTextLabel.Caption := Msg.Text;
+  MessageObject := Msg;
 end;
 
 end.

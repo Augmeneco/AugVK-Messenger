@@ -69,16 +69,6 @@ object MainForm: TMainForm
       ParentColor = False
       TabOrder = 0
     end
-    object ListBox2: TListBox
-      Left = 0
-      Height = 25
-      Top = 25
-      Width = 584
-      ItemHeight = 0
-      ScrollWidth = 582
-      TabOrder = 1
-      Visible = False
-    end
     object Panel5: TPanel
       Left = 0
       Height = 38
@@ -89,7 +79,7 @@ object MainForm: TMainForm
       ClientHeight = 38
       ClientWidth = 584
       ParentColor = False
-      TabOrder = 2
+      TabOrder = 1
       object Memo1: TMemo
         Left = 0
         Height = 38
@@ -107,6 +97,7 @@ object MainForm: TMainForm
         Align = alRight
         AutoSize = True
         Caption = 'SEND'
+        OnClick = SpeedButton1Click
       end
     end
     object ScrollBox1: TScrollBox
@@ -121,7 +112,14 @@ object MainForm: TMainForm
       VertScrollBar.Smooth = True
       VertScrollBar.Tracking = True
       Align = alClient
-      TabOrder = 3
+      TabOrder = 2
+    end
+  end
+  object ActionList1: TActionList
+    object SendAction: TAction
+      Caption = 'SendAction'
+      OnExecute = SendActionExecute
+      ShortCut = 13
     end
   end
 end

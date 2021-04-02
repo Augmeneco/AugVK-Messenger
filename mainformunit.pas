@@ -6,33 +6,36 @@ interface
 
 uses
   Classes, SysUtils, Forms, Controls, Graphics, Dialogs, ExtCtrls, Buttons,
-	StdCtrls, ComCtrls, VkLongpoll, fpjson, Utils, CachedLongpoll, augvkapi,
-	MessageFrameUnit, Types, Math;
+  StdCtrls, ComCtrls, ActnList, VkLongpoll, fpjson, Utils, CachedLongpoll,
+  augvkapi, MessageFrameUnit, Types, Math, Contnrs;
 
 type
 
-{ TMainForm }
+  { TMainForm }
 
-	TMainForm = class(TForm)
-		ListBox1: TListBox;
-		ListBox2: TListBox;
-		Memo1: TMemo;
-		Panel1: TPanel;
-		Panel2: TPanel;
-		Panel3: TPanel;
-		Panel4: TPanel;
-		Panel5: TPanel;
-		ScrollBox1: TScrollBox;
-		SpeedButton1: TSpeedButton;
-		Splitter1: TSplitter;
-		procedure FormCreate(Sender: TObject);
-		procedure FormShow(Sender: TObject);
-		procedure ListBox1Click(Sender: TObject);
-	private
+  TMainForm = class(TForm)
+    SendAction: TAction;
+    ActionList1: TActionList;
+    ListBox1: TListBox;
+    Memo1: TMemo;
+    Panel1: TPanel;
+    Panel2: TPanel;
+    Panel3: TPanel;
+    Panel4: TPanel;
+    Panel5: TPanel;
+    ScrollBox1: TScrollBox;
+    SpeedButton1: TSpeedButton;
+    Splitter1: TSplitter;
+    procedure FormCreate(Sender: TObject);
+    procedure FormShow(Sender: TObject);
+    procedure ListBox1Click(Sender: TObject);
+    procedure SpeedButton1Click(Sender: TObject);
+    procedure SendActionExecute(Sender: TObject);
+  private
 
-	public
+  public
 
-end;
+  end;
 
 var
   MainForm: TMainForm;
@@ -44,31 +47,25 @@ type
 
   { TDrawnMsgsManager }
 
-	TDrawnMsgsManager = class
-	public
-	  type
-	    TItem = class
-	      Prev: TItem;
-	      Next: TItem;
-	      ApiMsg: TMSG;
-	      GuiMsg: TMessageFrame;
-	    end;
-	private
-	  FirstItem: TItem;
-    FCount: Integer;
-	public
-    function Add(Item: TItem): Integer;
+  TDrawnMsgsManager = class
+  private
+    FList: TObjectList;
+    function GetCount: Integer;
+    function CreateFrame(Msg: TMSG): TMessageFrame;
+  public
+    constructor Create;
     function Add(Msg: TMSG): Integer;
-	  function Get(Idx: Integer): TItem;
+    function AddFront(Msg: TMSG): Integer;
+    function Get(Idx: Integer): TMessageFrame;
     procedure Remove(Idx: Integer);
     procedure Clear;
-    property Count: Integer read FCount;
-	end;
+    property Count: Integer read GetCount;
+  end;
 
 var
   AugVK: TAugVKAPI;
   DrawnMsgsManager: TDrawnMsgsManager;
-  SelectedChat: Integer;
+  SelectedChat: integer;
 
 {$R *.lfm}
 
@@ -80,165 +77,117 @@ begin
   MainForm.ListBox1.Items.Clear;
 
   for chat in augvk.getChatsForDraw do
-    MainForm.ListBox1.Items.Add(chat.name);
+    MainForm.ListBox1.Items.Add(chat.Name);
 
-  if (SelectedChat = -1) then Exit;
+  if (SelectedChat = -1) then
+    Exit;
 
   if SelectedChat = Event.Integers[3] then
-    DrawnMsgsManager.Add(
-      LongpollThread.GetCache(Event.Integers[3],1)[0]
-    );
+    DrawnMsgsManager.AddFront(
+      LongpollThread.GetCache(Event.Integers[3], 1)[0]
+      );
 end;
 
 { TDrawnMsgsManager }
 
-{ !!!!!!!!!!!!!
-  ВООБЩЕ НАФИГ ПЕРЕДЕЛАТЬ ОСНОВАВ СПИСОК НА ОСНОВЕ ФРЕЙМА
-  !!!!!!!!!!!!! }
-
-function TDrawnMsgsManager.Add(Item: TItem): Integer;
-var
-  ItemIter: TItem;
-  i: Integer;
+function TDrawnMsgsManager.GetCount: Integer;
 begin
-  if Assigned(FirstItem) then
-  begin
-    ItemIter := FirstItem;
-    i:=0;
-    while Assigned(ItemIter.Next) do
-    begin
-      ItemIter := ItemIter.Next;
-      Inc(i);
-		end;
-		ItemIter.Next := Item;
-    Item.Prev := ItemIter;
-    FCount += 1;
-    Result := i;
-	end
-  else
-  begin
-    FirstItem := Item;
-    FCount := 1;
-    Result := 0;
-	end;
+  Result := FList.Count;
+end;
+
+function TDrawnMsgsManager.CreateFrame(Msg: TMSG): TMessageFrame;
+begin
+  Result := TMessageFrame.Create(MainForm);
+  Result.Fill(Msg);
+  Result.Name := Result.Name + IntToStr(GetCount);
+  Result.Anchors := [akBottom, akLeft, akRight];
+  Result.AnchorSide[akLeft].Control := MainForm.ScrollBox1;
+  Result.AnchorSide[akLeft].Side := asrLeft;
+  Result.AnchorSide[akRight].Control := MainForm.ScrollBox1;
+  Result.AnchorSide[akRight].Side := asrRight;
+end;
+
+constructor TDrawnMsgsManager.Create;
+begin
+  FList := TObjectList.Create;
 end;
 
 function TDrawnMsgsManager.Add(Msg: TMSG): Integer;
 var
-  Item: TItem;
-  MsgFrame: TMessageFrame;
+  Frame: TMessageFrame;
 begin
-  // создание titem
-  Item := TItem.Create;
-  // создание tmessageframe
-  MsgFrame := TMessageFrame.Create(nil);
+  Frame := CreateFrame(Msg);
 
-  // сохранение tmsg и tmessageframe в titem
-  Item.GuiMsg := MsgFrame;
-  Item.ApiMsg := Msg;
-
-  // помещение tmessageframe на форму за последним фреймом из titem в этом списке
-  MsgFrame.Name := MsgFrame.Name+IntToStr(FCount);
-  MsgFrame.Anchors := [akBottom, akLeft, akRight];
-
-  MsgFrame.AnchorSide[akLeft].Control := MainForm.ScrollBox1;
-  MsgFrame.AnchorSide[akLeft].Side := asrLeft;
-  MsgFrame.AnchorSide[akRight].Control := MainForm.ScrollBox1;
-  MsgFrame.AnchorSide[akRight].Side := asrRight;
-
-  //MsgFrame.AvatarImage.Picture.LoadFromFile('logo.png');
-  MsgFrame.AvatarImage.Picture := msg.fromId.Image;
-  MsgFrame.NameLabel.Caption := msg.fromId.name;
-  MsgFrame.MessageTextLabel.Caption := msg.text;
-
-  if not Assigned(FirstItem) then
+  if GetCount = 0 then
   begin
-    MsgFrame.AnchorSide[akBottom].Control := MainForm.ScrollBox1;
-    MsgFrame.AnchorSide[akBottom].Side := asrBottom;
+    Frame.AnchorSide[akBottom].Control := MainForm.ScrollBox1;
+    Frame.AnchorSide[akBottom].Side := asrBottom;
   end
   else
   begin
-    MsgFrame.AnchorSide[akBottom].Control := Get(FCount-1).GuiMsg;
-    MsgFrame.AnchorSide[akBottom].Side := asrTop;
+    Frame.AnchorSide[akBottom].Control := Get(GetCount - 1);
+    Frame.AnchorSide[akBottom].Side := asrTop;
   end;
-  MsgFrame.Parent := MainForm.ScrollBox1;
+  Frame.Parent := MainForm.ScrollBox1;
 
-  Result := Add(Item);
+  Result := Flist.Add(Frame);
 end;
 
-function TDrawnMsgsManager.Get(Idx: Integer): TItem;
+function TDrawnMsgsManager.AddFront(Msg: TMSG): Integer;
 var
-  i: Integer;
+  Frame: TMessageFrame;
 begin
-  if Assigned(FirstItem) or (Idx <= (FCount-1)) then
+  Frame := CreateFrame(Msg);
+
+  Frame.Visible := False;
+
+  Frame.Parent := MainForm.ScrollBox1;
+  if GetCount > 0 then
   begin
-    Result := FirstItem;
-    i:=0;
-    while i<Idx do
-    begin
-      Result := Result.Next;
-      Inc(i);
-		end;
-	end
-  else
-    raise Exception.Create('No such index');
+    Get(0).AnchorSide[akBottom].Control := Frame;
+    Get(0).AnchorSide[akBottom].Side := asrTop;
+  end;
+  Frame.AnchorSide[akBottom].Control := MainForm.ScrollBox1;
+  Frame.AnchorSide[akBottom].Side := asrBottom;
+
+  Frame.Visible := True;
+
+  FList.Insert(0, Frame);
+  Result := 0;
+end;
+
+function TDrawnMsgsManager.Get(Idx: Integer): TMessageFrame;
+begin
+  Result := TMessageFrame(FList[Idx]);
 end;
 
 procedure TDrawnMsgsManager.Remove(Idx: Integer);
-var
-  Item: TItem;
 begin
-  Item := Get(Idx);
-  // тут отсчет идет относительно Item
-
-  // если прошлый итем установлен то
-  if Assigned(Item.Prev) then
-  begin
-    // заменить прошлому Next на Next этого итема
-    Item.Prev.Next := Item.Next;
-	end
-	else
-  begin
-  // если прошлого итема нет значит это первый итем
-  // значит производим с ним отдельные операции
-    // значит меняем значение родительского класса на след. за этим итем
-    FirstItem := Item.Next;
-    // если след. за этим итем не нил - значит привязываем его к началу бокса
-    if Assigned(Item.Next) then
-      Item.Next.GuiMsg.AnchorSide[akBottom].Control := MainForm.ScrollBox1;
-	end;
-
-  // если след. итем установлен
-  if Assigned(Item.Next) then
-  begin
-    // заменить след. итему Prev на Prev этого итема
-    Item.Next.Prev := Item.Prev;
-	end;
-
-  // если след. итем не нил и пред. не нил
-  // то у след. итема меняем привязку на пред. итем
-  if Assigned(Item.Prev) then
-    Item.Next.GuiMsg.AnchorSide[akBottom].Control := Item.Prev.GuiMsg;
-
-  Dec(FCount);
+  TMessageFrame(FList[Idx]).Parent := nil;
+  //TMessageFrame(FList[Idx]).Free;
+  FList.Delete(Idx);
 end;
 
 procedure TDrawnMsgsManager.Clear;
 var
-  i: Integer;
+  i: integer;
 begin
-  if FCount > 0 then
-	  for i:=0 to FCount-1 do
-	    Remove(0);
+  for i:=0 to GetCount-1 do
+  begin
+    Get(i).Parent := nil;
+    //Get(i).Free;
+  end;
+  FList.Clear;
 end;
 
 { TMainForm }
 
 procedure TMainForm.FormCreate(Sender: TObject);
 var
-  Token: String;
+  Token: string;
 begin
-  Token := Config.GetPath(Format('accounts[%d].token', [Config.Integers['active_account']])).AsString;
+  Token := Config.GetPath(Format('accounts[%d].token',
+    [Config.Integers['active_account']])).AsString;
   AugVK := TAugVKAPI.Create(Token);
 
   DrawnMsgsManager := TDrawnMsgsManager.Create;
@@ -262,7 +211,8 @@ var
   chat: TChat;
   msg: TMSG;
 begin
-  if ListBox1.ItemIndex = -1 then Exit;
+  if ListBox1.ItemIndex = -1 then
+    Exit;
 
   Chat := AugVK.GetChatByIndex(ListBox1.ItemIndex);
   SelectedChat := Chat.Id;
@@ -271,9 +221,21 @@ begin
   for msg in augvk.getHistory(chat.id, 30) do
   begin
     DrawnMsgsManager.Add(msg);
-	end;
-  ScrollBox1.VertScrollBar.Position := ScrollBox1.VertScrollBar.Range-ScrollBox1.VertScrollBar.Page;
+  end;
+  ScrollBox1.VertScrollBar.Position :=
+    ScrollBox1.VertScrollBar.Range - ScrollBox1.VertScrollBar.Page;
+end;
+
+procedure TMainForm.SpeedButton1Click(Sender: TObject);
+begin
+
+end;
+
+{ Actions }
+
+procedure TMainForm.SendActionExecute(Sender: TObject);
+begin
+
 end;
 
 end.
-

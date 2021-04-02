@@ -30,7 +30,7 @@ object MessageFrame: TMessageFrame
     AnchorSideRight.Side = asrBottom
     AnchorSideBottom.Side = asrCenter
     Left = 65
-    Height = 19
+    Height = 15
     Top = 8
     Width = 263
     Anchors = [akTop, akLeft, akRight]
@@ -48,7 +48,7 @@ object MessageFrame: TMessageFrame
     AnchorSideRight.Side = asrBottom
     Left = 65
     Height = 28
-    Top = 27
+    Top = 23
     Width = 263
     Anchors = [akTop, akLeft, akRight]
     AutoSize = False

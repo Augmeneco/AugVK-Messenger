@@ -4,6 +4,7 @@
     <Version Value="11"/>
     <General>
       <SessionStorage Value="InProjectDir"/>
+      <MainUnit Value="0"/>
       <Title Value="LazVK"/>
       <Scaled Value="True"/>
       <ResourceType Value="res"/>
@@ -25,13 +26,14 @@
     </PublishOptions>
     <RunParams>
       <FormatVersion Value="2"/>
+      <Modes Count="0"/>
     </RunParams>
     <RequiredPackages Count="1">
       <Item1>
         <PackageName Value="LCL"/>
       </Item1>
     </RequiredPackages>
-    <Units Count="8">
+    <Units Count="7">
       <Unit0>
         <Filename Value="LazVK.lpr"/>
         <IsPartOfProject Value="True"/>
@@ -74,18 +76,13 @@
         <UnitName Value="Utils"/>
       </Unit5>
       <Unit6>
-        <Filename Value="../PasVK/cachedlongpoll.pas"/>
-        <IsPartOfProject Value="True"/>
-        <UnitName Value="CachedLongpoll"/>
-      </Unit6>
-      <Unit7>
         <Filename Value="messageframeunit.pas"/>
         <IsPartOfProject Value="True"/>
         <ComponentName Value="MessageFrame"/>
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Frame"/>
         <UnitName Value="MessageFrameUnit"/>
-      </Unit7>
+      </Unit6>
     </Units>
   </ProjectOptions>
   <CompilerOptions>
