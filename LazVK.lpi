@@ -33,7 +33,7 @@
         <PackageName Value="LCL"/>
       </Item1>
     </RequiredPackages>
-    <Units Count="7">
+    <Units Count="6">
       <Unit0>
         <Filename Value="LazVK.lpr"/>
         <IsPartOfProject Value="True"/>
@@ -55,34 +55,26 @@
         <UnitName Value="ChatFrameUnit"/>
       </Unit2>
       <Unit3>
-        <Filename Value="chatlistframeunit.pas"/>
-        <IsPartOfProject Value="True"/>
-        <ComponentName Value="ChatListFrame"/>
-        <HasResources Value="True"/>
-        <ResourceBaseClass Value="Frame"/>
-        <UnitName Value="ChatListFrameUnit"/>
-      </Unit3>
-      <Unit4>
         <Filename Value="webbrowserformunit.pas"/>
         <IsPartOfProject Value="True"/>
         <ComponentName Value="WebBrowserForm"/>
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
         <UnitName Value="WebBrowserFormUnit"/>
-      </Unit4>
-      <Unit5>
+      </Unit3>
+      <Unit4>
         <Filename Value="utils.pas"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="Utils"/>
-      </Unit5>
-      <Unit6>
+      </Unit4>
+      <Unit5>
         <Filename Value="messageframeunit.pas"/>
         <IsPartOfProject Value="True"/>
         <ComponentName Value="MessageFrame"/>
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Frame"/>
         <UnitName Value="MessageFrameUnit"/>
-      </Unit6>
+      </Unit5>
     </Units>
   </ProjectOptions>
   <CompilerOptions>

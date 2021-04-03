@@ -29,15 +29,14 @@ object MainForm: TMainForm
       ParentColor = False
       TabOrder = 0
     end
-    object ListBox1: TListBox
+    object ScrollBox2: TScrollBox
       Left = 0
       Height = 381
       Top = 50
       Width = 187
+      HorzScrollBar.Page = 1
+      VertScrollBar.Page = 1
       Align = alClient
-      ItemHeight = 0
-      OnClick = ListBox1Click
-      ScrollWidth = 185
       TabOrder = 1
     end
   end
@@ -84,21 +83,20 @@ object MainForm: TMainForm
         Left = 0
         Height = 38
         Top = 0
-        Width = 551
+        Width = 519
         Align = alClient
         OnKeyDown = Memo1KeyDown
         TabOrder = 0
       end
       object SpeedButton1: TSpeedButton
         Cursor = crHandPoint
-        Left = 551
+        Left = 519
         Height = 38
         Top = 0
-        Width = 33
+        Width = 65
+        Action = SendAction
         Align = alRight
         AutoSize = True
-        Caption = 'SEND'
-        OnClick = SpeedButton1Click
       end
     end
     object ScrollBox1: TScrollBox

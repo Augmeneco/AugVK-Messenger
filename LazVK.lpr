@@ -11,7 +11,7 @@ uses
    athreads,
    {$ENDIF}
    Interfaces, // this includes the LCL widgetset
-   Forms, MainFormUnit, Net, ChatFrameUnit, ChatListFrameUnit, {VkontakteApi,
+   Forms, MainFormUnit, Net, ChatFrameUnit, {VkontakteApi,
 	 VkLongpoll,} {WebBrowserFormUnit,} Utils
    { you can add units after this };
 

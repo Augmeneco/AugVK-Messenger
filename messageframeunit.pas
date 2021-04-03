@@ -17,7 +17,7 @@ type
 		Bevel1: TBevel;
 		NameLabel: TLabel;
 		MessageTextLabel: TLabel;
-		procedure FrameMouseWheel(Sender: TObject; Shift: TShiftState;
+    procedure FrameMouseWheel(Sender: TObject; Shift: TShiftState;
 			WheelDelta: Integer; MousePos: TPoint; var Handled: Boolean);
   private
 

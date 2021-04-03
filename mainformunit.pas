@@ -7,16 +7,39 @@ interface
 uses
   Classes, SysUtils, Forms, Controls, Graphics, Dialogs, ExtCtrls, Buttons,
   StdCtrls, ComCtrls, ActnList, VkLongpoll, fpjson, Utils, CachedLongpoll,
-  augvkapi, MessageFrameUnit, Types, Math, Contnrs;
+  augvkapi, MessageFrameUnit;
 
 type
+
+  { TFrameManager }
+
+  TFrameManager = class
+  private
+    FList: TObjectList;
+    function GetCount: Integer;
+    function CreateFrame(Msg: TMSG): TMessageFrame; abstract;
+  public
+    constructor Create;
+    function Add(Msg: TMSG): Integer;
+    function AddFront(Msg: TMSG): Integer;
+    function Get(Idx: Integer): TMessageFrame;
+    procedure Remove(Idx: Integer);
+    procedure Remove(Frame: TMessageFrame);
+    procedure Clear;
+    property Count: Integer read GetCount;
+  end;
+
+  { TMsgFrameManager }
+
+
+  { TChatFrameManager }
 
   { TMainForm }
 
   TMainForm = class(TForm)
+    ScrollBox2: TScrollBox;
     SendAction: TAction;
     ActionList1: TActionList;
-    ListBox1: TListBox;
     Memo1: TMemo;
     Panel1: TPanel;
     Panel2: TPanel;
@@ -30,12 +53,11 @@ type
     procedure FormShow(Sender: TObject);
     procedure ListBox1Click(Sender: TObject);
     procedure Memo1KeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
-    procedure SpeedButton1Click(Sender: TObject);
     procedure SendActionExecute(Sender: TObject);
   private
 
   public
-
+    DrawnMsgsManager: TFrameManager;
   end;
 
 var
@@ -44,28 +66,8 @@ var
 
 implementation
 
-type
-
-  { TDrawnMsgsManager }
-
-  TDrawnMsgsManager = class
-  private
-    FList: TObjectList;
-    function GetCount: Integer;
-    function CreateFrame(Msg: TMSG): TMessageFrame;
-  public
-    constructor Create;
-    function Add(Msg: TMSG): Integer;
-    function AddFront(Msg: TMSG): Integer;
-    function Get(Idx: Integer): TMessageFrame;
-    procedure Remove(Idx: Integer);
-    procedure Clear;
-    property Count: Integer read GetCount;
-  end;
-
 var
   AugVK: TAugVKAPI;
-  DrawnMsgsManager: TDrawnMsgsManager;
   SelectedChat: integer;
 
 {$R *.lfm}
@@ -84,7 +86,7 @@ begin
     Exit;
 
   if SelectedChat = Event.Integers[3] then
-    DrawnMsgsManager.AddFront(
+    MainForm.DrawnMsgsManager.AddFront(
       LongpollThread.GetCache(Event.Integers[3], 1)[0]
       );
 
@@ -92,14 +94,14 @@ begin
     MainForm.ScrollBox1.VertScrollBar.Range - MainForm.ScrollBox1.VertScrollBar.Page;
 end;
 
-{ TDrawnMsgsManager }
+{ TFrameManager }
 
-function TDrawnMsgsManager.GetCount: Integer;
+function TFrameManager.GetCount: Integer;
 begin
   Result := FList.Count;
 end;
 
-function TDrawnMsgsManager.CreateFrame(Msg: TMSG): TMessageFrame;
+function TFrameManager.CreateFrame(Msg: TMSG): TMessageFrame;
 begin
   Result := TMessageFrame.Create(MainForm);
   Result.Fill(Msg);
@@ -111,12 +113,12 @@ begin
   Result.AnchorSide[akRight].Side := asrRight;
 end;
 
-constructor TDrawnMsgsManager.Create;
+constructor TFrameManager.Create;
 begin
   FList := TObjectList.Create;
 end;
 
-function TDrawnMsgsManager.Add(Msg: TMSG): Integer;
+function TFrameManager.Add(Msg: TMSG): Integer;
 var
   Frame: TMessageFrame;
 begin
@@ -137,7 +139,7 @@ begin
   Result := Flist.Add(Frame);
 end;
 
-function TDrawnMsgsManager.AddFront(Msg: TMSG): Integer;
+function TFrameManager.AddFront(Msg: TMSG): Integer;
 var
   Frame: TMessageFrame;
 begin
@@ -160,19 +162,27 @@ begin
   Result := 0;
 end;
 
-function TDrawnMsgsManager.Get(Idx: Integer): TMessageFrame;
+function TFrameManager.Get(Idx: Integer): TMessageFrame;
 begin
   Result := TMessageFrame(FList[Idx]);
 end;
 
-procedure TDrawnMsgsManager.Remove(Idx: Integer);
+procedure TFrameManager.Remove(Idx: Integer);
 begin
-  //TMessageFrame(FList[Idx]).Parent := nil;
-  //TMessageFrame(FList[Idx]).Free;
-  //FList.Delete(Idx);
+  if Idx < GetCount-1 then
+  begin
+    TMessageFrame(FList[Idx+1]).AnchorSideBottom.Control := TMessageFrame(FList[Idx]).AnchorSideBottom.Control;
+    TMessageFrame(FList[Idx+1]).AnchorSideBottom.Side := TMessageFrame(FList[Idx]).AnchorSideBottom.Side;
+  end;
+  FList.Delete(Idx);
 end;
 
-procedure TDrawnMsgsManager.Clear;
+procedure TFrameManager.Remove(Frame: TMessageFrame);
+begin
+  Remove(FList.IndexOf(Frame));
+end;
+
+procedure TFrameManager.Clear;
 begin
   FList.Clear;
 end;
@@ -187,7 +197,7 @@ begin
     [Config.Integers['active_account']])).AsString;
   AugVK := TAugVKAPI.Create(Token);
 
-  DrawnMsgsManager := TDrawnMsgsManager.Create;
+  DrawnMsgsManager := TFrameManager.Create;
 
   LongpollThread := TCachedLongpoll.Create(Token);
   LongpollThread.RegisterEventHandler(4, @NewMessageHandler);
@@ -204,23 +214,8 @@ begin
 end;
 
 procedure TMainForm.ListBox1Click(Sender: TObject);
-var
-  chat: TChat;
-  msg: TMSG;
 begin
-  if ListBox1.ItemIndex = -1 then
-    Exit;
 
-  Chat := AugVK.GetChatByIndex(ListBox1.ItemIndex);
-  SelectedChat := Chat.Id;
-
-  DrawnMsgsManager.Clear;
-  for msg in augvk.getHistory(chat.id, 30) do
-  begin
-    DrawnMsgsManager.Add(msg);
-  end;
-  ScrollBox1.VertScrollBar.Position :=
-    ScrollBox1.VertScrollBar.Range - ScrollBox1.VertScrollBar.Page;
 end;
 
 procedure TMainForm.Memo1KeyDown(Sender: TObject; var Key: Word;
@@ -233,16 +228,31 @@ begin
   end;
 end;
 
-procedure TMainForm.SpeedButton1Click(Sender: TObject);
-begin
-  AugVK.SendMessage(Memo1.Text, SelectedChat);
-end;
+//procedure TMainForm.ListBox1Click(Sender: TObject);
+//var
+//  chat: TChat;
+//  msg: TMSG;
+//begin
+//  if ListBox1.ItemIndex = -1 then
+//    Exit;
+//
+//  Chat := AugVK.GetChatByIndex(ListBox1.ItemIndex);
+//  SelectedChat := Chat.Id;
+//
+//  DrawnMsgsManager.Clear;
+//  for msg in augvk.getHistory(chat.id, 30) do
+//  begin
+//    DrawnMsgsManager.Add(msg);
+//  end;
+//  ScrollBox1.VertScrollBar.Position :=
+//    ScrollBox1.VertScrollBar.Range - ScrollBox1.VertScrollBar.Page;
+//end;
 
 { Actions }
 
 procedure TMainForm.SendActionExecute(Sender: TObject);
 begin
-
+  ShowMessage('sos');
 end;
 
 end.

@@ -5,14 +5,17 @@ unit ChatFrameUnit;
 interface
 
 uses
-  Classes, SysUtils, Forms, Controls, StdCtrls;
+  Classes, SysUtils, Forms, Controls, StdCtrls, ExtCtrls;
 
 type
 
 	{ TChatFrame }
 
   TChatFrame = class(TFrame)
-		ListBox1: TListBox;
+    Bevel1: TBevel;
+    ChatAvatarImage: TImage;
+    TitleLabel: TLabel;
+    LastMessageLabel: TLabel;
   private
 
   public
@@ -22,6 +25,8 @@ type
 implementation
 
 {$R *.lfm}
+
+{ TChatFrame }
 
 end.
 
