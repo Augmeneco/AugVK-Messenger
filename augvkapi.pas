@@ -43,10 +43,16 @@ type TChatsArray = array of TChat;
 type TChatsList = specialize TFPGList<TChat>;
 
 type
+  TAttachment = class
+    //todo
+end;
+type TAttachmentsArray = array of TAttachment;
+
+type
   TAugVKAPI = class
   private
     requests: TRequests;
-    vkapi: TVKAPI;
+    VKAPI: TVKAPI;
 
   public
     function parseMsg(data: TJSONObject): TMSG;
@@ -70,6 +76,11 @@ type
     function getChatsForDraw: TChatsArray;
     function getChatByIndex(index: Integer): TChat;
 
+    procedure SendMessage(Text: String; PeerId: Integer; Reply: Integer; Attachments: TAttachmentsArray);
+    procedure SendMessage(Text: String; PeerId: Integer); overload;
+    procedure SendMessage(Text: String; PeerId: Integer; Reply: Integer); overload;
+    procedure SendMessage(Text: String; PeerId: Integer; Attachments: TAttachmentsArray); overload;
+
     constructor Create(token: String);
 end;
 
@@ -77,6 +88,40 @@ implementation
 var
   usersCache: TUsersArray;
   drawedChats: TChatsList;
+
+procedure TAugVKAPI.SendMessage(Text: String; PeerId: Integer); overload;
+begin
+  SendMessage(Text,PeerId,-1,Nil);
+end;
+
+procedure TAugVKAPI.SendMessage(Text: String; PeerId: Integer; Reply: Integer); overload;
+begin
+  SendMessage(Text,PeerId,Reply,Nil);
+end;
+
+procedure TAugVKAPI.SendMessage(Text: String; PeerId: Integer; Attachments: TAttachmentsArray); overload;
+begin
+  SendMessage(Text,PeerId,-1,Attachments);
+end;
+
+procedure TAugVKAPI.SendMessage(Text: String; PeerId: Integer; Reply: Integer; Attachments: TAttachmentsArray);
+var
+  Params: TParams;
+begin
+  Params := TParams.Create;
+  Params
+     .Add('peer_id',PeerId)
+     .Add('random_id',0)
+     .Add('message',Text);
+
+  if Reply <> -1 then
+     Params.Add('reply_to',Reply);
+
+  VKAPI.Call(
+     'messages.send',
+     Params
+  );
+end;
 
 function TAugVKAPI.getChatByIndex(index: Integer): TChat;
 begin

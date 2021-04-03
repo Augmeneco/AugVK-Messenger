@@ -22,14 +22,14 @@ type
     access_token: String;
     version: String;
 
-    function call(method: String; params: TParams): TJSONData;
+    function Call(method: String; params: TParams): TJSONData;
     constructor Create;
     constructor Create(AToken: String);
   end;
 
 implementation
 
-function TVKAPI.call(method: String; params: TParams): TJSONData;
+function TVKAPI.Call(method: String; params: TParams): TJSONData;
 var
   response: TJSONObject;
 begin

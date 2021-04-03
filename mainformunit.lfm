@@ -86,6 +86,7 @@ object MainForm: TMainForm
         Top = 0
         Width = 551
         Align = alClient
+        OnKeyDown = Memo1KeyDown
         TabOrder = 0
       end
       object SpeedButton1: TSpeedButton

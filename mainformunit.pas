@@ -29,6 +29,7 @@ type
     procedure FormCreate(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure ListBox1Click(Sender: TObject);
+    procedure Memo1KeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
     procedure SpeedButton1Click(Sender: TObject);
     procedure SendActionExecute(Sender: TObject);
   private
@@ -86,6 +87,9 @@ begin
     DrawnMsgsManager.AddFront(
       LongpollThread.GetCache(Event.Integers[3], 1)[0]
       );
+
+  MainForm.ScrollBox1.VertScrollBar.Position :=
+    MainForm.ScrollBox1.VertScrollBar.Range - MainForm.ScrollBox1.VertScrollBar.Page;
 end;
 
 { TDrawnMsgsManager }
@@ -219,9 +223,19 @@ begin
     ScrollBox1.VertScrollBar.Range - ScrollBox1.VertScrollBar.Page;
 end;
 
+procedure TMainForm.Memo1KeyDown(Sender: TObject; var Key: Word;
+  Shift: TShiftState);
+begin
+  if Key = 13 then
+  begin
+     AugVK.SendMessage(Memo1.Text, SelectedChat);
+     Memo1.Lines.Clear;
+  end;
+end;
+
 procedure TMainForm.SpeedButton1Click(Sender: TObject);
 begin
-
+  AugVK.SendMessage(Memo1.Text, SelectedChat);
 end;
 
 { Actions }

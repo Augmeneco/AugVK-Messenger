@@ -9,136 +9,135 @@ uses
 
 type
   TResponse = class (TInterfacedObject)
-    text: String;
-    code: Integer;
-    data: array of Byte;
+    Text: String;
+    Code: Integer;
+    Data: array of Byte;
 
-    function json(): TJSONData;
+    function JSON(): TJSONData;
 end;
 
 type
   TParams = class
   private
-    params: array of array of String;
+    Params: array of array of String;
   public
-    function add(key: String; value: String): TParams; overload;
-    function add(key: String; value: Integer): TParams; overload;
-    function buildUrl(): String;
-    function buildPost(): TStringList;
+    function Add(Key: String; Value: String): TParams; overload;
+    function Add(Key: String; Value: Integer): TParams; overload;
+    function BuildURL(): String;
+    function BuildPost(): TStringList;
 end;
 
 type
   TRequests = class
   private
-    client: TFPHTTPClient;
+    Client: TFPHTTPClient;
   public
     constructor Create;
-    function get(URL: String; params: TParams): TResponse;
-    function get(URL: String): TResponse; overload;
-    procedure get(URL: String; stream: TStream); overload;
-    function post(URL: String; params: TParams): TResponse;
+    function Get(URL: String; Params: TParams): TResponse;
+    function Get(URL: String): TResponse; overload;
+    procedure Get(URL: String; Stream: TStream); overload;
+    function Post(URL: String; Params: TParams): TResponse;
 end;
 
 function URLEncode(URL: String): String;
 
 implementation
 var
-  encoder: TEncoding;
+  Encoder: TEncoding;
 
-function TResponse.json(): TJSONData;
+function TResponse.JSON(): TJSONData;
 begin
   Result := GetJSON(text);
 end;
 
-procedure TRequests.get(URL: String; stream: TStream); overload;
+procedure TRequests.Get(URL: String; Stream: TStream); overload;
 begin
-  client.Get(URL,stream);
+  Client.Get(URL,Stream);
 end;
 
-function TRequests.get(URL: String): TResponse; overload;
+function TRequests.Get(URL: String): TResponse; overload;
 begin
-  Result := get(URL, TParams.Create);
+  Result := Get(URL, TParams.Create);
 end;
 
-function TRequests.get(URL: String; params: TParams): TResponse;
+function TRequests.Get(URL: String; Params: TParams): TResponse;
 var
-  response: TResponse;
-  bs: TBytesStream;
+  Response: TResponse;
+  BS: TBytesStream;
 begin
-  bs := TBytesStream.Create;
-  response := TResponse.Create;
-  client.Get(
-     Format('%s?%s',[url, params.buildUrl()]),
-     bs
+  BS := TBytesStream.Create;
+  Response := TResponse.Create;
+  Client.Get(
+     Format('%s?%s',[URL, Params.BuildUrl()]),
+     BS
   );
-  response.text := encoder.GetString(bs.Bytes);
-  response.code := client.ResponseStatusCode;
-  response.data := bs.Bytes;
+  Response.Text := Encoder.GetString(BS.Bytes);
+  Response.Code := Client.ResponseStatusCode;
+  Response.Data := BS.Bytes;
 
-  Result := response;
+  Result := Response;
 
 end;
 
-function TRequests.post(URL: String; params: TParams): TResponse;
+function TRequests.Post(URL: String; Params: TParams): TResponse;
 var
-  response: TResponse;
-  bs: TBytesStream;
+  Response: TResponse;
+  BS: TBytesStream;
 begin
-  bs := TBytesStream.Create;
-  response := TResponse.Create;
-  client.FormPost(
-     url,
-     params.buildPost(),
-     bs
+  BS := TBytesStream.Create;
+  Response := TResponse.Create;
+  Client.FormPost(
+     URL,
+     Params.BuildPost(),
+     BS
   );
-  response.text := encoder.GetString(bs.Bytes);
-  response.code := client.ResponseStatusCode;
-  response.data := bs.Bytes;
+  Response.Text := Encoder.GetString(BS.Bytes);
+  Response.Code := Client.ResponseStatusCode;
+  Response.Data := BS.Bytes;
 
-  Result := response;
+  Result := Response;
 
 end;
 
 constructor TRequests.Create;
 begin
-  client := TFPHTTPClient.Create(nil);
+  Client := TFPHTTPClient.Create(nil);
 end;
 
-function TParams.buildUrl(): String;
+function TParams.BuildUrl(): String;
 var
-  kv: array of String;
+  KV: array of String;
 begin
-  for kv in params do
+  for KV in Params do
         Result += Format('%s=%s&',[
-               URLEncode(kv[0]),
-               URLEncode(kv[1])
+               URLEncode(KV[0]),
+               URLEncode(KV[1])
         ]);
 end;
 
-function TParams.buildPost(): TStringList;
+function TParams.BuildPost(): TStringList;
 var
-  kv: array of String;
+  KV: array of String;
 begin
   Result := TStringList.Create;
-  for kv in params do
+  for KV in params do
         Result.Add(Format('%s=%s',[
-               URLEncode(kv[0]),
-               URLEncode(kv[1])
+               KV[0],KV[1]
         ]));
 end;
 
-function TParams.add(key: String; value: String): TParams; overload;
+function TParams.Add(Key: String; Value: String): TParams; overload;
 begin
-  SetLength(params,Length(params)+1,2);
-  params[Length(params)-1] := [key,value];
+  SetLength(Params,Length(Params)+1,2);
+  Params[Length(Params)-1] := [Key,Value];
 
   Result := Self;
 end;
 
-function TParams.add(key: String; value: Integer): TParams; overload;
+function TParams.Add(Key: String; Value: Integer): TParams; overload;
 begin
-  SetLength(params,Length(params)+1,2);
-  params[Length(params)-1] := [key,IntToStr(value)];
+  SetLength(Params,Length(Params)+1,2);
+  Params[Length(Params)-1] := [Key,IntToStr(Value)];
 
   Result := Self;
 end;
@@ -173,7 +172,7 @@ end;
 
 initialization
 begin
-  encoder := TEncoding.UTF8;
+  Encoder := TEncoding.UTF8;
 end;
 
 end.
