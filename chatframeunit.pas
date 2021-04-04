@@ -62,7 +62,7 @@ end;
 
 procedure TChatFrame.Fill(Chat: TChat);
 begin
-  //ChatAvatarImage.Picture := Chat.;
+  ChatAvatarImage.Picture := Chat.Image;
   TitleLabel.Caption := Chat.name;
   LastMessageLabel.Caption := Chat.previewMsg.text;
   ChatObject := Chat;

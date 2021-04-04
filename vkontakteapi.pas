@@ -16,20 +16,20 @@ type
 
   TVKAPI = class (TInterfacedObject)
   private
-    requests: TRequests;
+    Requests: TRequests;
 
   public
-    access_token: String;
-    version: String;
+    Access_Token: String;
+    Version: String;
 
-    function Call(method: String; params: TParams): TJSONData;
+    function Call(Method: String; Params: TParams): TJSONData;
     constructor Create;
     constructor Create(AToken: String);
   end;
 
 implementation
 
-function TVKAPI.Call(method: String; params: TParams): TJSONData;
+function TVKAPI.Call(Method: String; Params: TParams): TJSONData;
 var
   response: TJSONObject;
 begin
