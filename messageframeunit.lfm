@@ -5,13 +5,13 @@ object MessageFrame: TMessageFrame
   Top = 0
   Width = 338
   Anchors = []
+  AutoSize = True
   BorderSpacing.InnerBorder = 10
   ClientHeight = 67
   ClientWidth = 338
-  OnMouseWheel = FrameMouseWheel
   TabOrder = 0
-  DesignLeft = 271
-  DesignTop = -12
+  DesignLeft = 270
+  DesignTop = -13
   object AvatarImage: TImage
     AnchorSideLeft.Control = Owner
     AnchorSideTop.Control = Owner
@@ -47,15 +47,15 @@ object MessageFrame: TMessageFrame
     AnchorSideRight.Control = Owner
     AnchorSideRight.Side = asrBottom
     Left = 65
-    Height = 28
+    Height = 15
     Top = 23
     Width = 263
     Anchors = [akTop, akLeft, akRight]
-    AutoSize = False
     BorderSpacing.Left = 5
     BorderSpacing.Right = 10
     Caption = 'MessageTextLabel'
     ParentColor = False
+    WordWrap = True
   end
   object Bevel1: TBevel
     Left = 10

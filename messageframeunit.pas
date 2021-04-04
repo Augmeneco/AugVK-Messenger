@@ -17,8 +17,8 @@ type
 		Bevel1: TBevel;
 		NameLabel: TLabel;
 		MessageTextLabel: TLabel;
-    procedure FrameMouseWheel(Sender: TObject; Shift: TShiftState;
-			WheelDelta: Integer; MousePos: TPoint; var Handled: Boolean);
+   // procedure FrameMouseWheel(Sender: TObject; Shift: TShiftState;
+			//WheelDelta: Integer; MousePos: TPoint; var Handled: Boolean);
   private
 
   public
@@ -34,12 +34,12 @@ uses MainFormUnit;
 
 { TMessageFrame }
 
-procedure TMessageFrame.FrameMouseWheel(Sender: TObject; Shift: TShiftState;
-	WheelDelta: Integer; MousePos: TPoint; var Handled: Boolean);
-begin
-  MainForm.ScrollBox1.VertScrollBar.Position :=
-    MainForm.ScrollBox1.VertScrollBar.Position + (-Sign(WheelDelta)*15)
-end;
+//procedure TMessageFrame.FrameMouseWheel(Sender: TObject; Shift: TShiftState;
+//	WheelDelta: Integer; MousePos: TPoint; var Handled: Boolean);
+//begin
+//  MainForm.ChatScroll.VertScrollBar.Position :=
+//    MainForm.ChatScroll.VertScrollBar.Position + (-Sign(WheelDelta)*15)
+//end;
 
 procedure TMessageFrame.Fill(Msg: TMSG);
 begin

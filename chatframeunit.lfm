@@ -1,22 +1,32 @@
 object ChatFrame: TChatFrame
+  Cursor = crHandPoint
   Left = 0
   Height = 69
   Top = 0
   Width = 306
   ClientHeight = 69
   ClientWidth = 306
+  Color = clDefault
+  OnClick = FrameClick
+  OnMouseEnter = FrameMouseEnter
+  OnMouseLeave = FrameMouseLeave
+  ParentColor = False
   TabOrder = 0
-  DesignLeft = 287
-  DesignTop = 4
+  DesignLeft = 277
+  DesignTop = -6
   object ChatAvatarImage: TImage
     AnchorSideLeft.Control = Owner
     AnchorSideTop.Control = Owner
+    Cursor = crHandPoint
     Left = 10
     Height = 48
     Top = 10
     Width = 50
     BorderSpacing.Left = 10
     BorderSpacing.Top = 10
+    OnClick = FrameClick
+    OnMouseEnter = FrameMouseEnter
+    OnMouseLeave = FrameMouseLeave
   end
   object TitleLabel: TLabel
     AnchorSideLeft.Control = ChatAvatarImage
@@ -24,35 +34,45 @@ object ChatFrame: TChatFrame
     AnchorSideTop.Control = ChatAvatarImage
     AnchorSideRight.Control = Owner
     AnchorSideRight.Side = asrBottom
+    Cursor = crHandPoint
     Left = 65
     Height = 15
-    Top = 10
+    Top = 13
     Width = 231
     Anchors = [akTop, akLeft, akRight]
     AutoSize = False
     BorderSpacing.Left = 5
+    BorderSpacing.Top = 3
     BorderSpacing.Right = 10
     Caption = 'TitleLabel'
     ParentColor = False
+    OnClick = FrameClick
+    OnMouseEnter = FrameMouseEnter
+    OnMouseLeave = FrameMouseLeave
   end
   object LastMessageLabel: TLabel
     AnchorSideLeft.Control = ChatAvatarImage
     AnchorSideLeft.Side = asrBottom
-    AnchorSideTop.Control = TitleLabel
     AnchorSideTop.Side = asrBottom
     AnchorSideRight.Control = Owner
     AnchorSideRight.Side = asrBottom
+    AnchorSideBottom.Control = ChatAvatarImage
+    AnchorSideBottom.Side = asrBottom
+    Cursor = crHandPoint
     Left = 65
     Height = 15
-    Top = 30
+    Top = 40
     Width = 231
-    Anchors = [akTop, akLeft, akRight]
+    Anchors = [akLeft, akRight, akBottom]
     AutoSize = False
     BorderSpacing.Left = 5
-    BorderSpacing.Top = 5
     BorderSpacing.Right = 10
+    BorderSpacing.Bottom = 3
     Caption = 'LastMessageLabel'
     ParentColor = False
+    OnClick = FrameClick
+    OnMouseEnter = FrameMouseEnter
+    OnMouseLeave = FrameMouseLeave
   end
   object Bevel1: TBevel
     AnchorSideLeft.Control = Owner
@@ -60,11 +80,14 @@ object ChatFrame: TChatFrame
     AnchorSideRight.Side = asrBottom
     AnchorSideBottom.Control = Owner
     AnchorSideBottom.Side = asrBottom
+    Cursor = crHandPoint
     Left = 0
     Height = 3
     Top = 66
     Width = 306
     Anchors = [akLeft, akRight, akBottom]
     Shape = bsBottomLine
+    OnMouseEnter = FrameMouseEnter
+    OnMouseLeave = FrameMouseLeave
   end
 end

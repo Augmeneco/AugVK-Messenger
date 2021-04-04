@@ -29,13 +29,17 @@ object MainForm: TMainForm
       ParentColor = False
       TabOrder = 0
     end
-    object ScrollBox2: TScrollBox
+    object ChatListScroll: TScrollBox
       Left = 0
       Height = 381
       Top = 50
       Width = 187
       HorzScrollBar.Page = 1
+      HorzScrollBar.Visible = False
+      VertScrollBar.Increment = 1
       VertScrollBar.Page = 1
+      VertScrollBar.Smooth = True
+      VertScrollBar.Tracking = True
       Align = alClient
       TabOrder = 1
     end
@@ -99,7 +103,7 @@ object MainForm: TMainForm
         AutoSize = True
       end
     end
-    object ScrollBox1: TScrollBox
+    object ChatScroll: TScrollBox
       Left = 0
       Height = 343
       Top = 50
