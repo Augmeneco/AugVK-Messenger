@@ -117,13 +117,14 @@ object MainForm: TMainForm
       VertScrollBar.Tracking = True
       Align = alClient
       ClientHeight = 339
-      ClientWidth = 580
+      ClientWidth = 576
       TabOrder = 2
       object Splitter2: TSplitter
+        Cursor = crVSplit
         Left = 0
         Height = 1
         Top = 338
-        Width = 580
+        Width = 576
         Align = alBottom
         ResizeAnchor = akBottom
       end

@@ -56,7 +56,6 @@ type
 
   TMainForm = class(TForm)
     ChatListScroll: TScrollBox;
-    SendAction: TAction;
     ActionList1: TActionList;
     Memo1: TMemo;
     Panel1: TPanel;
@@ -67,11 +66,11 @@ type
     ChatScroll: TScrollBox;
     SpeedButton1: TSpeedButton;
     Splitter1: TSplitter;
+    Splitter2: TSplitter;
     procedure FormCreate(Sender: TObject);
     procedure FormShow(Sender: TObject);
-    procedure ListBox1Click(Sender: TObject);
     procedure Memo1KeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
-    procedure SendActionExecute(Sender: TObject);
+    procedure SpeedButton1Click(Sender: TObject);
   private
 
   public
@@ -269,6 +268,8 @@ begin
   MessagesManager := TMsgFrameManager.Create;
   ChatListManager := TChatFrameManager.Create;
 
+  SelectedChat := -1;
+
   LongpollThread := TCachedLongpoll.Create(Token);
   LongpollThread.RegisterEventHandler(4, @NewMessageHandler);
 
@@ -283,46 +284,29 @@ begin
     MainForm.ChatListManager.Add(Chat);
 end;
 
-procedure TMainForm.ListBox1Click(Sender: TObject);
-begin
-
-end;
-
 procedure TMainForm.Memo1KeyDown(Sender: TObject; var Key: Word;
   Shift: TShiftState);
 begin
   if Key = 13 then
   begin
-     AugVK.SendMessage(Memo1.Text, SelectedChat);
-     Memo1.Lines.Clear;
+    if SelectedChat <> -1 then
+    begin
+      AugVK.SendMessage(Memo1.Text, SelectedChat);
+      Memo1.Clear;
+    end;
   end;
 end;
 
-//procedure TMainForm.ListBox1Click(Sender: TObject);
-//var
-//  chat: TChat;
-//  msg: TMSG;
-//begin
-//  if ListBox1.ItemIndex = -1 then
-//    Exit;
-//
-//  Chat := AugVK.GetChatByIndex(ListBox1.ItemIndex);
-//  SelectedChat := Chat.Id;
-//
-//  DrawnMsgsManager.Clear;
-//  for msg in augvk.getHistory(chat.id, 30) do
-//  begin
-//    DrawnMsgsManager.Add(msg);
-//  end;
-//  ChatScroll.VertScrollBar.Position :=
-//    ChatScroll.VertScrollBar.Range - ChatScroll.VertScrollBar.Page;
-//end;
+procedure TMainForm.SpeedButton1Click(Sender: TObject);
+begin
+  if SelectedChat <> -1 then
+  begin
+    AugVK.SendMessage(Memo1.Text, SelectedChat);
+    Memo1.Clear;
+  end;
+end;
 
 { Actions }
 
-procedure TMainForm.SendActionExecute(Sender: TObject);
-begin
-  //ShowMessage('sos');
-end;
 
 end.
