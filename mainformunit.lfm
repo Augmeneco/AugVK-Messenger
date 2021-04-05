@@ -98,9 +98,10 @@ object MainForm: TMainForm
         Height = 38
         Top = 0
         Width = 65
-        Action = SendAction
         Align = alRight
         AutoSize = True
+        Caption = 'SendAction'
+        OnClick = SpeedButton1Click
       end
     end
     object ChatScroll: TScrollBox
@@ -115,14 +116,19 @@ object MainForm: TMainForm
       VertScrollBar.Smooth = True
       VertScrollBar.Tracking = True
       Align = alClient
+      ClientHeight = 339
+      ClientWidth = 580
       TabOrder = 2
+      object Splitter2: TSplitter
+        Left = 0
+        Height = 1
+        Top = 338
+        Width = 580
+        Align = alBottom
+        ResizeAnchor = akBottom
+      end
     end
   end
   object ActionList1: TActionList
-    object SendAction: TAction
-      Caption = 'SendAction'
-      OnExecute = SendActionExecute
-      ShortCut = 13
-    end
   end
 end
