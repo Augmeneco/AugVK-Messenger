@@ -33,6 +33,7 @@ function TVKAPI.Call(Method: String; Params: TParams): TJSONData;
 var
   response: TJSONObject;
 begin
+  WriteLn('Call ',Method);
   response := TJSONObject(
      requests.post(
          Format('https://api.vk.com/method/%s',[method]),

@@ -322,7 +322,7 @@ end;
 
 procedure TMainForm.SendActionExecute(Sender: TObject);
 begin
-  ShowMessage('sos');
+  //ShowMessage('sos');
 end;
 
 end.

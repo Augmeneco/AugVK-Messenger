@@ -48,25 +48,25 @@ object MainForm: TMainForm
     Left = 187
     Height = 431
     Top = 0
-    Width = 1
+    Width = 5
     ParentColor = False
   end
   object Panel2: TPanel
-    Left = 188
+    Left = 192
     Height = 431
     Top = 0
-    Width = 584
+    Width = 580
     Align = alClient
     BevelOuter = bvNone
     ClientHeight = 431
-    ClientWidth = 584
+    ClientWidth = 580
     ParentColor = False
     TabOrder = 2
     object Panel4: TPanel
       Left = 0
       Height = 50
       Top = 0
-      Width = 584
+      Width = 580
       Align = alTop
       BevelOuter = bvNone
       ParentColor = False
@@ -76,25 +76,25 @@ object MainForm: TMainForm
       Left = 0
       Height = 38
       Top = 393
-      Width = 584
+      Width = 580
       Align = alBottom
       BevelOuter = bvNone
       ClientHeight = 38
-      ClientWidth = 584
+      ClientWidth = 580
       ParentColor = False
       TabOrder = 1
       object Memo1: TMemo
         Left = 0
         Height = 38
         Top = 0
-        Width = 519
+        Width = 515
         Align = alClient
         OnKeyDown = Memo1KeyDown
         TabOrder = 0
       end
       object SpeedButton1: TSpeedButton
         Cursor = crHandPoint
-        Left = 519
+        Left = 515
         Height = 38
         Top = 0
         Width = 65
@@ -107,7 +107,7 @@ object MainForm: TMainForm
       Left = 0
       Height = 343
       Top = 50
-      Width = 584
+      Width = 580
       HorzScrollBar.Page = 1
       HorzScrollBar.Visible = False
       VertScrollBar.Increment = 1

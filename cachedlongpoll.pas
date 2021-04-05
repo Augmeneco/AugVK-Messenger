@@ -69,16 +69,14 @@ begin
   inherited Create(AToken);
 end;
 
+{Миша сунь это блин в поток лп}
 procedure TCachedLongpoll.ProcessEvent(Event: TJSONArray);
 var
   Msg: TMSG;
   Msgs: TMSGsArray;
 begin
-  //writeln(Event.FormatJSON());
-
   if Event.Integers[0] <> 4 then Exit;
 
-  {Миша, не пытайся понять это, ты умрёшь}
   if CachedMsgs.IndexOf(Event.Integers[3]) = -1 then
   begin
     CachedMsgs.Add(
@@ -86,18 +84,17 @@ begin
       Augvk.GetHistory(Event.Integers[3],100)
     );
     Msgs := CachedMsgs.KeyData[Event.Integers[3]];
-    Msg := Msgs[0]; //ммм костыли
+    Msg := Msgs[0];
   end
   else
   begin
-    Msg := Augvk.GetMSGById(Event.Integers[1]);
+
+    Msg := AugVK.ParseLPMsg(Event);//Augvk.GetMSGById(Event.Integers[1]);   //вот из-за этого мелкофризы появляются
     Msgs := CachedMsgs.KeyData[Msg.PeerId];
   end;
 
   Insert([Msg],Msgs,0);
   CachedMsgs.AddOrSetData(Msg.PeerId,Msgs);
-
-  writeln(msg.text);
 
   inherited ProcessEvent(Event);
 end;
