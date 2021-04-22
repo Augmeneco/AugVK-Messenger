@@ -66,25 +66,25 @@ object MainForm: TMainForm
     Left = 187
     Height = 431
     Top = 0
-    Width = 5
+    Width = 1
     ParentColor = False
   end
   object Panel2: TPanel
-    Left = 192
+    Left = 188
     Height = 431
     Top = 0
-    Width = 580
+    Width = 584
     Align = alClient
     BevelOuter = bvNone
     ClientHeight = 431
-    ClientWidth = 580
+    ClientWidth = 584
     ParentColor = False
     TabOrder = 2
     object Panel4: TPanel
       Left = 0
       Height = 50
       Top = 0
-      Width = 580
+      Width = 584
       Align = alTop
       BevelOuter = bvNone
       ParentColor = False
@@ -94,25 +94,25 @@ object MainForm: TMainForm
       Left = 0
       Height = 38
       Top = 393
-      Width = 580
+      Width = 584
       Align = alBottom
       BevelOuter = bvNone
       ClientHeight = 38
-      ClientWidth = 580
+      ClientWidth = 584
       ParentColor = False
       TabOrder = 1
       object Memo1: TMemo
         Left = 0
         Height = 38
         Top = 0
-        Width = 515
+        Width = 519
         Align = alClient
         OnKeyDown = Memo1KeyDown
         TabOrder = 0
       end
       object SpeedButton1: TSpeedButton
         Cursor = crHandPoint
-        Left = 515
+        Left = 519
         Height = 38
         Top = 0
         Width = 65
@@ -126,7 +126,7 @@ object MainForm: TMainForm
       Left = 0
       Height = 343
       Top = 50
-      Width = 580
+      Width = 584
       HorzScrollBar.Page = 1
       HorzScrollBar.Visible = False
       VertScrollBar.Increment = 5
@@ -135,18 +135,8 @@ object MainForm: TMainForm
       VertScrollBar.Tracking = True
       Align = alClient
       ClientHeight = 339
-      ClientWidth = 576
+      ClientWidth = 580
       TabOrder = 2
-<<<<<<< Updated upstream
-      object Splitter2: TSplitter
-        Cursor = crVSplit
-        Left = 0
-        Height = 1
-        Top = 338
-        Width = 576
-        Align = alBottom
-        ResizeAnchor = akBottom
-=======
       object FlowPanel1: TFlowPanel
         AnchorSideLeft.Control = ChatScroll
         AnchorSideTop.Control = ChatScroll
@@ -163,7 +153,6 @@ object MainForm: TMainForm
         FlowStyle = fsLeftRightTopBottom
         TabOrder = 0
         OnResize = FlowPanel1Resize
->>>>>>> Stashed changes
       end
     end
   end
