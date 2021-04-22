@@ -8,9 +8,11 @@ object MessageFrame: TMessageFrame
   BorderSpacing.InnerBorder = 10
   ClientHeight = 67
   ClientWidth = 338
+  Color = clNone
+  ParentColor = False
   TabOrder = 0
-  DesignLeft = 269
-  DesignTop = -14
+  DesignLeft = 268
+  DesignTop = -15
   object AvatarImage: TImage
     AnchorSideLeft.Control = Owner
     AnchorSideTop.Control = Owner

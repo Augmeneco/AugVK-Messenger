@@ -5,7 +5,7 @@ unit ChatFrameUnit;
 interface
 
 uses
-  Classes, SysUtils, Forms, Controls, StdCtrls, ExtCtrls, Graphics, augvkapi;
+  Classes, SysUtils, Forms, Controls, StdCtrls, ExtCtrls, Graphics, augvkapi, Design;
 
 type
 
@@ -72,7 +72,7 @@ end;
 
 procedure TChatFrame.FrameMouseLeave(Sender: TObject);
 begin
-  Color := clDefault;
+  Color := DC_BACKGROUND;
 end;
 
 procedure TChatFrame.Fill(Chat: TChat);

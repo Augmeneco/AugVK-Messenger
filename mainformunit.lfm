@@ -6,6 +6,7 @@ object MainForm: TMainForm
   Caption = 'MainForm'
   ClientHeight = 431
   ClientWidth = 772
+  Color = clWhite
   OnCreate = FormCreate
   OnShow = FormShow
   LCLVersion = '2.0.12.0'
@@ -18,6 +19,7 @@ object MainForm: TMainForm
     BevelOuter = bvNone
     ClientHeight = 431
     ClientWidth = 187
+    Color = clNone
     ParentColor = False
     TabOrder = 0
     object Panel3: TPanel
@@ -27,6 +29,7 @@ object MainForm: TMainForm
       Width = 187
       Align = alTop
       BevelOuter = bvNone
+      Color = clNone
       ParentColor = False
       TabOrder = 0
     end
@@ -37,8 +40,8 @@ object MainForm: TMainForm
       Width = 187
       HorzScrollBar.Page = 1
       HorzScrollBar.Visible = False
-      VertScrollBar.Increment = 5
-      VertScrollBar.Page = 50
+      VertScrollBar.Increment = 1
+      VertScrollBar.Page = 1
       VertScrollBar.Smooth = True
       VertScrollBar.Tracking = True
       Align = alClient
@@ -50,11 +53,11 @@ object MainForm: TMainForm
         AnchorSideRight.Control = ChatListScroll
         AnchorSideRight.Side = asrBottom
         Left = 0
-        Height = 50
+        Height = 0
         Top = 0
         Width = 183
         Anchors = [akTop, akLeft, akRight]
-        Caption = 'FlowPanel2'
+        BevelOuter = bvNone
         ControlList = <>
         FlowLayout = tlTop
         FlowStyle = fsLeftRightTopBottom
@@ -67,27 +70,29 @@ object MainForm: TMainForm
     Left = 187
     Height = 431
     Top = 0
-    Width = 1
+    Width = 2
     ParentColor = False
   end
   object Panel2: TPanel
-    Left = 188
+    Left = 189
     Height = 431
     Top = 0
-    Width = 584
+    Width = 583
     Align = alClient
     BevelOuter = bvNone
     ClientHeight = 431
-    ClientWidth = 584
+    ClientWidth = 583
+    Color = clNone
     ParentColor = False
     TabOrder = 2
     object Panel4: TPanel
       Left = 0
       Height = 50
       Top = 0
-      Width = 584
+      Width = 583
       Align = alTop
       BevelOuter = bvNone
+      Color = clNone
       ParentColor = False
       TabOrder = 0
     end
@@ -95,25 +100,26 @@ object MainForm: TMainForm
       Left = 0
       Height = 38
       Top = 393
-      Width = 584
+      Width = 583
       Align = alBottom
       BevelOuter = bvNone
       ClientHeight = 38
-      ClientWidth = 584
+      ClientWidth = 583
+      Color = clNone
       ParentColor = False
       TabOrder = 1
       object Memo1: TMemo
         Left = 0
         Height = 38
         Top = 0
-        Width = 519
+        Width = 518
         Align = alClient
         OnKeyDown = Memo1KeyDown
         TabOrder = 0
       end
       object SpeedButton1: TSpeedButton
         Cursor = crHandPoint
-        Left = 519
+        Left = 518
         Height = 38
         Top = 0
         Width = 65
@@ -127,16 +133,16 @@ object MainForm: TMainForm
       Left = 0
       Height = 343
       Top = 50
-      Width = 584
+      Width = 583
       HorzScrollBar.Page = 1
       HorzScrollBar.Visible = False
-      VertScrollBar.Increment = 5
-      VertScrollBar.Page = 50
+      VertScrollBar.Increment = 1
+      VertScrollBar.Page = 1
       VertScrollBar.Smooth = True
       VertScrollBar.Tracking = True
       Align = alClient
       ClientHeight = 339
-      ClientWidth = 580
+      ClientWidth = 579
       TabOrder = 2
       object FlowPanel1: TFlowPanel
         AnchorSideLeft.Control = ChatScroll
@@ -144,11 +150,11 @@ object MainForm: TMainForm
         AnchorSideRight.Control = ChatScroll
         AnchorSideRight.Side = asrBottom
         Left = 0
-        Height = 50
+        Height = 0
         Top = 0
-        Width = 580
+        Width = 579
         Anchors = [akTop, akLeft, akRight]
-        Caption = 'FlowPanel1'
+        BevelOuter = bvNone
         ControlList = <>
         FlowLayout = tlTop
         FlowStyle = fsLeftRightTopBottom

@@ -6,14 +6,14 @@ object ChatFrame: TChatFrame
   Width = 306
   ClientHeight = 69
   ClientWidth = 306
-  Color = clDefault
+  Color = clNone
   OnClick = FrameClick
   OnMouseEnter = FrameMouseEnter
   OnMouseLeave = FrameMouseLeave
   ParentColor = False
   TabOrder = 0
-  DesignLeft = 277
-  DesignTop = -6
+  DesignLeft = 276
+  DesignTop = -7
   object ChatAvatarImage: TImage
     AnchorSideLeft.Control = Owner
     AnchorSideTop.Control = Owner

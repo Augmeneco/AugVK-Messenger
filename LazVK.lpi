@@ -33,7 +33,7 @@
         <PackageName Value="LCL"/>
       </Item1>
     </RequiredPackages>
-    <Units Count="6">
+    <Units Count="7">
       <Unit0>
         <Filename Value="LazVK.lpr"/>
         <IsPartOfProject Value="True"/>
@@ -75,6 +75,11 @@
         <ResourceBaseClass Value="Frame"/>
         <UnitName Value="MessageFrameUnit"/>
       </Unit5>
+      <Unit6>
+        <Filename Value="design.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="Design"/>
+      </Unit6>
     </Units>
   </ProjectOptions>
   <CompilerOptions>

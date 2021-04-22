@@ -7,7 +7,11 @@ interface
 uses
   Classes, SysUtils, Forms, Controls, Graphics, Dialogs, ExtCtrls, Buttons,
   StdCtrls, ComCtrls, ActnList, VkLongpoll, fpjson, Utils, CachedLongpoll,
+<<<<<<< Updated upstream
   augvkapi, MessageFrameUnit, ChatFrameUnit, Contnrs, fgl;
+=======
+  augvkapi, MessageFrameUnit, ChatFrameUnit, Design, fgl;
+>>>>>>> Stashed changes
 
 type
   { TMainForm }

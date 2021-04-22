@@ -5,7 +5,7 @@ unit MessageFrameUnit;
 interface
 
 uses
-  Classes, SysUtils, Forms, Controls, ExtCtrls, StdCtrls, Graphics, Types, Math,
+  Classes, SysUtils, Forms, Controls, ExtCtrls, StdCtrls, Graphics, Design,
   augvkapi;
 
 type
