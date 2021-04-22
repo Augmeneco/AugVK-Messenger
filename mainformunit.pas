@@ -7,7 +7,7 @@ interface
 uses
   Classes, SysUtils, Forms, Controls, Graphics, Dialogs, ExtCtrls, Buttons,
   StdCtrls, ComCtrls, ActnList, VkLongpoll, fpjson, Utils, CachedLongpoll,
-  augvkapi, MessageFrameUnit, ChatFrameUnit, OMultiPanel, Contnrs, fgl;
+  augvkapi, MessageFrameUnit, ChatFrameUnit, Contnrs, fgl;
 
 type
   { TMainForm }
@@ -78,7 +78,7 @@ begin
   if MainForm.SelectedChat = Event.Integers[3] then
   begin
     Frame := TMessageFrame.Create(MainForm.FlowPanel1);
-    Frame.Name := Frame.Name+IntToStr(Event.Integers[3]);
+    Frame.Name := Frame.Name+IntToStr(Event.Integers[1]);
     Frame.Fill(LongpollThread.GetCache(Event.Integers[3], 1)[0]);
     Frame.Parent := MainForm.FlowPanel1;
     Frame.Width := MainForm.FlowPanel1.Width;
