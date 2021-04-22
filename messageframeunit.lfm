@@ -5,13 +5,12 @@ object MessageFrame: TMessageFrame
   Top = 0
   Width = 338
   Anchors = []
-  AutoSize = True
   BorderSpacing.InnerBorder = 10
   ClientHeight = 67
   ClientWidth = 338
   TabOrder = 0
-  DesignLeft = 270
-  DesignTop = -13
+  DesignLeft = 269
+  DesignTop = -14
   object AvatarImage: TImage
     AnchorSideLeft.Control = Owner
     AnchorSideTop.Control = Owner

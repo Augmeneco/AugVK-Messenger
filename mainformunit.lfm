@@ -36,12 +36,30 @@ object MainForm: TMainForm
       Width = 187
       HorzScrollBar.Page = 1
       HorzScrollBar.Visible = False
-      VertScrollBar.Increment = 1
-      VertScrollBar.Page = 1
+      VertScrollBar.Increment = 5
+      VertScrollBar.Page = 50
       VertScrollBar.Smooth = True
       VertScrollBar.Tracking = True
       Align = alClient
+      ClientHeight = 377
+      ClientWidth = 183
       TabOrder = 1
+      object FlowPanel2: TFlowPanel
+        AnchorSideLeft.Control = ChatListScroll
+        AnchorSideRight.Control = ChatListScroll
+        AnchorSideRight.Side = asrBottom
+        Left = 0
+        Height = 50
+        Top = 0
+        Width = 183
+        Anchors = [akTop, akLeft, akRight]
+        Caption = 'FlowPanel2'
+        ControlList = <>
+        FlowLayout = tlTop
+        FlowStyle = fsLeftRightTopBottom
+        TabOrder = 0
+        OnResize = FlowPanel2Resize
+      end
     end
   end
   object Splitter1: TSplitter
@@ -111,14 +129,15 @@ object MainForm: TMainForm
       Width = 580
       HorzScrollBar.Page = 1
       HorzScrollBar.Visible = False
-      VertScrollBar.Increment = 1
-      VertScrollBar.Page = 1
+      VertScrollBar.Increment = 5
+      VertScrollBar.Page = 50
       VertScrollBar.Smooth = True
       VertScrollBar.Tracking = True
       Align = alClient
       ClientHeight = 339
       ClientWidth = 576
       TabOrder = 2
+<<<<<<< Updated upstream
       object Splitter2: TSplitter
         Cursor = crVSplit
         Left = 0
@@ -127,6 +146,24 @@ object MainForm: TMainForm
         Width = 576
         Align = alBottom
         ResizeAnchor = akBottom
+=======
+      object FlowPanel1: TFlowPanel
+        AnchorSideLeft.Control = ChatScroll
+        AnchorSideTop.Control = ChatScroll
+        AnchorSideRight.Control = ChatScroll
+        AnchorSideRight.Side = asrBottom
+        Left = 0
+        Height = 50
+        Top = 0
+        Width = 580
+        Anchors = [akTop, akLeft, akRight]
+        Caption = 'FlowPanel1'
+        ControlList = <>
+        FlowLayout = tlTop
+        FlowStyle = fsLeftRightTopBottom
+        TabOrder = 0
+        OnResize = FlowPanel1Resize
+>>>>>>> Stashed changes
       end
     end
   end
