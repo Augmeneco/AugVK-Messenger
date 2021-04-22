@@ -547,6 +547,13 @@ begin
   Result := TMSG.Create;
   Result.Id := Data.Integers[1];
   Result.Date := -1;
+
+  if Data.Objects[6].IndexOfName('from') = -1 then
+  begin
+    Result := GetMSGById(Data.Integers[1]);      //пофиксить костыль
+    Exit;
+  end;
+
   Result.FromId := GetUser(StrToInt(Data.Objects[6]['from'].AsString));
   Result.PeerId := Data.Integers[3];
   Result.Text := Data.Strings[5];
