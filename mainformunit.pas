@@ -7,7 +7,7 @@ interface
 uses
   Classes, SysUtils, Forms, Controls, Graphics, Dialogs, ExtCtrls, Buttons,
   StdCtrls, ComCtrls, ActnList, VkLongpoll, fpjson, Utils, CachedLongpoll,
-  augvkapi, MessageFrameUnit, ChatFrameUnit, Design, fgl;
+  augvkapi, MessageFrameUnit, ChatFrameUnit, Design, BCSVGButton, fgl;
 
 type
   { TMainForm }
@@ -26,7 +26,7 @@ type
     Panel4: TPanel;
     Panel5: TPanel;
     ChatScroll: TScrollBox;
-    SpeedButton1: TSpeedButton;
+    SpeedButton1: TBCSVGButton;
     Splitter1: TSplitter;
     procedure FlowPanel1Resize(Sender: TObject);
     procedure FlowPanel2Resize(Sender: TObject);
@@ -51,10 +51,10 @@ implementation
 
 procedure NewMessageHandler(Event: TJSONArray);
 var
-  //Chat: TChat;
   Idx: Integer;
   Found: Boolean = False;
   Frame: TMessageFrame;
+  OnBottom: Boolean = False;
 begin
   // перемещение наверх
   for Idx:=0 to MainForm.FlowPanel2.ControlList.Count-1 do
@@ -74,6 +74,9 @@ begin
   // если чат не выбран то выйти
   if MainForm.SelectedChat = -1 then exit;
 
+  if MainForm.ChatScroll.VertScrollBar.Position = MainForm.ChatScroll.VertScrollBar.Range - MainForm.ChatScroll.VertScrollBar.Page then
+    OnBottom := True;
+
   // если чат открыт то добавить сообщение
   if MainForm.SelectedChat = Event.Integers[3] then
   begin
@@ -85,8 +88,9 @@ begin
     MainForm.FlowPanel1.Height := MainForm.FlowPanel1.Height+Frame.Height;
   end;
 
-  MainForm.ChatScroll.VertScrollBar.Position :=
-    MainForm.ChatScroll.VertScrollBar.Range - MainForm.ChatScroll.VertScrollBar.Page;
+  if OnBottom then
+    MainForm.ChatScroll.VertScrollBar.Position :=
+      MainForm.ChatScroll.VertScrollBar.Range - MainForm.ChatScroll.VertScrollBar.Page;
 end;
 
 { TMainForm }
@@ -130,7 +134,6 @@ var
 begin
   for Chat in AugVK.GetChatsForDraw do
   begin
-    //MainForm.ChatListManager.Add(Chat);
     Frame := TChatFrame.Create(MainForm.FlowPanel2);
     Frame.Name := Frame.Name+IntToStr(Chat.Id).Replace('-', '_');
     Frame.Fill(Chat);

@@ -38,7 +38,8 @@ uses
 
 procedure TChatFrame.FrameClick(Sender: TObject);
 var
-  msg: TMSG;
+  msgs: TMSGsArray;
+  i: integer;
   frame: TMessageFrame;
   Item : TControl;
 begin
@@ -52,17 +53,16 @@ begin
   end;
   mainform.FlowPanel1.Height:=0;
   //
-  for msg in augvk.getHistory(id, 30) do
+  msgs := augvk.getHistory(id, 30);
+  for i:=length(msgs)-1 downto 0 do
   begin
     Frame := TMessageFrame.Create(MainForm.FlowPanel1);
-    Frame.Name := Frame.Name+IntToStr(msg.Id);
-    Frame.Fill(msg);
+    Frame.Name := Frame.Name+IntToStr(msgs[i].Id);
+    Frame.Fill(msgs[i]);
     Frame.Parent := MainForm.FlowPanel1;
     Frame.Width := MainForm.FlowPanel1.Width;
     MainForm.FlowPanel1.Height := MainForm.FlowPanel1.Height+Frame.Height;
   end;
-  MainForm.ChatScroll.VertScrollBar.Position :=
-    MainForm.ChatScroll.VertScrollBar.Range - MainForm.ChatScroll.VertScrollBar.Page;
 end;
 
 procedure TChatFrame.FrameMouseEnter(Sender: TObject);
