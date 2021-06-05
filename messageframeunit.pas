@@ -14,9 +14,10 @@ type
 
   TMessageFrame = class(TFrame)
 		AvatarImage: TImage;
-		Bevel1: TBevel;
+    Label1: TLabel;
 		NameLabel: TLabel;
 		MessageTextLabel: TLabel;
+    procedure FrameResize(Sender: TObject);
    // procedure FrameMouseWheel(Sender: TObject; Shift: TShiftState;
 			//WheelDelta: Integer; MousePos: TPoint; var Handled: Boolean);
   private
@@ -24,13 +25,14 @@ type
   public
     MessageObject: TMSG;
     procedure Fill(Msg: TMSG);
+    procedure RecalcSize;
   end;
 
 implementation
 
 {$R *.lfm}
 
-uses MainFormUnit;
+uses MainFormUnit, DateUtils;
 
 { TMessageFrame }
 
@@ -41,12 +43,35 @@ uses MainFormUnit;
 //    MainForm.ChatScroll.VertScrollBar.Position + (-Sign(WheelDelta)*15)
 //end;
 
+procedure TMessageFrame.FrameResize(Sender: TObject);
+begin
+  RecalcSize;
+end;
+
 procedure TMessageFrame.Fill(Msg: TMSG);
+var
+  Date: TDateTime;
 begin
   AvatarImage.Picture := Msg.fromId.Image;
   NameLabel.Caption := Msg.fromId.Name;
   MessageTextLabel.Caption := Msg.Text;
   MessageObject := Msg;
+  Date := UnixToDateTime(Msg.Date);
+  if DaysBetween(Now, Date) >= 1 then
+    Label1.Caption := FormatDateTime('DD.MM.YYYY h:nn', Date)
+  else
+    Label1.Caption := FormatDateTime('h:nn', Date);
+
+  RecalcSize;
+end;
+
+procedure TMessageFrame.RecalcSize;
+var
+  AutoSizeHeight: Integer;
+begin
+  AutoSizeHeight := AvatarImage.BorderSpacing.Top+NameLabel.Height+MessageTextLabel.Height+5;
+  if AutoSizeHeight > Constraints.MinHeight then
+    Height := AutoSizeHeight;
 end;
 
 end.

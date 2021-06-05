@@ -5,14 +5,14 @@ unit ChatFrameUnit;
 interface
 
 uses
-  Classes, SysUtils, Forms, Controls, StdCtrls, ExtCtrls, Graphics, augvkapi, Design;
+  Classes, SysUtils, Forms, Controls, StdCtrls, ExtCtrls, Graphics, augvkapi,
+  Design, DividerBevel;
 
 type
 
 	{ TChatFrame }
 
   TChatFrame = class(TFrame)
-    Bevel1: TBevel;
     ChatAvatarImage: TImage;
     TitleLabel: TLabel;
     LastMessageLabel: TLabel;
@@ -46,22 +46,22 @@ begin
   if MainForm.SelectedChat = Id then exit;
   MainForm.SelectedChat := Id;
   // очистка чата
-  while MainForm.FlowPanel1.ControlCount > 0 do
+  while MainForm.StackPanel2.ControlCount > 0 do
   begin
-    Item := MainForm.FlowPanel1.Controls[0];
+    Item := MainForm.StackPanel2.Controls[0];
     Item.Free;
   end;
-  mainform.FlowPanel1.Height:=0;
-  //
+  MainForm.StackPanel2.Height:=0;
   msgs := augvk.getHistory(id, 30);
   for i:=length(msgs)-1 downto 0 do
   begin
-    Frame := TMessageFrame.Create(MainForm.FlowPanel1);
+    Frame := TMessageFrame.Create(MainForm.StackPanel2.Owner);
     Frame.Name := Frame.Name+IntToStr(msgs[i].Id);
     Frame.Fill(msgs[i]);
-    Frame.Parent := MainForm.FlowPanel1;
-    Frame.Width := MainForm.FlowPanel1.Width;
-    MainForm.FlowPanel1.Height := MainForm.FlowPanel1.Height+Frame.Height;
+    Frame.Parent := MainForm.StackPanel2;
+    //Frame.Constraints.MaxWidth := MainForm.StackPanel2.Width;
+    //   Frame.Width := MainForm.StackPanel2.Width;
+    MainForm.StackPanel2.Height := MainForm.StackPanel2.Height+Frame.Height;
   end;
 end;
 

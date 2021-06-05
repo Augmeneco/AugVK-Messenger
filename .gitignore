@@ -1,6 +1,6 @@
 **/lib
 **/backup
-**/test
+#**/test
 **/*.lps
 **/build
 **/precompile

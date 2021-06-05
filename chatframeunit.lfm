@@ -74,20 +74,4 @@ object ChatFrame: TChatFrame
     OnMouseEnter = FrameMouseEnter
     OnMouseLeave = FrameMouseLeave
   end
-  object Bevel1: TBevel
-    AnchorSideLeft.Control = Owner
-    AnchorSideRight.Control = Owner
-    AnchorSideRight.Side = asrBottom
-    AnchorSideBottom.Control = Owner
-    AnchorSideBottom.Side = asrBottom
-    Cursor = crHandPoint
-    Left = 0
-    Height = 3
-    Top = 66
-    Width = 306
-    Anchors = [akLeft, akRight, akBottom]
-    Shape = bsBottomLine
-    OnMouseEnter = FrameMouseEnter
-    OnMouseLeave = FrameMouseLeave
-  end
 end

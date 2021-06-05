@@ -6,8 +6,9 @@ interface
 
 uses
   Classes, SysUtils, Forms, Controls, Graphics, Dialogs, ExtCtrls, Buttons,
-  StdCtrls, ComCtrls, ActnList, VkLongpoll, fpjson, Utils, CachedLongpoll,
-  augvkapi, MessageFrameUnit, ChatFrameUnit, Design, BCSVGButton, fgl;
+  StdCtrls, ComCtrls, ActnList, Menus, VkLongpoll, fpjson, Utils,
+  CachedLongpoll, augvkapi, MessageFrameUnit, ChatFrameUnit, Design, StackPanel,
+  BCSVGButton, fgl;
 
 type
   { TMainForm }
@@ -17,8 +18,6 @@ type
   TMainForm = class(TForm)
     ChatListScroll: TScrollBox;
     ActionList1: TActionList;
-    FlowPanel1: TFlowPanel;
-    FlowPanel2: TFlowPanel;
     Memo1: TMemo;
     Panel1: TPanel;
     Panel2: TPanel;
@@ -28,12 +27,16 @@ type
     ChatScroll: TScrollBox;
     SpeedButton1: TBCSVGButton;
     Splitter1: TSplitter;
-    procedure FlowPanel1Resize(Sender: TObject);
-    procedure FlowPanel2Resize(Sender: TObject);
+    StackPanel1: TStackPanel;
+    StackPanel2: TStackPanel;
+    TrayIcon1: TTrayIcon;
+    procedure FormCloseQuery(Sender: TObject; var CanClose: boolean);
     procedure FormCreate(Sender: TObject);
-    procedure FormShow(Sender: TObject);
     procedure Memo1KeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
     procedure SpeedButton1Click(Sender: TObject);
+    procedure Splitter1Moved(Sender: TObject);
+    procedure TrayIcon1MouseUp(Sender: TObject; Button: TMouseButton;
+      Shift: TShiftState; X, Y: Integer);
   private
 
   public
@@ -57,9 +60,9 @@ var
   OnBottom: Boolean = False;
 begin
   // перемещение наверх
-  for Idx:=0 to MainForm.FlowPanel2.ControlList.Count-1 do
+  for Idx:=0 to MainForm.StackPanel1.ControlCollection.Count-1 do
   begin
-    if TChatFrame(MainForm.FlowPanel2.ControlList[Idx].Control).Id = Event.Integers[3] then
+    if TChatFrame(MainForm.StackPanel1.ControlCollection[Idx].Control).Id = Event.Integers[3] then
     begin
       Found := True;
       break;
@@ -68,8 +71,8 @@ begin
   if Found = False then
     exit;
 
-  TChatFrame(MainForm.FlowPanel2.ControlList[Idx].Control).LastMessageLabel.Caption := Event.Strings[5];
-  MainForm.FlowPanel2.ControlList.Move(Idx, 0);
+  TChatFrame(MainForm.StackPanel1.ControlCollection[Idx].Control).LastMessageLabel.Caption := Event.Strings[5];
+  MainForm.StackPanel1.ControlCollection.Move(Idx, 0);
 
   // если чат не выбран то выйти
   if MainForm.SelectedChat = -1 then exit;
@@ -80,12 +83,13 @@ begin
   // если чат открыт то добавить сообщение
   if MainForm.SelectedChat = Event.Integers[3] then
   begin
-    Frame := TMessageFrame.Create(MainForm.FlowPanel1);
+    Frame := TMessageFrame.Create(MainForm.StackPanel2.Owner);
     Frame.Name := Frame.Name+IntToStr(Event.Integers[1]);
     Frame.Fill(LongpollThread.GetCache(Event.Integers[3], 1)[0]);
-    Frame.Parent := MainForm.FlowPanel1;
-    Frame.Width := MainForm.FlowPanel1.Width;
-    MainForm.FlowPanel1.Height := MainForm.FlowPanel1.Height+Frame.Height;
+    Frame.Parent := MainForm.StackPanel2;
+    //Frame.Constraints.MaxWidth := MainForm.FlowPanel1.Width;
+    //Frame.Width := MainForm.FlowPanel1.Width;
+    //MainForm.FlowPanel1.Height := MainForm.FlowPanel1.Height+Frame.Height;
   end;
 
   if OnBottom then
@@ -98,6 +102,8 @@ end;
 procedure TMainForm.FormCreate(Sender: TObject);
 var
   Token: string;
+  Chat: TChat;
+  Frame: TChatFrame;
 begin
   Token := Config.GetPath(Format('accounts[%d].token',
     [Config.Integers['active_account']])).AsString;
@@ -109,38 +115,23 @@ begin
   LongpollThread.RegisterEventHandler(4, @NewMessageHandler);
 
   LongpollThread.Start;
-end;
 
-procedure TMainForm.FlowPanel1Resize(Sender: TObject);
-var
-  i: integer;
-begin
-  for I:=0 to FlowPanel1.ControlList.Count-1 do
-    FlowPanel1.ControlList.Items[I].Control.Width:=FlowPanel1.Width;
-end;
-
-procedure TMainForm.FlowPanel2Resize(Sender: TObject);
-var
-  i: integer;
-begin
-  for I:=0 to FlowPanel2.ControlList.Count-1 do
-    FlowPanel2.ControlList.Items[I].Control.Width:=FlowPanel2.Width;
-end;
-
-procedure TMainForm.FormShow(Sender: TObject);
-var
-  Chat: TChat;
-  Frame: TChatFrame;
-begin
+  // загрузка чатов
   for Chat in AugVK.GetChatsForDraw do
   begin
-    Frame := TChatFrame.Create(MainForm.FlowPanel2);
+    Frame := TChatFrame.Create(MainForm.StackPanel1.Owner);
     Frame.Name := Frame.Name+IntToStr(Chat.Id).Replace('-', '_');
     Frame.Fill(Chat);
-    Frame.Parent := MainForm.FlowPanel2;
-    Frame.Width := MainForm.FlowPanel2.Width;
-    MainForm.FlowPanel2.Height := MainForm.FlowPanel2.Height+Frame.Height;
+    Frame.Parent := MainForm.StackPanel1;
+    //Frame.Width := MainForm.FlowPanel2.Width;
+    //MainForm.FlowPanel2.Height := MainForm.FlowPanel2.Height+Frame.Height;
   end;
+end;
+
+procedure TMainForm.FormCloseQuery(Sender: TObject; var CanClose: boolean);
+begin
+  MainForm.Hide;
+  CanClose:=False;
 end;
 
 procedure TMainForm.Memo1KeyDown(Sender: TObject; var Key: Word;
@@ -163,6 +154,23 @@ begin
     AugVK.SendMessage(Memo1.Text, SelectedChat);
     Memo1.Clear;
   end;
+end;
+
+procedure TMainForm.Splitter1Moved(Sender: TObject);
+begin
+  Invalidate;
+end;
+
+procedure TMainForm.TrayIcon1MouseUp(Sender: TObject; Button: TMouseButton;
+  Shift: TShiftState; X, Y: Integer);
+begin
+  //if Button = mbRight then
+  //  PopupMenu1.PopUp;
+  if Button = mbLeft then
+    if Visible then
+      Hide
+    else
+      Show;
 end;
 
 { Actions }

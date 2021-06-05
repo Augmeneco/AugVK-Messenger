@@ -1,18 +1,17 @@
 object MessageFrame: TMessageFrame
   AnchorSideRight.Side = asrBottom
   Left = 0
-  Height = 67
+  Height = 70
   Top = 0
   Width = 338
-  Anchors = []
   BorderSpacing.InnerBorder = 10
-  ClientHeight = 67
+  ClientHeight = 70
   ClientWidth = 338
-  Color = clNone
-  ParentColor = False
+  Constraints.MinHeight = 70
+  OnResize = FrameResize
   TabOrder = 0
-  DesignLeft = 268
-  DesignTop = -15
+  DesignLeft = 247
+  DesignTop = -36
   object AvatarImage: TImage
     AnchorSideLeft.Control = Owner
     AnchorSideTop.Control = Owner
@@ -27,18 +26,19 @@ object MessageFrame: TMessageFrame
   object NameLabel: TLabel
     AnchorSideLeft.Control = AvatarImage
     AnchorSideLeft.Side = asrBottom
-    AnchorSideRight.Control = Owner
-    AnchorSideRight.Side = asrBottom
+    AnchorSideTop.Control = AvatarImage
     AnchorSideBottom.Side = asrCenter
     Left = 65
     Height = 15
-    Top = 8
-    Width = 263
-    Anchors = [akTop, akLeft, akRight]
+    Top = 10
+    Width = 62
     BorderSpacing.Left = 5
     BorderSpacing.Right = 10
     Caption = 'NameLabel'
+    Font.Color = 8404992
+    Font.Style = [fsBold]
     ParentColor = False
+    ParentFont = False
   end
   object MessageTextLabel: TLabel
     AnchorSideLeft.Control = AvatarImage
@@ -49,23 +49,35 @@ object MessageFrame: TMessageFrame
     AnchorSideRight.Side = asrBottom
     Left = 65
     Height = 15
-    Top = 23
+    Top = 25
     Width = 263
     Anchors = [akTop, akLeft, akRight]
     BorderSpacing.Left = 5
     BorderSpacing.Right = 10
     Caption = 'MessageTextLabel'
+    Color = clHighlight
+    Font.CharSet = RUSSIAN_CHARSET
+    Font.Color = clBlack
+    Font.Height = -12
+    Font.Name = 'Arial'
+    Font.Pitch = fpVariable
+    Font.Quality = fqDraft
     ParentColor = False
+    ParentFont = False
+    Transparent = False
     WordWrap = True
   end
-  object Bevel1: TBevel
-    Left = 10
-    Height = 2
-    Top = 65
-    Width = 318
-    Align = alBottom
-    BorderSpacing.Left = 10
-    BorderSpacing.Right = 10
-    Shape = bsBottomLine
+  object Label1: TLabel
+    AnchorSideLeft.Control = NameLabel
+    AnchorSideLeft.Side = asrBottom
+    AnchorSideTop.Control = AvatarImage
+    Left = 137
+    Height = 15
+    Top = 10
+    Width = 34
+    Caption = 'Label1'
+    Font.Color = clGray
+    ParentColor = False
+    ParentFont = False
   end
 end
