@@ -1,26 +1,30 @@
 object MainForm: TMainForm
   Left = 574
-  Height = 450
+  Height = 500
   Top = 324
   Width = 803
   Caption = 'MainForm'
-  ClientHeight = 450
+  ClientHeight = 500
   ClientWidth = 803
   Color = clWhite
+  Constraints.MinHeight = 400
+  Constraints.MinWidth = 400
   DoubleBuffered = True
   OnCloseQuery = FormCloseQuery
   OnCreate = FormCreate
+  OnResize = FormResize
   ParentDoubleBuffered = False
   object Panel1: TPanel
     Left = 0
-    Height = 450
+    Height = 500
     Top = 0
     Width = 286
     Align = alLeft
     BevelOuter = bvNone
-    ClientHeight = 450
+    ClientHeight = 500
     ClientWidth = 286
     Color = clNone
+    Constraints.MinWidth = 70
     DoubleBuffered = True
     ParentColor = False
     ParentDoubleBuffered = False
@@ -38,7 +42,7 @@ object MainForm: TMainForm
     end
     object ChatListScroll: TScrollBox
       Left = 0
-      Height = 400
+      Height = 450
       Top = 50
       Width = 286
       HorzScrollBar.Page = 1
@@ -49,9 +53,11 @@ object MainForm: TMainForm
       VertScrollBar.Tracking = True
       Align = alClient
       BorderStyle = bsNone
-      ClientHeight = 400
+      ClientHeight = 450
       ClientWidth = 286
       TabOrder = 1
+      OnMouseEnter = ChatListScrollMouseEnter
+      OnMouseLeave = ChatListScrollMouseLeave
       object StackPanel1: TStackPanel
         AnchorSideLeft.Control = ChatListScroll
         AnchorSideTop.Control = ChatListScroll
@@ -72,7 +78,7 @@ object MainForm: TMainForm
   end
   object Splitter1: TSplitter
     Left = 286
-    Height = 450
+    Height = 500
     Top = 0
     Width = 1
     AutoSnap = False
@@ -83,12 +89,12 @@ object MainForm: TMainForm
   end
   object Panel2: TPanel
     Left = 287
-    Height = 450
+    Height = 500
     Top = 0
     Width = 516
     Align = alClient
     BevelOuter = bvNone
-    ClientHeight = 450
+    ClientHeight = 500
     ClientWidth = 516
     Color = clNone
     DoubleBuffered = True
@@ -109,7 +115,7 @@ object MainForm: TMainForm
     object Panel5: TPanel
       Left = 0
       Height = 39
-      Top = 411
+      Top = 461
       Width = 516
       Align = alBottom
       BevelOuter = bvNone
@@ -226,7 +232,7 @@ object MainForm: TMainForm
     end
     object ChatScroll: TScrollBox
       Left = 0
-      Height = 361
+      Height = 411
       Top = 50
       Width = 516
       HorzScrollBar.Page = 1
@@ -237,24 +243,22 @@ object MainForm: TMainForm
       VertScrollBar.Tracking = True
       Align = alClient
       BorderStyle = bsNone
-      ClientHeight = 361
+      ClientHeight = 411
       ClientWidth = 516
       Color = clMoneyGreen
       ParentColor = False
       TabOrder = 2
       object StackPanel2: TStackPanel
-        AnchorSideLeft.Control = ChatScroll
-        AnchorSideTop.Control = ChatScroll
-        AnchorSideRight.Control = ChatScroll
-        AnchorSideRight.Side = asrBottom
         Left = 0
         Height = 0
         Top = 0
         Width = 516
-        Anchors = [akTop, akLeft, akRight]
+        Align = alTop
         AutoSize = True
         BevelOuter = bvNone
+        Constraints.MinWidth = 100
         ControlCollection = <>
+        HorizontalPositioning = sphpFill
         TabOrder = 0
         UseDockManager = False
         VerticalPositioning = spvpTop

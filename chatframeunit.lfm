@@ -4,6 +4,8 @@ object ChatFrame: TChatFrame
   Height = 69
   Top = 0
   Width = 306
+  HorzScrollBar.Page = 1
+  VertScrollBar.Page = 1
   ClientHeight = 69
   ClientWidth = 306
   Color = clNone
@@ -12,8 +14,8 @@ object ChatFrame: TChatFrame
   OnMouseLeave = FrameMouseLeave
   ParentColor = False
   TabOrder = 0
-  DesignLeft = 276
-  DesignTop = -7
+  DesignLeft = 272
+  DesignTop = -11
   object ChatAvatarImage: TImage
     AnchorSideLeft.Control = Owner
     AnchorSideTop.Control = Owner

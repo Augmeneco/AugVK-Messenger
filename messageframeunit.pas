@@ -5,8 +5,8 @@ unit MessageFrameUnit;
 interface
 
 uses
-  Classes, SysUtils, Forms, Controls, ExtCtrls, StdCtrls, Graphics, Design,
-  augvkapi;
+  Classes, SysUtils, Forms, Controls, ExtCtrls, StdCtrls, Graphics,
+  PairSplitter, ButtonPanel, Design, augvkapi, BCLabel;
 
 type
 
@@ -15,8 +15,8 @@ type
   TMessageFrame = class(TFrame)
 		AvatarImage: TImage;
     Label1: TLabel;
+    MessageTextLabel: TLabel;
 		NameLabel: TLabel;
-		MessageTextLabel: TLabel;
     procedure FrameResize(Sender: TObject);
    // procedure FrameMouseWheel(Sender: TObject; Shift: TShiftState;
 			//WheelDelta: Integer; MousePos: TPoint; var Handled: Boolean);
@@ -69,7 +69,7 @@ procedure TMessageFrame.RecalcSize;
 var
   AutoSizeHeight: Integer;
 begin
-  AutoSizeHeight := AvatarImage.BorderSpacing.Top+NameLabel.Height+MessageTextLabel.Height+5;
+  AutoSizeHeight := AvatarImage.BorderSpacing.Top+NameLabel.Height+MessageTextLabel.Height+10;
   if AutoSizeHeight > Constraints.MinHeight then
     Height := AutoSizeHeight;
 end;

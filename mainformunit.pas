@@ -30,8 +30,11 @@ type
     StackPanel1: TStackPanel;
     StackPanel2: TStackPanel;
     TrayIcon1: TTrayIcon;
+    procedure ChatListScrollMouseEnter(Sender: TObject);
+    procedure ChatListScrollMouseLeave(Sender: TObject);
     procedure FormCloseQuery(Sender: TObject; var CanClose: boolean);
     procedure FormCreate(Sender: TObject);
+    procedure FormResize(Sender: TObject);
     procedure Memo1KeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
     procedure SpeedButton1Click(Sender: TObject);
     procedure Splitter1Moved(Sender: TObject);
@@ -41,6 +44,7 @@ type
 
   public
     SelectedChat: Integer;
+    ChatListWidthPercent: Real;
   end;
 
 var
@@ -128,10 +132,25 @@ begin
   end;
 end;
 
+procedure TMainForm.FormResize(Sender: TObject);
+begin
+  Panel1.Width := Trunc(Width * ChatListWidthPercent);
+end;
+
 procedure TMainForm.FormCloseQuery(Sender: TObject; var CanClose: boolean);
 begin
   MainForm.Hide;
   CanClose:=False;
+end;
+
+procedure TMainForm.ChatListScrollMouseLeave(Sender: TObject);
+begin
+  ChatListScroll.VertScrollBar.Visible := False;
+end;
+
+procedure TMainForm.ChatListScrollMouseEnter(Sender: TObject);
+begin
+  ChatListScroll.VertScrollBar.Visible := True;
 end;
 
 procedure TMainForm.Memo1KeyDown(Sender: TObject; var Key: Word;
@@ -159,6 +178,7 @@ end;
 procedure TMainForm.Splitter1Moved(Sender: TObject);
 begin
   Invalidate;
+  ChatListWidthPercent := Panel1.Width / Width;
 end;
 
 procedure TMainForm.TrayIcon1MouseUp(Sender: TObject; Button: TMouseButton;

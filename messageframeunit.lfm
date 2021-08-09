@@ -10,8 +10,8 @@ object MessageFrame: TMessageFrame
   Constraints.MinHeight = 70
   OnResize = FrameResize
   TabOrder = 0
-  DesignLeft = 247
-  DesignTop = -36
+  DesignLeft = 245
+  DesignTop = -38
   object AvatarImage: TImage
     AnchorSideLeft.Control = Owner
     AnchorSideTop.Control = Owner
@@ -37,6 +37,19 @@ object MessageFrame: TMessageFrame
     Caption = 'NameLabel'
     Font.Color = 8404992
     Font.Style = [fsBold]
+    ParentColor = False
+    ParentFont = False
+  end
+  object Label1: TLabel
+    AnchorSideLeft.Control = NameLabel
+    AnchorSideLeft.Side = asrBottom
+    AnchorSideTop.Control = AvatarImage
+    Left = 137
+    Height = 15
+    Top = 10
+    Width = 34
+    Caption = 'Label1'
+    Font.Color = clGray
     ParentColor = False
     ParentFont = False
   end
@@ -66,18 +79,5 @@ object MessageFrame: TMessageFrame
     ParentFont = False
     Transparent = False
     WordWrap = True
-  end
-  object Label1: TLabel
-    AnchorSideLeft.Control = NameLabel
-    AnchorSideLeft.Side = asrBottom
-    AnchorSideTop.Control = AvatarImage
-    Left = 137
-    Height = 15
-    Top = 10
-    Width = 34
-    Caption = 'Label1'
-    Font.Color = clGray
-    ParentColor = False
-    ParentFont = False
   end
 end

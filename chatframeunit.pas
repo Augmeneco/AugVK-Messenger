@@ -62,6 +62,10 @@ begin
     //Frame.Constraints.MaxWidth := MainForm.StackPanel2.Width;
     //   Frame.Width := MainForm.StackPanel2.Width;
     MainForm.StackPanel2.Height := MainForm.StackPanel2.Height+Frame.Height;
+    writeln(mainform.StackPanel2.Height);
+    //MainForm.HtmlViewer1.dom;
+    //MainForm.HtmlViewer1.InsertImage(inttostr(msgs[i].Id), msgs[i].FromId.Image.Bitmap, itrIntrinsic);
+    //MainForm.HtmlViewer1.LoadFromString(Format('<img src="%s">', [inttostr(msgs[i].Id)]));
   end;
 end;
 
