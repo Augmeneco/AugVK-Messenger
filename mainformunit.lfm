@@ -14,7 +14,7 @@ object MainForm: TMainForm
   OnCreate = FormCreate
   OnResize = FormResize
   ParentDoubleBuffered = False
-  object Panel1: TPanel
+  object DialogsPanel: TPanel
     Left = 0
     Height = 500
     Top = 0
@@ -56,8 +56,6 @@ object MainForm: TMainForm
       ClientHeight = 450
       ClientWidth = 286
       TabOrder = 1
-      OnMouseEnter = ChatListScrollMouseEnter
-      OnMouseLeave = ChatListScrollMouseLeave
       object StackPanel1: TStackPanel
         AnchorSideLeft.Control = ChatListScroll
         AnchorSideTop.Control = ChatListScroll
@@ -87,7 +85,7 @@ object MainForm: TMainForm
     OnMoved = Splitter1Moved
     ParentColor = False
   end
-  object Panel2: TPanel
+  object ChatPanel: TPanel
     Left = 287
     Height = 500
     Top = 0
@@ -97,6 +95,8 @@ object MainForm: TMainForm
     ClientHeight = 500
     ClientWidth = 516
     Color = clNone
+    Constraints.MinHeight = 400
+    Constraints.MinWidth = 400
     DoubleBuffered = True
     ParentColor = False
     ParentDoubleBuffered = False
@@ -108,9 +108,33 @@ object MainForm: TMainForm
       Width = 516
       Align = alTop
       BevelOuter = bvNone
+      ClientHeight = 50
+      ClientWidth = 516
       Color = clNone
       ParentColor = False
       TabOrder = 0
+      object BCSVGButton1: TBCSVGButton
+        Cursor = crHandPoint
+        Left = 0
+        Height = 50
+        Top = 0
+        Width = 52
+        Align = alLeft
+        SVGString = '<?xml version="1.0" encoding="utf-8"?>'#13#10'<svg role="img" width="1em" xmlns="http://www.w3.org/2000/svg" height="1em" viewBox="0 0 16 16" aria-hidden="true" xmlns:xlink="http://www.w3.org/1999/xlink" preserveAspectRatio="xMidYMid meet">'#13#10'  <g fill="none">'#13#10'    <path d="M14 8a.75.75 0 0 1-.75.75H4.463l3.287 2.941a.75.75 0 1 1-1 1.118L2 8.559A.75.75 0 0 1 2 7.44l4.75-4.25a.75.75 0 1 1 1 1.118L4.463 7.25h8.787A.75.75 0 0 1 14 8z" fill="#5f8dd3"/>'#13#10'  </g>'#13#10'</svg>'#13#10
+        DestDPI = 160
+        x = 150
+        y = 150
+        StretchMode = smNone
+        Color = clWhite
+        ColorOpacity = 128
+        OnClick = BCSVGButton1Click
+        Caption = 'BCSVGButton1'
+        SVGNormalXML.Strings = (
+          '<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true" role="img" width="1em" height="1em" preserveAspectRatio="xMidYMid meet" viewBox="0 0 16 16"><g fill="none"><path d="M14 8a.75.75 0 0 1-.75.75H4.463l3.287 2.941a.75.75 0 1 1-1 1.118L2 8.559A.75.75 0 0 1 2 7.44l4.75-4.25a.75.75 0 1 1 1 1.118L4.463 7.25h8.787A.75.75 0 0 1 14 8z" fill="#5f8dd3"/></g></svg>'
+        )
+        Position = 0
+        Maximum = 0
+      end
     end
     object Panel5: TPanel
       Left = 0
@@ -153,7 +177,7 @@ object MainForm: TMainForm
         Top = 0
         Width = 36
         Align = alRight
-        SVGString = '<?xml version="1.0" encoding="utf-8"?>'#13#10'<svg id="svg30" style="-ms-transform: rotate(360deg); -webkit-transform: rotate(360deg); transform: rotate(360deg);" width="16" xmlns="http://www.w3.org/2000/svg" height="16" version="1.1" viewBox="0 0 16 16" xmlns:cc="http://creativecommons.org/ns#" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:svg="http://www.w3.org/2000/svg" xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape" xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd" inkscape:version="1.0.2-2 (e86c870879, 2021-01-15)" sodipodi:docname="send-16-filled.svg" preserveAspectRatio="xMidYMid meet">'#13#10'  <metadata id="metadata36">'#13#10'    <rdf:RDF>'#13#10'      <cc:Work rdf:about="">'#13#10'        <dc:format>image/svg+xml</dc:format>'#13#10'        <dc:type rdf:resource="http://purl.org/dc/dcmitype/StillImage"/>'#13#10'      </cc:Work>'#13#10'    </rdf:RDF>'#13#10'  </metadata>'#13#10'  <defs id="defs34"/>'#13#10'  <sodipodi:namedview id="namedview32" showgrid="false" pagecolor="#ffffff" bordercolor="#666666" inkscape:cx="9.0297021" inkscape:cy="9.3113041" borderopacity="1" gridtolerance="10" inkscape:zoom="37.609242" guidetolerance="10" objecttolerance="10" inkscape:window-x="-8" inkscape:window-y="-8" inkscape:pageshadow="2" inkscape:pageopacity="0" inkscape:window-width="1920" inkscape:current-layer="svg30" inkscape:window-height="1027" inkscape:window-maximized="1"/>'#13#10'  <g id="g26" fill="none" style="fill:#5f8dd3">'#13#10'    <path d="M1.724 1.053a.5.5 0 0 0-.714.545l1.403 4.85a.5.5 0 0 0 .397.354l5.69.953c.268.053.268.437 0 .49l-5.69.953a.5.5 0 0 0-.397.354l-1.403 4.85a.5.5 0 0 0 .714.545l13-6.5a.5.5 0 0 0 0-.894l-13-6.5z" id="path24" fill="#626262" style="fill:#5f8dd3"/>'#13#10'  </g>'#13#10'</svg>'#13#10
+        SVGString = '<?xml version="1.0" encoding="utf-8"?>'#13#10'<svg role="img" width="1em" xmlns="http://www.w3.org/2000/svg" height="1em" viewBox="0 0 16 16" aria-hidden="true" xmlns:xlink="http://www.w3.org/1999/xlink" preserveAspectRatio="xMidYMid meet">'#13#10'  <g fill="none">'#13#10'    <path d="M1.724 1.053a.5.5 0 0 0-.714.545l1.403 4.85a.5.5 0 0 0 .397.354l5.69.953c.268.053.268.437 0 .49l-5.69.953a.5.5 0 0 0-.397.354l-1.403 4.85a.5.5 0 0 0 .714.545l13-6.5a.5.5 0 0 0 0-.894l-13-6.5z" fill="#5f8dd3"/>'#13#10'  </g>'#13#10'</svg>'#13#10
         DestDPI = 160
         x = 150
         y = 150
@@ -163,68 +187,7 @@ object MainForm: TMainForm
         OnClick = SpeedButton1Click
         Caption = 'SendAction'
         SVGNormalXML.Strings = (
-          '<?xml version="1.0" encoding="UTF-8" standalone="no"?>'
-          '<svg'
-          '   xmlns:dc="http://purl.org/dc/elements/1.1/"'
-          '   xmlns:cc="http://creativecommons.org/ns#"'
-          '   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"'
-          '   xmlns:svg="http://www.w3.org/2000/svg"'
-          '   xmlns="http://www.w3.org/2000/svg"'
-          '   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"'
-          '   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"'
-          '   width="16"'
-          '   height="16"'
-          '   preserveAspectRatio="xMidYMid meet"'
-          '   viewBox="0 0 16 16"'
-          '   style="-ms-transform: rotate(360deg); -webkit-transform: rotate(360deg); transform: rotate(360deg);"'
-          '   version="1.1"'
-          '   id="svg30"'
-          '   sodipodi:docname="send-16-filled.svg"'
-          '   inkscape:version="1.0.2-2 (e86c870879, 2021-01-15)">'
-          '  <metadata'
-          '     id="metadata36">'
-          '    <rdf:RDF>'
-          '      <cc:Work'
-          '         rdf:about="">'
-          '        <dc:format>image/svg+xml</dc:format>'
-          '        <dc:type'
-          '           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />'
-          '      </cc:Work>'
-          '    </rdf:RDF>'
-          '  </metadata>'
-          '  <defs'
-          '     id="defs34" />'
-          '  <sodipodi:namedview'
-          '     pagecolor="#ffffff"'
-          '     bordercolor="#666666"'
-          '     borderopacity="1"'
-          '     objecttolerance="10"'
-          '     gridtolerance="10"'
-          '     guidetolerance="10"'
-          '     inkscape:pageopacity="0"'
-          '     inkscape:pageshadow="2"'
-          '     inkscape:window-width="1920"'
-          '     inkscape:window-height="1027"'
-          '     id="namedview32"'
-          '     showgrid="false"'
-          '     inkscape:zoom="37.609242"'
-          '     inkscape:cx="9.0297021"'
-          '     inkscape:cy="9.3113041"'
-          '     inkscape:window-x="-8"'
-          '     inkscape:window-y="-8"'
-          '     inkscape:window-maximized="1"'
-          '     inkscape:current-layer="svg30" />'
-          '  <g'
-          '     fill="none"'
-          '     id="g26"'
-          '     style="fill:#5f8dd3">'
-          '    <path'
-          '       d="M1.724 1.053a.5.5 0 0 0-.714.545l1.403 4.85a.5.5 0 0 0 .397.354l5.69.953c.268.053.268.437 0 .49l-5.69.953a.5.5 0 0 0-.397.354l-1.403 4.85a.5.5 0 0 0 .714.545l13-6.5a.5.5 0 0 0 0-.894l-13-6.5z"'
-          '       fill="#626262"'
-          '       id="path24"'
-          '       style="fill:#5f8dd3" />'
-          '  </g>'
-          '</svg>'
+          '<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true" role="img" width="1em" height="1em" preserveAspectRatio="xMidYMid meet" viewBox="0 0 16 16"><g fill="none"><path d="M1.724 1.053a.5.5 0 0 0-.714.545l1.403 4.85a.5.5 0 0 0 .397.354l5.69.953c.268.053.268.437 0 .49l-5.69.953a.5.5 0 0 0-.397.354l-1.403 4.85a.5.5 0 0 0 .714.545l13-6.5a.5.5 0 0 0 0-.894l-13-6.5z" fill="#5f8dd3"/></g></svg>'
         )
         Position = 0
         Maximum = 0

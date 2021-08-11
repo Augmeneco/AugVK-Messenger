@@ -8,7 +8,7 @@ uses
   Classes, SysUtils, Forms, Controls, Graphics, Dialogs, ExtCtrls, Buttons,
   StdCtrls, ComCtrls, ActnList, Menus, VkLongpoll, fpjson, Utils,
   CachedLongpoll, augvkapi, MessageFrameUnit, ChatFrameUnit, Design, StackPanel,
-  BCSVGButton, fgl;
+  BCSVGButton, BCListBox, BCRadialProgressBar, fgl;
 
 type
   { TMainForm }
@@ -16,11 +16,12 @@ type
   TChatsMap = specialize TFPGMap<Integer, TChatFrame>;
 
   TMainForm = class(TForm)
+    BCSVGButton1: TBCSVGButton;
     ChatListScroll: TScrollBox;
     ActionList1: TActionList;
     Memo1: TMemo;
-    Panel1: TPanel;
-    Panel2: TPanel;
+    DialogsPanel: TPanel;
+    ChatPanel: TPanel;
     Panel3: TPanel;
     Panel4: TPanel;
     Panel5: TPanel;
@@ -30,8 +31,7 @@ type
     StackPanel1: TStackPanel;
     StackPanel2: TStackPanel;
     TrayIcon1: TTrayIcon;
-    procedure ChatListScrollMouseEnter(Sender: TObject);
-    procedure ChatListScrollMouseLeave(Sender: TObject);
+    procedure BCSVGButton1Click(Sender: TObject);
     procedure FormCloseQuery(Sender: TObject; var CanClose: boolean);
     procedure FormCreate(Sender: TObject);
     procedure FormResize(Sender: TObject);
@@ -45,6 +45,11 @@ type
   public
     SelectedChat: Integer;
     ChatListWidthPercent: Real;
+    CompactView: Boolean;
+
+    procedure ShowBothPanels;
+    procedure ShowOnlyChat;
+    procedure ShowOnlyDialogs;
   end;
 
 var
@@ -130,11 +135,17 @@ begin
     //Frame.Width := MainForm.FlowPanel2.Width;
     //MainForm.FlowPanel2.Height := MainForm.FlowPanel2.Height+Frame.Height;
   end;
+
+  ChatListWidthPercent := 0.3;
 end;
 
 procedure TMainForm.FormResize(Sender: TObject);
 begin
-  Panel1.Width := Trunc(Width * ChatListWidthPercent);
+  if Width <= 400 then
+    ShowOnlyChat
+  else
+    ShowBothPanels;
+  DialogsPanel.Width := Trunc(Width * ChatListWidthPercent);
 end;
 
 procedure TMainForm.FormCloseQuery(Sender: TObject; var CanClose: boolean);
@@ -143,14 +154,9 @@ begin
   CanClose:=False;
 end;
 
-procedure TMainForm.ChatListScrollMouseLeave(Sender: TObject);
+procedure TMainForm.BCSVGButton1Click(Sender: TObject);
 begin
-  ChatListScroll.VertScrollBar.Visible := False;
-end;
-
-procedure TMainForm.ChatListScrollMouseEnter(Sender: TObject);
-begin
-  ChatListScroll.VertScrollBar.Visible := True;
+  ShowOnlyDialogs;
 end;
 
 procedure TMainForm.Memo1KeyDown(Sender: TObject; var Key: Word;
@@ -178,7 +184,7 @@ end;
 procedure TMainForm.Splitter1Moved(Sender: TObject);
 begin
   Invalidate;
-  ChatListWidthPercent := Panel1.Width / Width;
+  ChatListWidthPercent := DialogsPanel.Width / Width;
 end;
 
 procedure TMainForm.TrayIcon1MouseUp(Sender: TObject; Button: TMouseButton;
@@ -191,6 +197,37 @@ begin
       Hide
     else
       Show;
+end;
+
+procedure TMainForm.ShowBothPanels;
+begin
+  DialogsPanel.Show;
+  ChatPanel.Show;
+  BCSVGButton1.Hide;
+  DialogsPanel.Align := alLeft;
+  Splitter1.Show;
+  ChatListWidthPercent := 0.3;
+  CompactView := False;
+end;
+
+procedure TMainForm.ShowOnlyChat;
+begin
+  DialogsPanel.Hide;
+  ChatPanel.Show;
+  BCSVGButton1.Show;
+  DialogsPanel.Align := alClient;
+  Splitter1.Hide;
+  CompactView := True;
+end;
+
+procedure TMainForm.ShowOnlyDialogs;
+begin
+  DialogsPanel.Show;
+  ChatPanel.Hide;
+  BCSVGButton1.Hide;
+  ChatPanel.Align := alClient;
+  Splitter1.Hide;
+  CompactView := True;
 end;
 
 { Actions }

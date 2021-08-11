@@ -43,7 +43,10 @@ var
   frame: TMessageFrame;
   Item : TControl;
 begin
-  if MainForm.SelectedChat = Id then exit;
+  if MainForm.CompactView then
+    MainForm.ShowOnlyChat;
+  if MainForm.SelectedChat = Id then
+    exit;
   MainForm.SelectedChat := Id;
   // очистка чата
   while MainForm.StackPanel2.ControlCount > 0 do
@@ -59,14 +62,11 @@ begin
     Frame.Name := Frame.Name+IntToStr(msgs[i].Id);
     Frame.Fill(msgs[i]);
     Frame.Parent := MainForm.StackPanel2;
-    //Frame.Constraints.MaxWidth := MainForm.StackPanel2.Width;
-    //   Frame.Width := MainForm.StackPanel2.Width;
-    MainForm.StackPanel2.Height := MainForm.StackPanel2.Height+Frame.Height;
-    writeln(mainform.StackPanel2.Height);
-    //MainForm.HtmlViewer1.dom;
-    //MainForm.HtmlViewer1.InsertImage(inttostr(msgs[i].Id), msgs[i].FromId.Image.Bitmap, itrIntrinsic);
-    //MainForm.HtmlViewer1.LoadFromString(Format('<img src="%s">', [inttostr(msgs[i].Id)]));
+    //MainForm.StackPanel2.Height := MainForm.StackPanel2.Height+Frame.Height;
   end;
+
+  MainForm.ChatScroll.VertScrollBar.Position :=
+    MainForm.ChatScroll.VertScrollBar.Range - MainForm.ChatScroll.VertScrollBar.Page;
 end;
 
 procedure TChatFrame.FrameMouseEnter(Sender: TObject);

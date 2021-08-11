@@ -14,10 +14,14 @@
       </XPManifest>
       <Icon Value="0"/>
     </General>
+    <MacroValues Count="1">
+      <Macro2 Name="LCLWidgetType" Value="qt5"/>
+    </MacroValues>
     <BuildModes Count="1">
       <Item1 Name="Default" Default="True"/>
-      <SharedMatrixOptions Count="1">
+      <SharedMatrixOptions Count="2">
         <Item1 ID="583174017471" Type="IDEMacro" MacroName="LCLWidgetType" Value="gtk2"/>
+        <Item2 ID="199425859549" Modes="Default" Type="IDEMacro" MacroName="LCLWidgetType" Value="qt5"/>
       </SharedMatrixOptions>
     </BuildModes>
     <PublishOptions>
@@ -91,15 +95,17 @@
   <CompilerOptions>
     <Version Value="11"/>
     <Target>
-      <Filename Value="build/$(TargetCPU)-$(TargetOS)-$(BuildMode)/AugVK"/>
+      <Filename Value="build/$(TargetCPU)-$(TargetOS)-$(LCLWidgetType)-$(BuildMode)/AugVK"/>
     </Target>
     <SearchPaths>
       <IncludeFiles Value="$(ProjOutDir)"/>
       <OtherUnitFiles Value="lib/dslayout"/>
-      <UnitOutputDirectory Value="precompile/$(TargetCPU)-$(TargetOS)"/>
+      <UnitOutputDirectory Value="precompile/$(TargetCPU)-$(TargetOS)-$(LCLWidgetType)"/>
     </SearchPaths>
     <CodeGeneration>
       <SmartLinkUnit Value="True"/>
+      <TargetCPU Value="i386"/>
+      <TargetOS Value="win32"/>
     </CodeGeneration>
     <Linking>
       <LinkSmart Value="True"/>
