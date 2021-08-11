@@ -6,7 +6,7 @@ interface
 
 uses
   Classes, SysUtils, Forms, Controls, StdCtrls, ExtCtrls, Graphics, augvkapi,
-  Design, DividerBevel;
+  Design, DividerBevel, Types;
 
 type
 
@@ -19,6 +19,8 @@ type
     procedure FrameClick(Sender: TObject);
     procedure FrameMouseEnter(Sender: TObject);
     procedure FrameMouseLeave(Sender: TObject);
+    procedure FrameMouseWheel(Sender: TObject; Shift: TShiftState;
+      WheelDelta: Integer; MousePos: TPoint; var Handled: Boolean);
   private
 
   public
@@ -30,43 +32,15 @@ type
 implementation
 
 uses
-  MainFormUnit, MessageFrameUnit;
+  MainFormUnit, MessageFrameUnit, LCLType, LCLIntf, LMessages;
 
 {$R *.lfm}
 
 { TChatFrame }
 
 procedure TChatFrame.FrameClick(Sender: TObject);
-var
-  msgs: TMSGsArray;
-  i: integer;
-  frame: TMessageFrame;
-  Item : TControl;
 begin
-  if MainForm.CompactView then
-    MainForm.ShowOnlyChat;
-  if MainForm.SelectedChat = Id then
-    exit;
-  MainForm.SelectedChat := Id;
-  // очистка чата
-  while MainForm.StackPanel2.ControlCount > 0 do
-  begin
-    Item := MainForm.StackPanel2.Controls[0];
-    Item.Free;
-  end;
-  MainForm.StackPanel2.Height:=0;
-  msgs := augvk.getHistory(id, 30);
-  for i:=length(msgs)-1 downto 0 do
-  begin
-    Frame := TMessageFrame.Create(MainForm.StackPanel2.Owner);
-    Frame.Name := Frame.Name+IntToStr(msgs[i].Id);
-    Frame.Fill(msgs[i]);
-    Frame.Parent := MainForm.StackPanel2;
-    //MainForm.StackPanel2.Height := MainForm.StackPanel2.Height+Frame.Height;
-  end;
-
-  MainForm.ChatScroll.VertScrollBar.Position :=
-    MainForm.ChatScroll.VertScrollBar.Range - MainForm.ChatScroll.VertScrollBar.Page;
+  MainForm.OpenChat(Id);
 end;
 
 procedure TChatFrame.FrameMouseEnter(Sender: TObject);
@@ -77,6 +51,15 @@ end;
 procedure TChatFrame.FrameMouseLeave(Sender: TObject);
 begin
   Color := DC_BACKGROUND;
+end;
+
+procedure TChatFrame.FrameMouseWheel(Sender: TObject; Shift: TShiftState;
+  WheelDelta: Integer; MousePos: TPoint; var Handled: Boolean);
+begin
+  if WheelDelta > 0 then
+    SendMessage(MainForm.ChatListScroll.Handle, LM_VSCROLL, SB_LINEUP, 0)
+  else
+    SendMessage(MainForm.ChatListScroll.Handle, LM_VSCROLL, SB_LINEDOWN, 0);
 end;
 
 procedure TChatFrame.Fill(Chat: TChat);

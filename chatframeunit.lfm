@@ -12,10 +12,11 @@ object ChatFrame: TChatFrame
   OnClick = FrameClick
   OnMouseEnter = FrameMouseEnter
   OnMouseLeave = FrameMouseLeave
+  OnMouseWheel = FrameMouseWheel
   ParentColor = False
   TabOrder = 0
-  DesignLeft = 272
-  DesignTop = -11
+  DesignLeft = 271
+  DesignTop = -12
   object ChatAvatarImage: TImage
     AnchorSideLeft.Control = Owner
     AnchorSideTop.Control = Owner

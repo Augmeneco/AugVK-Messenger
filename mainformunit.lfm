@@ -56,6 +56,7 @@ object MainForm: TMainForm
       ClientHeight = 450
       ClientWidth = 286
       TabOrder = 1
+      TabStop = True
       object StackPanel1: TStackPanel
         AnchorSideLeft.Control = ChatListScroll
         AnchorSideTop.Control = ChatListScroll
@@ -211,6 +212,7 @@ object MainForm: TMainForm
       Color = clMoneyGreen
       ParentColor = False
       TabOrder = 2
+      TabStop = True
       object StackPanel2: TStackPanel
         Left = 0
         Height = 0

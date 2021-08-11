@@ -8,10 +8,11 @@ object MessageFrame: TMessageFrame
   ClientHeight = 70
   ClientWidth = 338
   Constraints.MinHeight = 70
+  OnMouseWheel = FrameMouseWheel
   OnResize = FrameResize
   TabOrder = 0
-  DesignLeft = 245
-  DesignTop = -38
+  DesignLeft = 244
+  DesignTop = -39
   object AvatarImage: TImage
     AnchorSideLeft.Control = Owner
     AnchorSideTop.Control = Owner

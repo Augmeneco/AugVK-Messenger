@@ -6,7 +6,7 @@ interface
 
 uses
   Classes, SysUtils, Forms, Controls, ExtCtrls, StdCtrls, Graphics,
-  PairSplitter, ButtonPanel, Design, augvkapi, BCLabel;
+  PairSplitter, ButtonPanel, Design, augvkapi, BCLabel, Types;
 
 type
 
@@ -17,9 +17,9 @@ type
     Label1: TLabel;
     MessageTextLabel: TLabel;
 		NameLabel: TLabel;
+    procedure FrameMouseWheel(Sender: TObject; Shift: TShiftState;
+      WheelDelta: Integer; MousePos: TPoint; var Handled: Boolean);
     procedure FrameResize(Sender: TObject);
-   // procedure FrameMouseWheel(Sender: TObject; Shift: TShiftState;
-			//WheelDelta: Integer; MousePos: TPoint; var Handled: Boolean);
   private
 
   public
@@ -32,23 +32,27 @@ implementation
 
 {$R *.lfm}
 
-uses MainFormUnit, DateUtils;
+uses MainFormUnit, DateUtils, LCLType, LCLIntf, LMessages;
 
 { TMessageFrame }
 
-//procedure TMessageFrame.FrameMouseWheel(Sender: TObject; Shift: TShiftState;
-//	WheelDelta: Integer; MousePos: TPoint; var Handled: Boolean);
-//begin
-//  MainForm.ChatScroll.VertScrollBar.Position :=
-//    MainForm.ChatScroll.VertScrollBar.Position + (-Sign(WheelDelta)*15)
-//end;
+procedure TMessageFrame.FrameMouseWheel(Sender: TObject; Shift: TShiftState;
+	WheelDelta: Integer; MousePos: TPoint; var Handled: Boolean);
+begin
+  //MainForm.ChatScroll.VertScrollBar.Position :=
+  //  MainForm.ChatScroll.VertScrollBar.Position + (-Sign(WheelDelta)*15)
+  if WheelDelta > 0 then
+    SendMessage(MainForm.ChatScroll.Handle, LM_VSCROLL, SB_LINEUP, 0)
+  else
+    SendMessage(MainForm.ChatScroll.Handle, LM_VSCROLL, SB_LINEDOWN, 0);
+end;
 
 procedure TMessageFrame.FrameResize(Sender: TObject);
 begin
   RecalcSize;
 end;
 
-procedure TMessageFrame.Fill(Msg: TMSG);
+procedure TMessageFrame.Fill(Msg: augvkapi.TMSG);
 var
   Date: TDateTime;
 begin

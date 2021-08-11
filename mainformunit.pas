@@ -8,7 +8,7 @@ uses
   Classes, SysUtils, Forms, Controls, Graphics, Dialogs, ExtCtrls, Buttons,
   StdCtrls, ComCtrls, ActnList, Menus, VkLongpoll, fpjson, Utils,
   CachedLongpoll, augvkapi, MessageFrameUnit, ChatFrameUnit, Design, StackPanel,
-  BCSVGButton, BCListBox, BCRadialProgressBar, fgl;
+  BCSVGButton, fgl, Types;
 
 type
   { TMainForm }
@@ -50,6 +50,8 @@ type
     procedure ShowBothPanels;
     procedure ShowOnlyChat;
     procedure ShowOnlyDialogs;
+    procedure OpenChat(Id: Integer);
+    procedure CloseChat;
   end;
 
 var
@@ -126,7 +128,7 @@ begin
   LongpollThread.Start;
 
   // загрузка чатов
-  for Chat in AugVK.GetChatsForDraw do
+  for Chat in AugVK.GetChats(0) do
   begin
     Frame := TChatFrame.Create(MainForm.StackPanel1.Owner);
     Frame.Name := Frame.Name+IntToStr(Chat.Id).Replace('-', '_');
@@ -141,8 +143,10 @@ end;
 
 procedure TMainForm.FormResize(Sender: TObject);
 begin
-  if Width <= 400 then
-    ShowOnlyChat
+  if Width <= 500 then
+    if not CompactView then
+      ShowOnlyChat
+    else // MEGA HAX00R HACK FOR STUPID OPTIMYZER THAT THINK INNER "if" CAN BE "and"
   else
     ShowBothPanels;
   DialogsPanel.Width := Trunc(Width * ChatListWidthPercent);
@@ -215,8 +219,8 @@ begin
   DialogsPanel.Hide;
   ChatPanel.Show;
   BCSVGButton1.Show;
-  DialogsPanel.Align := alClient;
   Splitter1.Hide;
+  DialogsPanel.Align := alClient;
   CompactView := True;
 end;
 
@@ -224,10 +228,47 @@ procedure TMainForm.ShowOnlyDialogs;
 begin
   DialogsPanel.Show;
   ChatPanel.Hide;
-  BCSVGButton1.Hide;
-  ChatPanel.Align := alClient;
   Splitter1.Hide;
+  ChatPanel.Align := alClient;
   CompactView := True;
+end;
+
+procedure TMainForm.OpenChat(Id: Integer);
+var
+  msgs: TMSGsArray;
+  i: integer;
+  frame: TMessageFrame;
+  Item : TControl;
+begin
+  if MainForm.CompactView then
+    MainForm.ShowOnlyChat;
+  if MainForm.SelectedChat = Id then
+    exit;
+  MainForm.SelectedChat := Id;
+  // очистка чата
+  while MainForm.StackPanel2.ControlCount > 0 do
+  begin
+    Item := MainForm.StackPanel2.Controls[0];
+    Item.Free;
+  end;
+  MainForm.StackPanel2.Height:=0;
+  msgs := augvk.getHistory(id, 30);
+  for i:=length(msgs)-1 downto 0 do
+  begin
+    Frame := TMessageFrame.Create(MainForm.StackPanel2.Owner);
+    Frame.Name := Frame.Name+IntToStr(msgs[i].Id);
+    Frame.Fill(msgs[i]);
+    Frame.Parent := MainForm.StackPanel2;
+    //MainForm.StackPanel2.Height := MainForm.StackPanel2.Height+Frame.Height;
+  end;
+
+  MainForm.ChatScroll.VertScrollBar.Position :=
+    MainForm.ChatScroll.VertScrollBar.Range - MainForm.ChatScroll.VertScrollBar.Page;
+end;
+
+procedure TMainForm.CloseChat;
+begin
+
 end;
 
 { Actions }
