@@ -78,7 +78,9 @@ type
     function GetChat(Id: Integer): TChat;
     function GetChatsById(Ids: array of Integer): TChatsArray;
 
-    function GetHistory(PeerId: Integer; Count: Integer; Offset: Integer = 0): TMSGsArray;
+    function GetHistory(PeerId: Integer; Count: Integer; Offset: Integer; StartMessageId: Integer): TMSGsArray;
+    function GetHistory(PeerId: Integer; Count: Integer): TMSGsArray; overload;
+    function GetHistory(PeerId: Integer; Count: Integer; Offset: Integer): TMSGsArray; overload;
 
     function UpdateChatsPosition(PeerId: Integer): TChatsArray;
     function GetChatsForDraw: TChatsArray;
@@ -168,7 +170,17 @@ begin
   end;
 end;
 
-function TAugVKAPI.GetHistory(PeerId: Integer; Count: Integer; Offset: Integer = 0): TMSGsArray;
+function TAugVKAPI.GetHistory(PeerId: Integer; Count: Integer): TMSGsArray; overload;
+begin
+  Result := GetHistory(PeerId,Count,0,0);
+end;
+
+function TAugVKAPI.GetHistory(PeerId: Integer; Count: Integer; Offset: Integer): TMSGsArray; overload;
+begin
+  Result := GetHistory(PeerId,Count,Offset,0);
+end;
+
+function TAugVKAPI.GetHistory(PeerId: Integer; Count: Integer; Offset: Integer; StartMessageId: Integer): TMSGsArray;
 var
   response: TJSONObject;
   jsonEnum: TJSONEnum;
@@ -181,6 +193,7 @@ begin
     TParams.Create
       .add('count',count)
       .add('offset',offset)
+      .add('start_message_id',StartMessageId)
       .add('peer_id',peerId)
       .add('extended',1)
   ));
