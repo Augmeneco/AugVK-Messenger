@@ -8,7 +8,7 @@ uses
   Classes, SysUtils, Forms, Controls, Graphics, Dialogs, ExtCtrls, Buttons,
   StdCtrls, ComCtrls, ActnList, Menus, VkLongpoll, fpjson, Utils,
   CachedLongpoll, augvkapi, MessageFrameUnit, ChatFrameUnit, Design, StackPanel,
-  BCSVGButton, fgl, Types;
+  AugScrollBox, BCSVGButton, BCListBox, BCPanel, fgl, Types;
 
 type
   { TMainForm }
@@ -19,19 +19,20 @@ type
     BCSVGButton1: TBCSVGButton;
     ChatListScroll: TScrollBox;
     ActionList1: TActionList;
+    ChatScroll: TAugScrollBox;
     Memo1: TMemo;
     DialogsPanel: TPanel;
     ChatPanel: TPanel;
     Panel3: TPanel;
     Panel4: TPanel;
     Panel5: TPanel;
-    ChatScroll: TScrollBox;
     SpeedButton1: TBCSVGButton;
     Splitter1: TSplitter;
     StackPanel1: TStackPanel;
     StackPanel2: TStackPanel;
     TrayIcon1: TTrayIcon;
     procedure BCSVGButton1Click(Sender: TObject);
+    procedure ChatScrollVScroll(Sender: TObject; var ScrollPos: Integer);
     procedure FormCloseQuery(Sender: TObject; var CanClose: boolean);
     procedure FormCreate(Sender: TObject);
     procedure FormResize(Sender: TObject);
@@ -41,7 +42,8 @@ type
     procedure TrayIcon1MouseUp(Sender: TObject; Button: TMouseButton;
       Shift: TShiftState; X, Y: Integer);
   private
-
+    DialogsOffset: Integer;
+    ChatPage: Integer;
   public
     SelectedChat: Integer;
     ChatListWidthPercent: Real;
@@ -50,6 +52,8 @@ type
     procedure ShowBothPanels;
     procedure ShowOnlyChat;
     procedure ShowOnlyDialogs;
+    procedure ClearChat;
+    procedure LoadChat(Id: Integer; Page: Integer=0; StartMsg: Integer=-1; ToTop: Boolean=True);
     procedure OpenChat(Id: Integer);
     procedure CloseChat;
   end;
@@ -163,6 +167,22 @@ begin
   ShowOnlyDialogs;
 end;
 
+procedure TMainForm.ChatScrollVScroll(Sender: TObject; var ScrollPos: Integer);
+var
+  BorderMessage: TMessageFrame;
+begin
+  if ChatScroll.VertScrollBar.Position = 0 then
+  begin
+    //ClearChat;
+    BorderMessage := TMessageFrame(StackPanel2.ControlCollection[0].Control);
+    ChatPage += 1;
+    LoadChat(SelectedChat, ChatPage, BorderMessage.MessageObject.Id);
+    writeln(BorderMessage.Top);
+    ChatScroll.VertScrollBar.Position := BorderMessage.Top;
+      //Trunc(ChatScroll.VertScrollBar.Range / 2) - MainForm.ChatScroll.VertScrollBar.Page;
+  end;
+end;
+
 procedure TMainForm.Memo1KeyDown(Sender: TObject; var Key: Word;
   Shift: TShiftState);
 begin
@@ -233,12 +253,37 @@ begin
   CompactView := True;
 end;
 
-procedure TMainForm.OpenChat(Id: Integer);
+procedure TMainForm.ClearChat;
+var
+  Item : TControl;
+begin
+  while StackPanel2.ControlCount > 0 do
+  begin
+    Item := StackPanel2.Controls[0];
+    Item.Free;
+  end;
+end;
+
+procedure TMainForm.LoadChat(Id: Integer; Page: Integer=0; StartMsg: Integer=-1; ToTop: Boolean=True);
 var
   msgs: TMSGsArray;
   i: integer;
   frame: TMessageFrame;
-  Item : TControl;
+begin
+  msgs := augvk.getHistory(Id, 30, Page*30, StartMsg);
+  for i:=0 to length(msgs)-1 do
+  begin
+    Frame := TMessageFrame.Create(StackPanel2.Owner);
+    Frame.Name := Frame.Name+IntToStr(msgs[i].Id);
+    Frame.Fill(msgs[i]);
+    Frame.Parent := StackPanel2;
+    if ToTop then
+      StackPanel2.ControlCollection.Move(StackPanel2.ControlCollection.Count-1, 0);
+    //MainForm.StackPanel2.Height := MainForm.StackPanel2.Height+Frame.Height;
+  end;
+end;
+
+procedure TMainForm.OpenChat(Id: Integer);
 begin
   if MainForm.CompactView then
     MainForm.ShowOnlyChat;
@@ -246,21 +291,9 @@ begin
     exit;
   MainForm.SelectedChat := Id;
   // очистка чата
-  while MainForm.StackPanel2.ControlCount > 0 do
-  begin
-    Item := MainForm.StackPanel2.Controls[0];
-    Item.Free;
-  end;
-  MainForm.StackPanel2.Height:=0;
-  msgs := augvk.getHistory(id, 30);
-  for i:=length(msgs)-1 downto 0 do
-  begin
-    Frame := TMessageFrame.Create(MainForm.StackPanel2.Owner);
-    Frame.Name := Frame.Name+IntToStr(msgs[i].Id);
-    Frame.Fill(msgs[i]);
-    Frame.Parent := MainForm.StackPanel2;
-    //MainForm.StackPanel2.Height := MainForm.StackPanel2.Height+Frame.Height;
-  end;
+  ClearChat;
+
+  LoadChat(Id);
 
   MainForm.ChatScroll.VertScrollBar.Position :=
     MainForm.ChatScroll.VertScrollBar.Range - MainForm.ChatScroll.VertScrollBar.Page;
@@ -268,7 +301,8 @@ end;
 
 procedure TMainForm.CloseChat;
 begin
-
+  SelectedChat := -1;
+  ClearChat;
 end;
 
 { Actions }

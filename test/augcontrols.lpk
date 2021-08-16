@@ -11,7 +11,7 @@
         <UnitOutputDirectory Value="lib\$(TargetCPU)-$(TargetOS)"/>
       </SearchPaths>
     </CompilerOptions>
-    <Files Count="2">
+    <Files Count="3">
       <Item1>
         <Filename Value="stackpanel.pas"/>
         <HasRegisterProc Value="True"/>
@@ -21,6 +21,11 @@
         <Filename Value="delphicompatibility.pas"/>
         <UnitName Value="DelphiCompatibility"/>
       </Item2>
+      <Item3>
+        <Filename Value="augscrollbox.pas"/>
+        <HasRegisterProc Value="True"/>
+        <UnitName Value="AugScrollBox"/>
+      </Item3>
     </Files>
     <RequiredPkgs Count="2">
       <Item1>
@@ -37,5 +42,8 @@
       <Version Value="2"/>
       <UseFileFilters Value="True"/>
     </PublishOptions>
+    <CustomOptions Items="ExternHelp" Version="2">
+      <_ExternHelp Items="Count"/>
+    </CustomOptions>
   </Package>
 </CONFIG>

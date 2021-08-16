@@ -194,7 +194,7 @@ object MainForm: TMainForm
         Maximum = 0
       end
     end
-    object ChatScroll: TScrollBox
+    object ChatScroll: TAugScrollBox
       Left = 0
       Height = 411
       Top = 50
@@ -213,6 +213,7 @@ object MainForm: TMainForm
       ParentColor = False
       TabOrder = 2
       TabStop = True
+      OnVScroll = ChatScrollVScroll
       object StackPanel2: TStackPanel
         Left = 0
         Height = 0

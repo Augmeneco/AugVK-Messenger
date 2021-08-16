@@ -172,12 +172,12 @@ end;
 
 function TAugVKAPI.GetHistory(PeerId: Integer; Count: Integer): TMSGsArray; overload;
 begin
-  Result := GetHistory(PeerId,Count,0,0);
+  Result := GetHistory(PeerId, Count, 0, -1);
 end;
 
 function TAugVKAPI.GetHistory(PeerId: Integer; Count: Integer; Offset: Integer): TMSGsArray; overload;
 begin
-  Result := GetHistory(PeerId,Count,Offset,0);
+  Result := GetHistory(PeerId, Count, Offset, -1);
 end;
 
 function TAugVKAPI.GetHistory(PeerId: Integer; Count: Integer; Offset: Integer; StartMessageId: Integer): TMSGsArray;
@@ -188,15 +188,16 @@ var
   item: TJSONObject;
   userType: String;
   index: Integer;
+  params: TParams;
 begin
-  response := TJSONObject(vkapi.call('messages.getHistory',
-    TParams.Create
-      .add('count',count)
-      .add('offset',offset)
-      .add('start_message_id',StartMessageId)
-      .add('peer_id',peerId)
-      .add('extended',1)
-  ));
+  params := TParams.Create
+    .add('count',count)
+    .add('offset',offset)
+    .add('peer_id',peerId)
+    .add('extended',1);
+  if StartMessageId >= 0 then
+    params.add('start_message_id',StartMessageId);
+  response := TJSONObject(vkapi.call('messages.getHistory', params));
 
   for userType in ['profiles','groups'] do
   begin
