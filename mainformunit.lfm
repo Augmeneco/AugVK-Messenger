@@ -7,8 +7,8 @@ object MainForm: TMainForm
   ClientHeight = 500
   ClientWidth = 803
   Color = clWhite
-  Constraints.MinHeight = 400
-  Constraints.MinWidth = 400
+  Constraints.MinHeight = 300
+  Constraints.MinWidth = 300
   DoubleBuffered = True
   OnCloseQuery = FormCloseQuery
   OnCreate = FormCreate
@@ -96,8 +96,8 @@ object MainForm: TMainForm
     ClientHeight = 500
     ClientWidth = 516
     Color = clNone
-    Constraints.MinHeight = 400
-    Constraints.MinWidth = 400
+    Constraints.MinHeight = 300
+    Constraints.MinWidth = 300
     DoubleBuffered = True
     ParentColor = False
     ParentDoubleBuffered = False
