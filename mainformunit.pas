@@ -132,7 +132,7 @@ begin
   LongpollThread.Start;
 
   // загрузка чатов
-  for Chat in AugVK.GetChats(0) do
+  for Chat in AugVK.GetChats(20) do
   begin
     Frame := TChatFrame.Create(MainForm.StackPanel1.Owner);
     Frame.Name := Frame.Name+IntToStr(Chat.Id).Replace('-', '_');

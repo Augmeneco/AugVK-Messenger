@@ -74,7 +74,8 @@ type
     function GetUser(Id: Integer): TUser;
     function GetUsers(Ids: array of Integer): TUsersArray;
 
-    function GetChats(Offset: Integer = 0): TChatsArray;
+    function GetChats(Count: Integer; Offset: Integer = 0): TChatsArray;
+    function GetAllChats(Offset: Integer = 0): TChatsArray;
     function GetChat(Id: Integer): TChat;
     function GetChatsById(Ids: array of Integer): TChatsArray;
 
@@ -320,7 +321,87 @@ begin
   TmpStream.Free;
 end;
 
-function TAugVKAPI.GetChats(Offset: Integer = 0): TChatsArray;
+function TAugVKAPI.GetChats(Count: Integer; Offset: Integer = 0): TChatsArray;
+var
+  chatsArray, profilesArray: TJSONArray;
+  chatObject, profileObject, response: TJSONObject;
+  jsonEnum: TJSONEnum;
+  index: Integer;
+  previewMsg: TMSG;
+  userType: String;
+  Chat: TChat;
+begin
+  if Count > 200 then Count := 200;
+
+  response := TJSONObject(vkapi.call(
+     'messages.getConversations',
+     TParams.Create
+        .add('offset', offset)
+        .add('count', Count)
+        .add('extended', 1)
+  ));
+
+  writeln(Format('Loading chats %d / %d',[offset,response['count'].AsInteger]));
+
+  chatsArray := response.Arrays['items'];
+  if chatsArray.Count = 0 then Exit;
+
+  for userType in ['profiles','groups'] do
+  begin
+    if response.IndexOfName(userType) = -1 then continue;
+
+    profilesArray := response.Arrays[userType];
+    for jsonEnum in profilesArray do
+    begin
+      profileObject := TJSONObject(jsonEnum.Value);
+      parseUser(profileObject);
+    end;
+  end;
+
+  for jsonEnum in chatsArray do
+  begin
+    SetLength(Result,Length(Result)+1);
+    index := Length(Result)-1;
+
+    ChatObject := TJSONObject(jsonEnum.Value);
+
+    if ChatsCache.IndexOf(ChatObject.GetPath('conversation.peer.id').AsInteger) <> -1 then
+    begin
+      Result[Index] := ChatsCache.KeyData[ChatObject.GetPath('conversation.peer.id').AsInteger];
+      Continue;
+    end;
+
+    Result[index] := TChat.Create;
+    Result[index].id := chatObject.GetPath('conversation.peer.id').AsInteger;
+    Result[index].previewMsg := parseMsg(chatObject.Objects['last_message']);
+
+    if chatObject.GetPath('conversation.peer.type').AsString = 'chat' then
+    begin
+      Result[index].name := chatObject.GetPath('conversation.chat_settings.title').AsString;
+
+      if ChatObject.Objects['conversation'].
+                    Objects['chat_settings'].IndexOfName('photo') = -1 then
+      begin
+        Result[Index].Image := Result[Index].PreviewMsg.FromId.Image;
+      end
+      else
+        Result[Index].Image := GetAvatar(
+          ChatObject.GetPath('conversation.chat_settings.photo.photo_50').AsString,
+          Format(IMAGE_PATH+'/%d.jpg',[Result[index].id])
+        );
+    end
+    else
+    begin
+      Result[index].name := getUser(Result[index].id).name;
+      Result[index].Image := GetUser(Result[Index].Id).Image;
+    end;
+
+    ChatsCache.Add(Result[Index].Id, Result[Index]);
+  end;
+
+end;
+
+function TAugVKAPI.GetAllChats(Offset: Integer = 0): TChatsArray;
 var
   chatsArray, profilesArray: TJSONArray;
   chatObject, profileObject, response: TJSONObject;
@@ -589,7 +670,7 @@ begin
   vkapi := TVKAPI.Create;
   vkapi.access_token := token;
 
-  GetChats;
+  //GetChats;
 end;
 
 initialization
