@@ -86,11 +86,13 @@ var
 begin
   BS := TBytesStream.Create;
   Response := TResponse.Create;
+  writeln('hui1');
   Client.FormPost(
      URL,
      Params.BuildPost(),
      BS
   );
+  writeln('hui2');
   Response.Text := Encoder.GetString(BS.Bytes);
   Response.Code := Client.ResponseStatusCode;
   Response.Data := BS.Bytes;

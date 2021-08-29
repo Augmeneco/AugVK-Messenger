@@ -8,7 +8,7 @@ uses
   Classes, SysUtils, VkLongpoll, fpjson, jsonparser, augvkapi, fgl;
 
 type
-  TCachedMsgs = specialize TFPGMap<Integer, TMSGsArray>;
+  TCachedMsgs = specialize TFPGMap<Integer, TMSGsList>;
 
 type
 
@@ -18,8 +18,8 @@ type
   protected
     procedure ProcessEvent(Event: TJSONArray); override;
   public
-    function GetCache(PeerId: Integer): TMSGsArray;
-    function GetCache(PeerId: Integer; Count: Integer): TMSGsArray; overload;
+    function GetCache(PeerId: Integer): TMSGsList;
+    function GetCache(PeerId: Integer; Count: Integer): TMSGsList; overload;
     constructor Create(AToken: String);
 end;
 
@@ -30,27 +30,28 @@ var
 
 { TCachedLongpoll }
 
-function TCachedLongpoll.GetCache(PeerId: Integer; Count: Integer): TMSGsArray; overload;
+function TCachedLongpoll.GetCache(PeerId: Integer; Count: Integer): TMSGsList; overload;
 var
-  Msgs: TMSGsArray;
+  Msgs: TMSGsList;
+  Msg: TMSG;
   Count_: Integer;
   I: Integer;
 begin
   Count_ := 0;
+  Result := TMSGsList.Create;
 
   Msgs := GetCache(PeerId);
 
-  for I:=0 to Length(Msgs) do
+  for Msg in Msgs do
   begin
     if Count_ = Count then Break;
 
-    SetLength(Result,Length(Result)+1);
-    Result[Length(Result)-1] := Msgs[I];
+    Result.Add(Msg);
     Count_ += 1;
   end;
 end;
 
-function TCachedLongpoll.GetCache(PeerId: Integer): TMSGsArray;
+function TCachedLongpoll.GetCache(PeerId: Integer): TMSGsList;
 begin
   if CachedMsgs.IndexOf(PeerId) = -1 then
     CachedMsgs.Add(
@@ -69,11 +70,10 @@ begin
   inherited Create(AToken);
 end;
 
-{Миша сунь это блин в поток лп}
 procedure TCachedLongpoll.ProcessEvent(Event: TJSONArray);
 var
   Msg: TMSG;
-  Msgs: TMSGsArray;
+  Msgs: TMSGsList;
 begin
   if Event.Integers[0] <> 4 then Exit;
 
@@ -84,7 +84,7 @@ begin
       Augvk.GetHistory(Event.Integers[3],100)
     );
     Msgs := CachedMsgs.KeyData[Event.Integers[3]];
-    Msg := Msgs[0];
+    Msg := Msgs.Items[0];   // зачем эта переменная тут? оставлю как есть
   end
   else
   begin
@@ -93,7 +93,7 @@ begin
     Msgs := CachedMsgs.KeyData[Msg.PeerId];
   end;
 
-  Insert([Msg],Msgs,0);
+  Msgs.Insert(0, Msg);
   CachedMsgs.AddOrSetData(Msg.PeerId,Msgs);
 
   inherited ProcessEvent(Event);
