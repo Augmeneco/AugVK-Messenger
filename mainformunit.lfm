@@ -1,5 +1,6 @@
 object MainForm: TMainForm
   Left = 574
+<<<<<<< HEAD
   Height = 500
   Top = 324
   Width = 803
@@ -9,6 +10,18 @@ object MainForm: TMainForm
   Color = clWhite
   Constraints.MinHeight = 300
   Constraints.MinWidth = 300
+=======
+  Height = 474
+  Top = 324
+  Width = 761
+  Caption = 'MainForm'
+  ClientHeight = 474
+  ClientWidth = 761
+  Color = clWhite
+  Constraints.MinHeight = 284
+  Constraints.MinWidth = 284
+  DesignTimePPI = 91
+>>>>>>> parent of f5a8282 (Плохая версия. просто нуженг коммит)
   DoubleBuffered = True
   OnCloseQuery = FormCloseQuery
   OnCreate = FormCreate
@@ -16,6 +29,7 @@ object MainForm: TMainForm
   ParentDoubleBuffered = False
   object DialogsPanel: TPanel
     Left = 0
+<<<<<<< HEAD
     Height = 500
     Top = 0
     Width = 286
@@ -34,17 +48,48 @@ object MainForm: TMainForm
       Height = 50
       Top = 0
       Width = 286
+=======
+    Height = 474
+    Top = 0
+    Width = 271
+    Align = alLeft
+    BevelOuter = bvNone
+    ClientHeight = 474
+    ClientWidth = 271
+    Color = clNone
+    Constraints.MinWidth = 66
+    DoubleBuffered = True
+    ParentColor = False
+    ParentDoubleBuffered = False
+    ParentFont = False
+    TabOrder = 0
+    object Panel3: TPanel
+      Left = 0
+      Height = 47
+      Top = 0
+      Width = 271
+>>>>>>> parent of f5a8282 (Плохая версия. просто нуженг коммит)
       Align = alTop
       BevelOuter = bvNone
       Color = clNone
       ParentColor = False
+<<<<<<< HEAD
+=======
+      ParentFont = False
+>>>>>>> parent of f5a8282 (Плохая версия. просто нуженг коммит)
       TabOrder = 0
     end
     object ChatListScroll: TScrollBox
       Left = 0
+<<<<<<< HEAD
       Height = 450
       Top = 50
       Width = 286
+=======
+      Height = 427
+      Top = 47
+      Width = 271
+>>>>>>> parent of f5a8282 (Плохая версия. просто нуженг коммит)
       HorzScrollBar.Page = 1
       HorzScrollBar.Visible = False
       VertScrollBar.Increment = 1
@@ -53,8 +98,14 @@ object MainForm: TMainForm
       VertScrollBar.Tracking = True
       Align = alClient
       BorderStyle = bsNone
+<<<<<<< HEAD
       ClientHeight = 450
       ClientWidth = 286
+=======
+      ClientHeight = 427
+      ClientWidth = 271
+      ParentFont = False
+>>>>>>> parent of f5a8282 (Плохая версия. просто нуженг коммит)
       TabOrder = 1
       TabStop = True
       object StackPanel1: TStackPanel
@@ -65,19 +116,32 @@ object MainForm: TMainForm
         Left = 0
         Height = 1
         Top = 0
+<<<<<<< HEAD
         Width = 286
+=======
+        Width = 271
+>>>>>>> parent of f5a8282 (Плохая версия. просто нуженг коммит)
         Anchors = [akTop, akLeft, akRight]
         AutoSize = True
         BevelOuter = bvNone
         ControlCollection = <>
         HorizontalPositioning = sphpFill
+<<<<<<< HEAD
+=======
+        ParentFont = False
+>>>>>>> parent of f5a8282 (Плохая версия. просто нуженг коммит)
         TabOrder = 0
       end
     end
   end
   object Splitter1: TSplitter
+<<<<<<< HEAD
     Left = 286
     Height = 500
+=======
+    Left = 271
+    Height = 474
+>>>>>>> parent of f5a8282 (Плохая версия. просто нуженг коммит)
     Top = 0
     Width = 1
     AutoSnap = False
@@ -87,6 +151,7 @@ object MainForm: TMainForm
     ParentColor = False
   end
   object ChatPanel: TPanel
+<<<<<<< HEAD
     Left = 287
     Height = 500
     Top = 0
@@ -113,13 +178,49 @@ object MainForm: TMainForm
       ClientWidth = 516
       Color = clNone
       ParentColor = False
+=======
+    Left = 272
+    Height = 474
+    Top = 0
+    Width = 489
+    Align = alClient
+    BevelOuter = bvNone
+    ClientHeight = 474
+    ClientWidth = 489
+    Color = clNone
+    Constraints.MinHeight = 284
+    Constraints.MinWidth = 284
+    DoubleBuffered = True
+    ParentColor = False
+    ParentDoubleBuffered = False
+    ParentFont = False
+    TabOrder = 2
+    object Panel4: TPanel
+      Left = 0
+      Height = 47
+      Top = 0
+      Width = 489
+      Align = alTop
+      BevelOuter = bvNone
+      ClientHeight = 47
+      ClientWidth = 489
+      Color = clNone
+      ParentColor = False
+      ParentFont = False
+>>>>>>> parent of f5a8282 (Плохая версия. просто нуженг коммит)
       TabOrder = 0
       object BCSVGButton1: TBCSVGButton
         Cursor = crHandPoint
         Left = 0
+<<<<<<< HEAD
         Height = 50
         Top = 0
         Width = 52
+=======
+        Height = 47
+        Top = 0
+        Width = 49
+>>>>>>> parent of f5a8282 (Плохая версия. просто нуженг коммит)
         Align = alLeft
         SVGString = '<?xml version="1.0" encoding="utf-8"?>'#10'<svg role="img" width="1em" xmlns="http://www.w3.org/2000/svg" height="1em" viewBox="0 0 16 16" aria-hidden="true" xmlns:xlink="http://www.w3.org/1999/xlink" preserveAspectRatio="xMidYMid meet">'#10'  <g fill="none">'#10'    <path d="M14 8a.75.75 0 0 1-.75.75H4.463l3.287 2.941a.75.75 0 1 1-1 1.118L2 8.559A.75.75 0 0 1 2 7.44l4.75-4.25a.75.75 0 1 1 1 1.118L4.463 7.25h8.787A.75.75 0 0 1 14 8z" fill="#5f8dd3"/>'#10'  </g>'#10'</svg>'#10
         DestDPI = 160
@@ -139,6 +240,7 @@ object MainForm: TMainForm
     end
     object Panel5: TPanel
       Left = 0
+<<<<<<< HEAD
       Height = 39
       Top = 461
       Width = 516
@@ -154,16 +256,42 @@ object MainForm: TMainForm
         Height = 33
         Top = 9
         Width = 475
+=======
+      Height = 37
+      Top = 437
+      Width = 489
+      Align = alBottom
+      BevelOuter = bvNone
+      ClientHeight = 37
+      ClientWidth = 489
+      Color = clNone
+      ParentColor = False
+      ParentFont = False
+      TabOrder = 1
+      object Memo1: TMemo
+        Left = 5
+        Height = 40
+        Top = 9
+        Width = 450
+>>>>>>> parent of f5a8282 (Плохая версия. просто нуженг коммит)
         HelpType = htKeyword
         Align = alClient
         BorderSpacing.Left = 5
         BorderSpacing.Top = 9
+<<<<<<< HEAD
         BorderSpacing.Bottom = 14
+=======
+        BorderSpacing.Bottom = 13
+>>>>>>> parent of f5a8282 (Плохая версия. просто нуженг коммит)
         BorderStyle = bsNone
         Color = clWhite
         Font.CharSet = RUSSIAN_CHARSET
         Font.Color = clBlack
+<<<<<<< HEAD
         Font.Height = -13
+=======
+        Font.Height = -12
+>>>>>>> parent of f5a8282 (Плохая версия. просто нуженг коммит)
         Font.Name = 'Segoe UI'
         Font.Pitch = fpVariable
         Font.Quality = fqDraft
@@ -173,10 +301,17 @@ object MainForm: TMainForm
       end
       object SpeedButton1: TBCSVGButton
         Cursor = crHandPoint
+<<<<<<< HEAD
         Left = 480
         Height = 39
         Top = 0
         Width = 36
+=======
+        Left = 455
+        Height = 37
+        Top = 0
+        Width = 34
+>>>>>>> parent of f5a8282 (Плохая версия. просто нуженг коммит)
         Align = alRight
         SVGString = '<?xml version="1.0" encoding="utf-8"?>'#10'<svg role="img" width="1em" xmlns="http://www.w3.org/2000/svg" height="1em" viewBox="0 0 16 16" aria-hidden="true" xmlns:xlink="http://www.w3.org/1999/xlink" preserveAspectRatio="xMidYMid meet">'#10'  <g fill="none">'#10'    <path d="M1.724 1.053a.5.5 0 0 0-.714.545l1.403 4.85a.5.5 0 0 0 .397.354l5.69.953c.268.053.268.437 0 .49l-5.69.953a.5.5 0 0 0-.397.354l-1.403 4.85a.5.5 0 0 0 .714.545l13-6.5a.5.5 0 0 0 0-.894l-13-6.5z" fill="#5f8dd3"/>'#10'  </g>'#10'</svg>'#10
         DestDPI = 160
@@ -196,9 +331,15 @@ object MainForm: TMainForm
     end
     object ChatScroll: TAugScrollBox
       Left = 0
+<<<<<<< HEAD
       Height = 411
       Top = 50
       Width = 516
+=======
+      Height = 390
+      Top = 47
+      Width = 489
+>>>>>>> parent of f5a8282 (Плохая версия. просто нуженг коммит)
       HorzScrollBar.Page = 1
       HorzScrollBar.Visible = False
       VertScrollBar.Increment = 1
@@ -207,10 +348,18 @@ object MainForm: TMainForm
       VertScrollBar.Tracking = True
       Align = alClient
       BorderStyle = bsNone
+<<<<<<< HEAD
       ClientHeight = 411
       ClientWidth = 516
       Color = clMoneyGreen
       ParentColor = False
+=======
+      ClientHeight = 390
+      ClientWidth = 489
+      Color = clMoneyGreen
+      ParentColor = False
+      ParentFont = False
+>>>>>>> parent of f5a8282 (Плохая версия. просто нуженг коммит)
       TabOrder = 2
       TabStop = True
       OnVScroll = ChatScrollVScroll
@@ -218,6 +367,7 @@ object MainForm: TMainForm
         Left = 0
         Height = 1
         Top = 0
+<<<<<<< HEAD
         Width = 516
         Align = alTop
         AutoSize = True
@@ -225,6 +375,16 @@ object MainForm: TMainForm
         Constraints.MinWidth = 100
         ControlCollection = <>
         HorizontalPositioning = sphpFill
+=======
+        Width = 489
+        Align = alTop
+        AutoSize = True
+        BevelOuter = bvNone
+        Constraints.MinWidth = 95
+        ControlCollection = <>
+        HorizontalPositioning = sphpFill
+        ParentFont = False
+>>>>>>> parent of f5a8282 (Плохая версия. просто нуженг коммит)
         TabOrder = 0
         UseDockManager = False
         VerticalPositioning = spvpTop
@@ -1466,6 +1626,7 @@ object MainForm: TMainForm
     }
     Visible = True
     OnMouseUp = TrayIcon1MouseUp
+<<<<<<< HEAD
     Left = 32
   end
   object PopupMenu1: TPopupMenu
@@ -1477,5 +1638,8 @@ object MainForm: TMainForm
     object MenuItem2: TMenuItem
       Caption = 'MenuItem2'
     end
+=======
+    Left = 30
+>>>>>>> parent of f5a8282 (Плохая версия. просто нуженг коммит)
   end
 end
