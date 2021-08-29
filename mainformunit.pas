@@ -119,7 +119,6 @@ procedure TMainForm.FormCreate(Sender: TObject);
 var
   Token: string;
   Chat: TChat;
-  Chats: TChatsList;
   Frame: TChatFrame;
 begin
   Token := Config.GetPath(Format('accounts[%d].token',
@@ -134,8 +133,7 @@ begin
   LongpollThread.Start;
 
   // загрузка чатов
-  Chats := AugVK.GetChats(20);
-  for Chat in Chats do
+  for Chat in AugVK.GetChats(20) do
   begin
     Frame := TChatFrame.Create(MainForm.StackPanel1.Owner);
     Frame.Name := Frame.Name+IntToStr(Chat.Id).Replace('-', '_');
@@ -269,16 +267,16 @@ end;
 
 procedure TMainForm.LoadChat(Id: Integer; Page: Integer=0; StartMsg: Integer=-1; ToTop: Boolean=True);
 var
-  Msgs: TMSGsList;
-  Msg: TMSG;
-  Frame: TMessageFrame;
+  msgs: TMSGsArray;
+  i: integer;
+  frame: TMessageFrame;
 begin
-  Msgs := AugVK.GetHistory(Id, 30, Page*30, StartMsg);
-  for Msg in Msgs do
+  msgs := augvk.getHistory(Id, 30, Page*30, StartMsg);
+  for i:=0 to length(msgs)-1 do
   begin
     Frame := TMessageFrame.Create(StackPanel2.Owner);
-    Frame.Name := Frame.Name+IntToStr(Msg.Id);
-    Frame.Fill(Msg);
+    Frame.Name := Frame.Name+IntToStr(msgs[i].Id);
+    Frame.Fill(msgs[i]);
     Frame.Parent := StackPanel2;
     if ToTop then
       StackPanel2.ControlCollection.Move(StackPanel2.ControlCollection.Count-1, 0);

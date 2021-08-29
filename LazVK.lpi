@@ -157,9 +157,6 @@
       <SmartLinkUnit Value="True"/>
     </CodeGeneration>
     <Linking>
-      <Debugging>
-        <StripSymbols Value="True"/>
-      </Debugging>
       <LinkSmart Value="True"/>
     </Linking>
   </CompilerOptions>
