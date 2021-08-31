@@ -391,6 +391,7 @@ begin
       ResultVar.name := GetUser(ResultVar.id).name;
       ResultVar.Image := GetUser(ResultVar.Id).Image;
     end;
+    Result.Add(ResultVar);
 
     ChatsCache.Add(ResultVar.Id, ResultVar);
   end;
@@ -555,6 +556,7 @@ var
   userObject: TJSONObject;
   response: TJSONArray;
   exists: Boolean;
+  Params: TParams;
 begin
   userIds := '';
   Result := TUsersList.Create;
@@ -577,11 +579,15 @@ begin
 
   if userIds <> '' then
   begin
+    Params := TParams.Create;
+    Params.Add('fields','photo_50, last_seen');
+
+    if UserIds <> '-1,' then
+      Params.Add('user_ids',UserIds);
+
     response := TJSONArray(vkapi.call(
       'users.get',
-      TParams.Create
-        .add('user_ids',userIds)
-        .add('fields','photo_50, last_seen')
+      Params
     ));
 
     for jsonEnum in response do
@@ -658,7 +664,6 @@ begin
   requests := TRequests.Create;
   vkapi := TVKAPI.Create;
   vkapi.access_token := token;
-
   //GetChats;
 end;
 

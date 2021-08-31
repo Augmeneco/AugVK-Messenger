@@ -138,7 +138,7 @@ begin
   LongpollThread.Start;
 
   // загрузка чатов
-  Chats := AugVK.GetAllChats(0);
+  Chats := AugVK.GetChats(20,0);
   for Chat in Chats do
   begin
     Frame := TChatFrame.Create(MainForm.StackPanel1.Owner);
