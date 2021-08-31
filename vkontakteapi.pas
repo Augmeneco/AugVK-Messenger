@@ -66,6 +66,7 @@ end;
 constructor TVKAPI.Create;
 begin
   requests := TRequests.Create;
+  requests.get('https://api.vk.com/method/users.get'); //говно-костыль  
   version := DEFAULT_API_VERSION;
 
   inherited Create;

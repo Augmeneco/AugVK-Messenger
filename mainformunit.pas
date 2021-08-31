@@ -1,6 +1,7 @@
 unit MainFormUnit;
 
 {$mode objfpc}{$H+}
+{$modeswitch nestedprocvars}
 
 interface
 
@@ -8,7 +9,7 @@ uses
   Classes, SysUtils, Forms, Controls, Graphics, Dialogs, ExtCtrls, Buttons,
   StdCtrls, ComCtrls, ActnList, Menus, VkLongpoll, fpjson, Utils,
   CachedLongpoll, augvkapi, MessageFrameUnit, ChatFrameUnit, Design, StackPanel,
-  AugScrollBox, BCSVGButton, BCListBox, BCPanel, fgl, Types;
+  AugScrollBox, BCSVGButton, BCListBox, BCPanel, fgl, Types, AugVKApiThread;
 
 type
   { TMainForm }
@@ -35,6 +36,7 @@ type
     procedure ChatScrollVScroll(Sender: TObject; var ScrollPos: Integer);
     procedure FormCloseQuery(Sender: TObject; var CanClose: boolean);
     procedure FormCreate(Sender: TObject);
+    procedure CustomExceptionHandler(Sender: TObject; E: Exception);
     procedure FormResize(Sender: TObject);
     procedure Memo1KeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
     procedure SpeedButton1Click(Sender: TObject);
@@ -54,6 +56,7 @@ type
     procedure ShowOnlyDialogs;
     procedure ClearChat;
     procedure LoadChat(Id: Integer; Page: Integer=0; StartMsg: Integer=-1; ToTop: Boolean=True);
+    procedure LoadChatCallback(Response: TObject; Data: Pointer);
     procedure OpenChat(Id: Integer);
     procedure CloseChat;
   end;
@@ -121,6 +124,8 @@ var
   Chats: TChatsList;
   Frame: TChatFrame;
 begin
+	Application.OnException := @CustomExceptionHandler;
+
   Token := Config.GetPath(Format('accounts[%d].token',
     [Config.Integers['active_account']])).AsString;
   AugVK := TAugVKAPI.Create(Token);
@@ -133,7 +138,7 @@ begin
   LongpollThread.Start;
 
   // загрузка чатов
-  Chats := AugVK.GetChats(20);
+  Chats := AugVK.GetAllChats(0);
   for Chat in Chats do
   begin
     Frame := TChatFrame.Create(MainForm.StackPanel1.Owner);
@@ -145,6 +150,11 @@ begin
   end;
 
   ChatListWidthPercent := 0.3;
+end;
+
+procedure TMainForm.CustomExceptionHandler(Sender: TObject; E: Exception);
+begin
+  DumpExceptionCallStack(E);
 end;
 
 procedure TMainForm.FormResize(Sender: TObject);
@@ -268,21 +278,36 @@ end;
 
 procedure TMainForm.LoadChat(Id: Integer; Page: Integer=0; StartMsg: Integer=-1; ToTop: Boolean=True);
 var
-  Msgs: TMSGsList;
-  Msg: TMSG;
-  Frame: TMessageFrame;
+  VkThread: TVKThread;
 begin
-  Msgs := AugVK.GetHistory(Id, 30, Page*30, StartMsg);
-  for Msg in Msgs do
+  //msgs := AugVK.GetHistory(Id, 30, Page*30, StartMsg);
+  VkThread := TVKThread.Create;
+  VkThread.AddCallback(@LoadChatCallback);
+	VkThread.AddCallbackData(Pointer(Integer(ToTop)));
+  VkThread.GetHistory(Id, 30, Page*30, StartMsg);
+  VkThread.Start;
+end;
+
+procedure TMainForm.LoadChatCallback(Response: TObject; Data: Pointer);
+var
+  msgs: TMSGsList;
+  msg: TMSG;
+  frame: TMessageFrame;
+  ToTop: Boolean;
+begin
+  ToTop := Boolean(Data);
+  msgs := TMSGsList(Response);
+	for msg in msgs do
   begin
     Frame := TMessageFrame.Create(StackPanel2.Owner);
-    Frame.Name := Frame.Name+IntToStr(Msg.Id);
-    Frame.Fill(Msg);
+    Frame.Name := Frame.Name+IntToStr(msg.Id);
+    Frame.Fill(msg);
     Frame.Parent := StackPanel2;
     if ToTop then
       StackPanel2.ControlCollection.Move(StackPanel2.ControlCollection.Count-1, 0);
     //MainForm.StackPanel2.Height := MainForm.StackPanel2.Height+Frame.Height;
   end;
+  //free TMSGsArray(Response)
 end;
 
 procedure TMainForm.OpenChat(Id: Integer);

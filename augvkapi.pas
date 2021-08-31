@@ -339,7 +339,6 @@ begin
         .add('count', Count)
         .add('extended', 1)
   ));
-  writeln('alive?');
 
   writeln(Format('Loading chats %d / %d',[offset,response['count'].AsInteger]));
 
@@ -473,6 +472,7 @@ begin
       end;
 
       ChatsCache.Add(ResultVar.Id, ResultVar);
+      Result.Add(ResultVar);
     end;
 
     if response['count'].AsInteger <= 200 then break
