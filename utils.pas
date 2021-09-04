@@ -9,7 +9,6 @@ type
   TLogType = (logNormal, logGood, logError, logWarning);
 
 var
-  Config: TJSONObject;
   botStartTime: Int64;
 
 threadvar
@@ -27,7 +26,6 @@ uses
   Forms, classes;
 
 var
-  ConfigFile: TFileStream;
   enableColors: Boolean = True;
   i: Integer;
 
@@ -116,9 +114,5 @@ begin
       '--colorless':
         enableColors := False;
     end;
-
-  ConfigFile := TFileStream.Create(Application.Location+'config.json', fmOpenReadWrite);
-  Config := TJSONObject.Create;
-  Config := TJSONObject(GetJSON(ConfigFile));
 end.
 

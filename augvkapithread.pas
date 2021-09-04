@@ -6,25 +6,16 @@ unit AugVKApiThread;
 interface
 
 uses
-	Classes, SysUtils, augvkapi, LCLIntf, Contnrs, syncobjs, Utils, Variants;
+	Classes, SysUtils, augvkapi, LCLIntf, Contnrs, syncobjs, Utils, Variants,
+  ConfigUtils;
 
 type
 	{ TVKThread }
 
   TVKThreadCallBack = procedure (Response: TObject; Data: Pointer) of object;
 
-	//TVKQueueItem = class
- //   Method: String;
- //   Args: Array of Variant;
- //   Callback: TVKThreadCallBack;
-	//end;
-
-	{ TVKWorkerThread }
-
   TVKThread = class(TThread)
 	private
-    //Lock: TCriticalSection;
-		//QueryQueue: TQueue;
     AugVK: TAugVKAPI;
 
 		Method: String;
@@ -40,67 +31,29 @@ type
 
   public
 		constructor Create;
-    procedure AddCallback(ACallback: TVKThreadCallBack);
-    procedure AddCallbackData(AData: Pointer);
+    function AddCallback(ACallback: TVKThreadCallBack): TVKThread;
+    function AddCallbackData(AData: Pointer): TVKThread;
 
-		procedure GetHistory(PeerId: Integer; Count: Integer; Offset: Integer;
-			StartMessageId: Integer);
+		function GetHistory(PeerId: Integer; Count: Integer; Offset: Integer;
+			StartMessageId: Integer): TVKThread;
 	end;
-
-//var
-//	VKWorkerThread: TVKWorkerThread;
 
 implementation
 
 { TVKThread }
 
-constructor TVKThread.Create;
-begin
-  inherited Create(True);
-  FreeOnTerminate := True;
-	//Lock := TCriticalSection.Create;
-	//QueryQueue := TQueue.Create;
-  AugVK := TAugVKAPI.Create(Config.GetPath(Format('accounts[%d].token',
-    [Config.Integers['active_account']])).AsString);
-end;
-
-procedure TVKThread.AddCallback(ACallback: TVKThreadCallBack);
-begin
-  Callback := ACallback;
-end;
-
-procedure TVKThread.AddCallbackData(AData: Pointer);
-begin
-  CallbackData := AData;
-end;
-
 procedure TVKThread.Execute;
 begin
- // while not Terminated do
-	//begin
-	//  Lock.Acquire;
-	//  try
-	//    if QueryQueue.Count > 0 then
- //     	Item := TVKQueueItem(QueryQueue.Pop)
- //     else
- //       continue;
-	//  finally
-	//    Lock.Release;
-	//  end;
-
-    try
-	    if Method = 'GetHistory' then
-	    begin
-	      ResponseData := AugVK.GetHistory(Integer(Args[0]), Integer(Args[1]), Integer(Args[2]), Integer(Args[3]));
-	      Synchronize(@RunCallback);
-			end;
-		except
-      on E: Exception do
-        WriteLn(DumpExceptionCallStack(E));
+  try
+	  if Method = 'GetHistory' then
+	  begin
+	    ResponseData := AugVK.GetHistory(Integer(Args[0]), Integer(Args[1]), Integer(Args[2]), Integer(Args[3]));
+	    Synchronize(@RunCallback);
 		end;
-
-    //Item.Free;
-	//end;
+	except
+    on E: Exception do
+      WriteLn(DumpExceptionCallStack(E));
+	end;
 end;
 
 procedure TVKThread.RunCallback;
@@ -108,27 +61,33 @@ begin
 	Callback(ResponseData, CallbackData);
 end;
 
-procedure TVKThread.GetHistory(PeerId: Integer; Count: Integer;
-	Offset: Integer; StartMessageId: Integer);
-//var
-//  Item: TVKQueueItem;
+constructor TVKThread.Create;
 begin
-  //Item := TVKQueueItem.Create;
+  inherited Create(True);
+  FreeOnTerminate := True;
+  AugVK := TAugVKAPI.Create(Config.GetPath(Format('accounts[%d].token',
+    [Config.Integers['active_account']])).AsString);
+end;
+
+function TVKThread.AddCallback(ACallback: TVKThreadCallBack): TVKThread;
+begin
+  Callback := ACallback;
+  Result := Self;
+end;
+
+function TVKThread.AddCallbackData(AData: Pointer): TVKThread;
+begin
+  CallbackData := AData;
+  Result := Self;
+end;
+
+function TVKThread.GetHistory(PeerId: Integer; Count: Integer;
+	Offset: Integer; StartMessageId: Integer): TVKThread;
+begin
   Method := 'GetHistory';
   Args := [PeerId, Count, Offset, StartMessageId];
   Callback := Callback;
-	//Lock.Acquire;
-  //try
-  //  QueryQueue.Push(Pointer(Item));
-  //finally
-  //  Lock.Release;
-  //end;
-end;
-
-initialization
-begin
-  //VKWorkerThread := TVKWorkerThread.Create(True);
-  //VKWorkerThread.Start;
+  Result := Self;
 end;
 
 end.

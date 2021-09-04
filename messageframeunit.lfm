@@ -13,21 +13,10 @@ object MessageFrame: TMessageFrame
   TabOrder = 0
   DesignLeft = 244
   DesignTop = -39
-  object AvatarImage: TImage
-    AnchorSideLeft.Control = Owner
-    AnchorSideTop.Control = Owner
-    Left = 10
-    Height = 50
-    Top = 10
-    Width = 50
-    BorderSpacing.Left = 10
-    BorderSpacing.Top = 10
-    Stretch = True
-  end
   object NameLabel: TLabel
-    AnchorSideLeft.Control = AvatarImage
+    AnchorSideLeft.Control = Panel1
     AnchorSideLeft.Side = asrBottom
-    AnchorSideTop.Control = AvatarImage
+    AnchorSideTop.Control = Panel1
     AnchorSideBottom.Side = asrCenter
     Left = 65
     Height = 15
@@ -41,21 +30,20 @@ object MessageFrame: TMessageFrame
     ParentColor = False
     ParentFont = False
   end
-  object Label1: TLabel
+  object DateTimeLabel: TLabel
     AnchorSideLeft.Control = NameLabel
     AnchorSideLeft.Side = asrBottom
-    AnchorSideTop.Control = AvatarImage
     Left = 137
     Height = 15
     Top = 10
-    Width = 34
-    Caption = 'Label1'
+    Width = 79
+    Caption = 'DateTimeLabel'
     Font.Color = clGray
     ParentColor = False
     ParentFont = False
   end
   object MessageTextLabel: TLabel
-    AnchorSideLeft.Control = AvatarImage
+    AnchorSideLeft.Control = Panel1
     AnchorSideLeft.Side = asrBottom
     AnchorSideTop.Control = NameLabel
     AnchorSideTop.Side = asrBottom
@@ -69,7 +57,6 @@ object MessageFrame: TMessageFrame
     BorderSpacing.Left = 5
     BorderSpacing.Right = 10
     Caption = 'MessageTextLabel'
-    Color = clHighlight
     Font.CharSet = RUSSIAN_CHARSET
     Font.Color = clBlack
     Font.Height = -12
@@ -78,7 +65,28 @@ object MessageFrame: TMessageFrame
     Font.Quality = fqDraft
     ParentColor = False
     ParentFont = False
-    Transparent = False
     WordWrap = True
+  end
+  object Panel1: TPanel
+    AnchorSideLeft.Control = Owner
+    AnchorSideTop.Control = Owner
+    Left = 10
+    Height = 50
+    Top = 10
+    Width = 50
+    AutoSize = True
+    BorderSpacing.Left = 10
+    BorderSpacing.Top = 10
+    BevelOuter = bvNone
+    ClientHeight = 50
+    ClientWidth = 50
+    TabOrder = 0
+    object AvatarImage: TImage
+      AnchorSideRight.Side = asrBottom
+      Left = 0
+      Height = 50
+      Top = 0
+      Width = 50
+    end
   end
 end

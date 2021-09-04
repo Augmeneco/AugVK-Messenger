@@ -17,7 +17,7 @@
     <MacroValues Count="1">
       <Macro1 Name="LCLWidgetType" Value="qt5"/>
     </MacroValues>
-    <BuildModes Count="3">
+    <BuildModes Count="4">
       <Item1 Name="Default" Default="True"/>
       <Item2 Name="Windows">
         <MacroValues Count="1">
@@ -66,8 +66,31 @@
           </Linking>
         </CompilerOptions>
       </Item3>
-      <SharedMatrixOptions Count="1">
+      <Item4 Name="Windows-Win32">
+        <MacroValues Count="1">
+          <Macro2 Name="LCLWidgetType" Value="win32"/>
+        </MacroValues>
+        <CompilerOptions>
+          <Version Value="11"/>
+          <Target>
+            <Filename Value="build/$(TargetCPU)-$(TargetOS)-$(LCLWidgetType)-$(BuildMode)/AugVK"/>
+          </Target>
+          <SearchPaths>
+            <IncludeFiles Value="$(ProjOutDir)"/>
+            <OtherUnitFiles Value="lib/cef"/>
+            <UnitOutputDirectory Value="precompile/$(TargetCPU)-$(TargetOS)-$(LCLWidgetType)"/>
+          </SearchPaths>
+          <CodeGeneration>
+            <SmartLinkUnit Value="True"/>
+          </CodeGeneration>
+          <Linking>
+            <LinkSmart Value="True"/>
+          </Linking>
+        </CompilerOptions>
+      </Item4>
+      <SharedMatrixOptions Count="2">
         <Item1 ID="199425859549" Modes="Default,Windows,Linux" Type="IDEMacro" MacroName="LCLWidgetType" Value="qt5"/>
+        <Item2 ID="071246017318" Modes="Windows-Win32" Type="IDEMacro" MacroName="LCLWidgetType" Value="win32"/>
       </SharedMatrixOptions>
     </BuildModes>
     <PublishOptions>
@@ -78,18 +101,21 @@
       <FormatVersion Value="2"/>
       <Modes Count="0"/>
     </RunParams>
-    <RequiredPackages Count="3">
+    <RequiredPackages Count="4">
       <Item1>
-        <PackageName Value="AugControls"/>
+        <PackageName Value="CEF4Delphi_Lazarus"/>
       </Item1>
       <Item2>
-        <PackageName Value="bgracontrols"/>
+        <PackageName Value="AugControls"/>
       </Item2>
       <Item3>
-        <PackageName Value="LCL"/>
+        <PackageName Value="bgracontrols"/>
       </Item3>
+      <Item4>
+        <PackageName Value="LCL"/>
+      </Item4>
     </RequiredPackages>
-    <Units Count="7">
+    <Units Count="9">
       <Unit0>
         <Filename Value="LazVK.lpr"/>
         <IsPartOfProject Value="True"/>
@@ -136,6 +162,16 @@
         <IsPartOfProject Value="True"/>
         <UnitName Value="Design"/>
       </Unit6>
+      <Unit7>
+        <Filename Value="configutils.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="ConfigUtils"/>
+      </Unit7>
+      <Unit8>
+        <Filename Value="shdocvw_1_1_tlb.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="SHDocVw_1_1_TLB"/>
+      </Unit8>
     </Units>
   </ProjectOptions>
   <CompilerOptions>

@@ -7,9 +7,10 @@ interface
 
 uses
   Classes, SysUtils, Forms, Controls, Graphics, Dialogs, ExtCtrls, Buttons,
-  StdCtrls, ComCtrls, ActnList, Menus, VkLongpoll, fpjson, Utils,
+  StdCtrls, ComCtrls, ActnList, Menus, PairSplitter, VkLongpoll, fpjson, Utils,
   CachedLongpoll, augvkapi, MessageFrameUnit, ChatFrameUnit, Design, StackPanel,
-  AugScrollBox, BCSVGButton, BCListBox, BCPanel, fgl, Types, AugVKApiThread;
+  AugScrollBox, BCSVGButton, BCListBox, BCPanel, fgl, Types, AugVKApiThread,
+  ConfigUtils, WebBrowserFormUnit;
 
 type
   { TMainForm }
@@ -48,6 +49,7 @@ type
     ChatPage: Integer;
   public
     SelectedChat: Integer;
+    ActiveUser: TUser;
     ChatListWidthPercent: Real;
     CompactView: Boolean;
 
@@ -123,12 +125,29 @@ var
   Chat: TChat;
   Chats: TChatsList;
   Frame: TChatFrame;
+  WebBrowser: TWebBrowserForm;
+  TokenPath: String;
+  AccountAddedId: Integer;
 begin
 	Application.OnException := @CustomExceptionHandler;
 
-  Token := Config.GetPath(Format('accounts[%d].token',
-    [Config.Integers['active_account']])).AsString;
+  // Получение токена
+  TokenPath := Format('accounts[%d].token', [Config.Integers['active_account']]);
+  if Config.FindPath(TokenPath) = nil then
+  begin
+    WebBrowser := TWebBrowserForm.Create(MainForm);
+    Token := WebBrowser.GetOAuthToken;
+    AccountAddedId := Config.Arrays['accounts'].Add(TJSONObject.Create(['token', Token]));
+    Config.Integers['active_account'] := AccountAddedId;
+    SaveConfig;
+  end
+  else
+    Token := Config.GetPath(TokenPath).AsString;
+
+  // создание AugVKAPI
   AugVK := TAugVKAPI.Create(Token);
+
+  ActiveUser := AugVK.GetUser(-1);
 
   SelectedChat := -1;
 
@@ -219,8 +238,14 @@ end;
 
 procedure TMainForm.Splitter1Moved(Sender: TObject);
 begin
-  Invalidate;
+  Repaint;
+  DialogsPanel.Repaint;
+  ChatPanel.Repaint;
+  Update;
+  DialogsPanel.Update;
+  ChatPanel.Update;
   ChatListWidthPercent := DialogsPanel.Width / Width;
+  //WriteLn(ChatListWidthPercent);
 end;
 
 procedure TMainForm.TrayIcon1MouseUp(Sender: TObject; Button: TMouseButton;
@@ -271,21 +296,23 @@ var
 begin
   while StackPanel2.ControlCount > 0 do
   begin
-    Item := StackPanel2.Controls[0];
-    Item.Free;
+    try
+      Item := StackPanel2.Controls[0];
+      Item.Free;
+    finally
+    end;
   end;
+
 end;
 
 procedure TMainForm.LoadChat(Id: Integer; Page: Integer=0; StartMsg: Integer=-1; ToTop: Boolean=True);
-var
-  VkThread: TVKThread;
 begin
   //msgs := AugVK.GetHistory(Id, 30, Page*30, StartMsg);
-  VkThread := TVKThread.Create;
-  VkThread.AddCallback(@LoadChatCallback);
-	VkThread.AddCallbackData(Pointer(Integer(ToTop)));
-  VkThread.GetHistory(Id, 30, Page*30, StartMsg);
-  VkThread.Start;
+  TVKThread.Create
+  .AddCallback(@LoadChatCallback)
+  .AddCallbackData(Pointer(Integer(ToTop)))
+  .GetHistory(Id, 30, Page*30, StartMsg)
+  .Start;
 end;
 
 procedure TMainForm.LoadChatCallback(Response: TObject; Data: Pointer);
@@ -299,10 +326,10 @@ begin
   msgs := TMSGsList(Response);
 	for msg in msgs do
   begin
-    Frame := TMessageFrame.Create(StackPanel2.Owner);
+    Frame := TMessageFrame.Create(Self);
     Frame.Name := Frame.Name+IntToStr(msg.Id);
-    Frame.Fill(msg);
     Frame.Parent := StackPanel2;
+    Frame.Fill(msg);
     if ToTop then
       StackPanel2.ControlCollection.Move(StackPanel2.ControlCollection.Count-1, 0);
     //MainForm.StackPanel2.Height := MainForm.StackPanel2.Height+Frame.Height;
@@ -317,6 +344,7 @@ begin
   if MainForm.SelectedChat = Id then
     exit;
   MainForm.SelectedChat := Id;
+
   // очистка чата
   ClearChat;
 

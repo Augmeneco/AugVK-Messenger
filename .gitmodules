@@ -1,0 +1,3 @@
+[submodule "libs"]
+	path = dlls
+	url = https://github.com/Augmeneco/AugVK-Libraries

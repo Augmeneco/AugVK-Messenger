@@ -25,6 +25,7 @@ object ChatFrame: TChatFrame
     Height = 48
     Top = 10
     Width = 50
+    AntialiasingMode = amOn
     BorderSpacing.Left = 10
     BorderSpacing.Top = 10
     OnClick = FrameClick
@@ -48,7 +49,9 @@ object ChatFrame: TChatFrame
     BorderSpacing.Top = 3
     BorderSpacing.Right = 10
     Caption = 'TitleLabel'
+    Font.Style = [fsBold]
     ParentColor = False
+    ParentFont = False
     OnClick = FrameClick
     OnMouseEnter = FrameMouseEnter
     OnMouseLeave = FrameMouseLeave
