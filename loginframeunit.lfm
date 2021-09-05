@@ -1,0 +1,331 @@
+object LoginFrame: TLoginFrame
+  Left = 0
+  Height = 469
+  Top = 0
+  Width = 541
+  ClientHeight = 469
+  ClientWidth = 541
+  Color = clWhite
+  ParentColor = False
+  TabOrder = 0
+  DesignLeft = 305
+  DesignTop = 23
+  object CaptchaPanel: TPanel
+    AnchorSideLeft.Control = Owner
+    AnchorSideLeft.Side = asrCenter
+    AnchorSideTop.Control = Owner
+    AnchorSideTop.Side = asrCenter
+    AnchorSideRight.Control = Owner
+    AnchorSideRight.Side = asrCenter
+    AnchorSideBottom.Control = Owner
+    AnchorSideBottom.Side = asrCenter
+    Left = 163
+    Height = 250
+    Top = 109
+    Width = 214
+    Anchors = [akTop, akLeft, akRight, akBottom]
+    BevelOuter = bvNone
+    ClientHeight = 250
+    ClientWidth = 214
+    TabOrder = 1
+    Visible = False
+    object Label2: TLabel
+      AnchorSideLeft.Control = LoginPanel
+      AnchorSideLeft.Side = asrCenter
+      AnchorSideTop.Side = asrCenter
+      AnchorSideRight.Control = CaptchaPanel
+      AnchorSideRight.Side = asrCenter
+      AnchorSideBottom.Side = asrCenter
+      Left = 7
+      Height = 37
+      Top = 0
+      Width = 199
+      Alignment = taCenter
+      Anchors = [akTop, akLeft, akRight]
+      Caption = 'Введите капчу'
+      Font.Color = 16090919
+      Font.Height = -27
+      ParentColor = False
+      ParentFont = False
+    end
+    object Image1: TImage
+      AnchorSideLeft.Control = CaptchaPanel
+      AnchorSideLeft.Side = asrCenter
+      AnchorSideRight.Control = CaptchaPanel
+      AnchorSideRight.Side = asrCenter
+      Left = 42
+      Height = 50
+      Top = 48
+      Width = 130
+      Anchors = [akTop, akLeft, akRight]
+      AutoSize = True
+    end
+    object CaptchaEdit: TEdit
+      AnchorSideLeft.Control = CaptchaPanel
+      AnchorSideLeft.Side = asrCenter
+      AnchorSideTop.Side = asrCenter
+      AnchorSideRight.Control = CaptchaPanel
+      AnchorSideRight.Side = asrCenter
+      AnchorSideBottom.Side = asrCenter
+      Left = 8
+      Height = 28
+      Top = 112
+      Width = 198
+      Anchors = [akTop, akRight]
+      AutoSelect = False
+      BorderStyle = bsNone
+      Color = 16118770
+      Font.Height = -20
+      ParentFont = False
+      TabOrder = 0
+      TextHint = 'Символы с картинки'
+    end
+    object CaptchaButton: TBCMaterialDesignButton
+      AnchorSideLeft.Control = CaptchaPanel
+      AnchorSideLeft.Side = asrCenter
+      AnchorSideRight.Control = CaptchaPanel
+      AnchorSideRight.Side = asrCenter
+      AnchorSideBottom.Side = asrCenter
+      Left = 7
+      Height = 32
+      Top = 152
+      Width = 200
+      NormalColor = 16090919
+      NormalColorEffect = 14383395
+      Shadow = False
+      TextColor = clWhite
+      TextShadow = False
+      TextFont = 'default'
+      TextQuality = fqSystemClearType
+      Anchors = [akTop, akLeft, akRight]
+      Caption = 'Отправить'
+      OnClick = CaptchaButtonClick
+    end
+  end
+  object ValidationPanel: TPanel
+    AnchorSideLeft.Control = Owner
+    AnchorSideLeft.Side = asrCenter
+    AnchorSideTop.Control = Owner
+    AnchorSideTop.Side = asrCenter
+    AnchorSideRight.Control = Owner
+    AnchorSideRight.Side = asrCenter
+    AnchorSideBottom.Control = Owner
+    AnchorSideBottom.Side = asrCenter
+    Left = 144
+    Height = 300
+    Top = 84
+    Width = 252
+    Anchors = [akTop, akLeft, akRight, akBottom]
+    BevelOuter = bvNone
+    ClientHeight = 300
+    ClientWidth = 252
+    TabOrder = 2
+    Visible = False
+    object Label3: TLabel
+      AnchorSideLeft.Control = ValidationPanel
+      AnchorSideLeft.Side = asrCenter
+      AnchorSideTop.Side = asrCenter
+      AnchorSideRight.Control = ValidationPanel
+      AnchorSideRight.Side = asrCenter
+      AnchorSideBottom.Side = asrCenter
+      Left = 2
+      Height = 72
+      Top = 0
+      Width = 249
+      Alignment = taCenter
+      AutoSize = False
+      Caption = 'Подтверждение входа'
+      Font.Color = 16090919
+      Font.Height = -27
+      ParentColor = False
+      ParentFont = False
+      WordWrap = True
+    end
+    object Label4: TLabel
+      AnchorSideLeft.Control = ValidationPanel
+      AnchorSideLeft.Side = asrCenter
+      AnchorSideRight.Control = ValidationPanel
+      AnchorSideRight.Side = asrCenter
+      Left = 36
+      Height = 30
+      Top = 80
+      Width = 180
+      Alignment = taCenter
+      Anchors = [akTop, akLeft, akRight]
+      Caption = 'Для подтвеждения входа мы выслали вам код'
+      ParentColor = False
+      ParentFont = False
+      WordWrap = True
+    end
+    object ValidCodeEdit: TEdit
+      AnchorSideLeft.Control = ValidationPanel
+      AnchorSideLeft.Side = asrCenter
+      AnchorSideTop.Side = asrCenter
+      AnchorSideRight.Control = ValidationPanel
+      AnchorSideRight.Side = asrCenter
+      AnchorSideBottom.Side = asrCenter
+      Left = 27
+      Height = 28
+      Top = 144
+      Width = 198
+      Anchors = [akTop, akRight]
+      AutoSelect = False
+      BorderStyle = bsNone
+      Color = 16118770
+      Font.Height = -20
+      ParentFont = False
+      TabOrder = 0
+      TextHint = 'Введите код'
+    end
+    object ValidationButton: TBCMaterialDesignButton
+      AnchorSideLeft.Control = ValidationPanel
+      AnchorSideLeft.Side = asrCenter
+      AnchorSideRight.Control = ValidationPanel
+      AnchorSideRight.Side = asrCenter
+      AnchorSideBottom.Side = asrCenter
+      Left = 26
+      Height = 32
+      Top = 192
+      Width = 200
+      NormalColor = 16090919
+      NormalColorEffect = 14383395
+      Shadow = False
+      TextColor = clWhite
+      TextShadow = False
+      TextFont = 'default'
+      TextQuality = fqSystemClearType
+      Caption = 'Подтвердить'
+      OnClick = ValidationButtonClick
+    end
+    object ForceSMSLabel: TLabel
+      Cursor = crHandPoint
+      Left = 28
+      Height = 15
+      Top = 240
+      Width = 165
+      Caption = 'Подтвердить с помощью SMS'
+      Font.Color = clGray
+      Font.Style = [fsUnderline]
+      ParentColor = False
+      ParentFont = False
+      OnClick = ForceSMSLabelClick
+    end
+  end
+  object LoginPanel: TPanel
+    AnchorSideLeft.Control = Owner
+    AnchorSideLeft.Side = asrCenter
+    AnchorSideTop.Control = Owner
+    AnchorSideTop.Side = asrCenter
+    AnchorSideRight.Control = Owner
+    AnchorSideRight.Side = asrCenter
+    AnchorSideBottom.Control = Owner
+    AnchorSideBottom.Side = asrCenter
+    Left = 145
+    Height = 260
+    Top = 104
+    Width = 250
+    Anchors = [akTop, akLeft, akRight, akBottom]
+    BevelOuter = bvNone
+    ClientHeight = 260
+    ClientWidth = 250
+    Color = clWhite
+    ParentColor = False
+    TabOrder = 0
+    object LoginEdit: TEdit
+      AnchorSideLeft.Control = LoginPanel
+      AnchorSideLeft.Side = asrCenter
+      AnchorSideTop.Side = asrCenter
+      AnchorSideRight.Control = LoginPanel
+      AnchorSideRight.Side = asrCenter
+      AnchorSideBottom.Side = asrCenter
+      Left = 25
+      Height = 28
+      Top = 72
+      Width = 200
+      Anchors = [akTop, akLeft, akRight]
+      AutoSelect = False
+      BorderStyle = bsNone
+      Color = 16118770
+      Font.Height = -20
+      ParentFont = False
+      TabOrder = 0
+      Text = '+7 (995) 452-9195'
+      TextHint = 'Телефон или email'
+    end
+    object PasswordEdit: TEdit
+      AnchorSideLeft.Control = LoginPanel
+      AnchorSideLeft.Side = asrCenter
+      AnchorSideTop.Side = asrCenter
+      AnchorSideRight.Control = LoginPanel
+      AnchorSideRight.Side = asrCenter
+      AnchorSideBottom.Side = asrCenter
+      Left = 25
+      Height = 28
+      Top = 120
+      Width = 200
+      Anchors = [akTop, akLeft, akRight]
+      AutoSelect = False
+      BorderStyle = bsNone
+      Color = 16118770
+      Font.Height = -20
+      ParentFont = False
+      TabOrder = 1
+      Text = 'merkeliada_on_snow'
+      TextHint = 'Пароль'
+    end
+    object Label1: TLabel
+      AnchorSideLeft.Control = LoginPanel
+      AnchorSideLeft.Side = asrCenter
+      AnchorSideTop.Side = asrCenter
+      AnchorSideRight.Side = asrCenter
+      AnchorSideBottom.Side = asrCenter
+      Left = 65
+      Height = 54
+      Top = 0
+      Width = 121
+      Alignment = taCenter
+      Caption = 'AugVK'
+      Font.Color = 16090919
+      Font.Height = -40
+      ParentColor = False
+      ParentFont = False
+    end
+    object LoginButton: TBCMaterialDesignButton
+      AnchorSideLeft.Control = LoginPanel
+      AnchorSideLeft.Side = asrCenter
+      AnchorSideRight.Control = LoginPanel
+      AnchorSideRight.Side = asrCenter
+      AnchorSideBottom.Side = asrCenter
+      Left = 25
+      Height = 32
+      Top = 168
+      Width = 200
+      NormalColor = 16090919
+      NormalColorEffect = 14383395
+      Shadow = False
+      TextColor = clWhite
+      TextShadow = False
+      TextFont = 'default'
+      TextQuality = fqSystemClearType
+      Anchors = [akTop, akLeft, akRight]
+      Caption = 'Войти'
+      OnClick = LoginButtonClick
+    end
+    object ErrorLabel: TLabel
+      AnchorSideLeft.Control = LoginPanel
+      AnchorSideLeft.Side = asrCenter
+      AnchorSideRight.Control = LoginPanel
+      AnchorSideRight.Side = asrCenter
+      Left = 27
+      Height = 1
+      Top = 209
+      Width = 196
+      Alignment = taCenter
+      Anchors = [akTop, akLeft, akRight]
+      Font.Color = clRed
+      ParentColor = False
+      ParentFont = False
+      WordWrap = True
+    end
+  end
+end

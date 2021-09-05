@@ -45,11 +45,11 @@ begin
   //    TLogType.logWarning:
   //      textColor(Yellow);
   //  end;
-  writeln(format('[%s][%u] %s',
+  WriteLn(format('[%s][%u] %s',
                  [formatDateTime('dd/mm/yy hh:nn:ss"."zzz', logTime),
                   logThreadId,
                   str]));
-  //writeln(format('[%s] %s',
+  //DebugLn(format('[%s] %s',
   //               [formatDateTime('dd/mm/yy hh:nn:ss"."zzz', logTime),
   //                str]));
   //if enableColors then

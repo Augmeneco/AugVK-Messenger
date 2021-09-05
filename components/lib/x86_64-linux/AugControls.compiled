@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CONFIG>
+  <Compiler Value="/usr/bin/fpc" Date="1622464867"/>
+  <Params Value=" -MObjFPC -Scghi -Cg -O1 -g -gl -l -vewnhibq -Fu/usr/lib/lazarus/packager/units/x86_64-linux -Fu/usr/lib/lazarus/components/lazutils/lib/x86_64-linux -Fu/usr/lib/lazarus/lcl/units/x86_64-linux -Fu/usr/lib/lazarus/lcl/units/x86_64-linux/qt5 -Fu/mnt/DCF826FDF826D614/Development/AugVK-Messenger/test/ -FU/mnt/DCF826FDF826D614/Development/AugVK-Messenger/test/lib/x86_64-linux/ -dLCL -dLCLqt5 augcontrols.pas"/>
+</CONFIG>

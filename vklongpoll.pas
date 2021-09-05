@@ -37,7 +37,7 @@ type
 
 implementation
 
-uses fphttpclient, jsonparser;
+uses fphttpclient, jsonparser, LazLogger;
 
 procedure TLongpollThread.UpdateLPInfo;
 var
@@ -53,7 +53,7 @@ begin
   LpKey := lpInfo.Strings['key'];
   LpTS := lpInfo.Integers['ts'];
 
-  writeln('New longpoll info received');
+  DebugLn('New longpoll info received');
 end;
 
 procedure TLongpollThread.Execute;
@@ -77,7 +77,7 @@ procedure TLongpollThread.ProcessEvent(Event: TJSONArray);
 begin
   EventTypeToHandle := Event.Integers[0];
   EventToHandle := Event;
-  //writeln(EventTypeToHandle, ' ',  EventToHandle.AsJSON);
+  //DebugLn(EventTypeToHandle, ' ',  EventToHandle.AsJSON);
   Synchronize(@ExecuteHandler);
 end;
 

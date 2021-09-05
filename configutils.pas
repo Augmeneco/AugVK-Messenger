@@ -17,7 +17,16 @@ procedure LoadConfig;
 implementation
 
 uses
-  Forms, Classes, SysUtils;
+  Forms, Classes, SysUtils, Utils;
+
+type
+  TFilestreamHelper = class helper for TFilestream
+    procedure WriteString(const s: String);
+  end;
+  procedure TFilestreamHelper.WriteString(const s: String);
+  begin
+    self.write(S[1],Length(s));
+  end;
 
 var
   ConfigFile: TFileStream;
@@ -25,7 +34,7 @@ var
 procedure SaveConfig;
 begin
   ConfigFile := TFileStream.Create(ConfigLocation, fmCreate);
-  ConfigFile.WriteAnsiString(AnsiString(Config.FormatJSON));
+  ConfigFile.WriteString(Config.FormatJSON);
   ConfigFile.Free;
 end;
 

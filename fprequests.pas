@@ -11,13 +11,13 @@ type
   TResponse = class (TInterfacedObject)
     Text: String;
     Code: Integer;
-    Data: array of Byte;
+    Data: TBytes;
 
     function JSON(): TJSONData;
 end;
 
 type
-  TParams = class
+  TParams = class (TInterfacedObject)
   private
     Params: array of array of String;
   public
@@ -28,10 +28,11 @@ type
 end;
 
 type
-  TRequests = class
+  TRequests = class (TInterfacedObject)
   private
     Client: TFPHTTPClient;
   public
+    AllowedCodes: Array of Integer;
     constructor Create;
     function Get(URL: String; Params: TParams): TResponse;
     function Get(URL: String): TResponse; overload;
@@ -42,6 +43,10 @@ end;
 function URLEncode(URL: String): String;
 
 implementation
+
+uses
+  LazLogger;
+
 var
   Encoder: TEncoding;
 
@@ -67,9 +72,11 @@ var
 begin
   BS := TBytesStream.Create;
   Response := TResponse.Create;
-  Client.Get(
+  Client.HTTPMethod(
+     'GET',
      Format('%s?%s',[URL, Params.BuildUrl()]),
-     BS
+     BS,
+     AllowedCodes
   );
   Response.Text := Encoder.GetString(BS.Bytes);
   Response.Code := Client.ResponseStatusCode;
@@ -102,6 +109,7 @@ end;
 constructor TRequests.Create;
 begin
   Client := TFPHTTPClient.Create(nil);
+  AllowedCodes := [200];
 end;
 
 function TParams.BuildUrl(): String;

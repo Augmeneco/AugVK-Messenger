@@ -10,7 +10,7 @@ uses
   StdCtrls, ComCtrls, ActnList, Menus, PairSplitter, VkLongpoll, fpjson, Utils,
   CachedLongpoll, augvkapi, MessageFrameUnit, ChatFrameUnit, Design, StackPanel,
   AugScrollBox, BCSVGButton, BCListBox, BCPanel, fgl, Types, AugVKApiThread,
-  ConfigUtils, WebBrowserFormUnit;
+  ConfigUtils, {WebBrowserFormUnit,} LoginFrameUnit;
 
 type
   { TMainForm }
@@ -22,9 +22,11 @@ type
     ChatListScroll: TScrollBox;
     ActionList1: TActionList;
     ChatScroll: TAugScrollBox;
+    LoginFrameForm: TLoginFrame;
     Memo1: TMemo;
     DialogsPanel: TPanel;
     ChatPanel: TPanel;
+    Panel1: TPanel;
     Panel3: TPanel;
     Panel4: TPanel;
     Panel5: TPanel;
@@ -47,6 +49,9 @@ type
   private
     DialogsOffset: Integer;
     ChatPage: Integer;
+
+    procedure OnLogined(Token: String; ExpiresIn, Id: Integer);
+    procedure AfterLogin(Token: String);
   public
     SelectedChat: Integer;
     ActiveUser: TUser;
@@ -69,6 +74,9 @@ var
   AugVK: TAugVKAPI;
 
 implementation
+
+uses
+  LazLogger;
 
 {$R *.lfm}
 
@@ -122,12 +130,8 @@ end;
 procedure TMainForm.FormCreate(Sender: TObject);
 var
   Token: string;
-  Chat: TChat;
-  Chats: TChatsList;
-  Frame: TChatFrame;
-  WebBrowser: TWebBrowserForm;
+  //WebBrowser: TWebBrowserForm;
   TokenPath: String;
-  AccountAddedId: Integer;
 begin
 	Application.OnException := @CustomExceptionHandler;
 
@@ -135,45 +139,20 @@ begin
   TokenPath := Format('accounts[%d].token', [Config.Integers['active_account']]);
   if Config.FindPath(TokenPath) = nil then
   begin
-    WebBrowser := TWebBrowserForm.Create(MainForm);
-    Token := WebBrowser.GetOAuthToken;
-    AccountAddedId := Config.Arrays['accounts'].Add(TJSONObject.Create(['token', Token]));
-    Config.Integers['active_account'] := AccountAddedId;
-    SaveConfig;
+    //WebBrowser := TWebBrowserForm.Create(MainForm);
+    //Token := WebBrowser.GetOAuthToken;
+    LoginFrameForm.OnLogined := @OnLogined;
+    LoginFrameForm.Show;
   end
   else
-    Token := Config.GetPath(TokenPath).AsString;
-
-  // создание AugVKAPI
-  AugVK := TAugVKAPI.Create(Token);
-
-  ActiveUser := AugVK.GetUser(-1);
-
-  SelectedChat := -1;
-
-  LongpollThread := TCachedLongpoll.Create(Token);
-  LongpollThread.RegisterEventHandler(4, @NewMessageHandler);
-
-  LongpollThread.Start;
-
-  // загрузка чатов
-  Chats := AugVK.GetChats(20,0);
-  for Chat in Chats do
-  begin
-    Frame := TChatFrame.Create(MainForm.StackPanel1.Owner);
-    Frame.Name := Frame.Name+IntToStr(Chat.Id).Replace('-', '_');
-    Frame.Fill(Chat);
-    Frame.Parent := MainForm.StackPanel1;
-    //Frame.Width := MainForm.FlowPanel2.Width;
-    //MainForm.FlowPanel2.Height := MainForm.FlowPanel2.Height+Frame.Height;
-  end;
+    AfterLogin(Config.GetPath(TokenPath).AsString);
 
   ChatListWidthPercent := 0.3;
 end;
 
 procedure TMainForm.CustomExceptionHandler(Sender: TObject; E: Exception);
 begin
-  DumpExceptionCallStack(E);
+  DebugLn(DumpExceptionCallStack(E));
 end;
 
 procedure TMainForm.FormResize(Sender: TObject);
@@ -208,7 +187,7 @@ begin
     BorderMessage := TMessageFrame(StackPanel2.ControlCollection[0].Control);
     ChatPage += 1;
     LoadChat(SelectedChat, ChatPage, BorderMessage.MessageObject.Id);
-    writeln(BorderMessage.Top);
+    //DebugLn(BorderMessage.Top);
     ChatScroll.VertScrollBar.Position := BorderMessage.Top;
       //Trunc(ChatScroll.VertScrollBar.Range / 2) - MainForm.ChatScroll.VertScrollBar.Page;
   end;
@@ -245,7 +224,7 @@ begin
   DialogsPanel.Update;
   ChatPanel.Update;
   ChatListWidthPercent := DialogsPanel.Width / Width;
-  //WriteLn(ChatListWidthPercent);
+  //DebugLn(ChatListWidthPercent);
 end;
 
 procedure TMainForm.TrayIcon1MouseUp(Sender: TObject; Button: TMouseButton;
@@ -258,6 +237,50 @@ begin
       Hide
     else
       Show;
+end;
+
+procedure TMainForm.OnLogined(Token: String; ExpiresIn, Id: Integer);
+var
+  AccountAddedId: Integer;
+begin
+  AccountAddedId := Config.Arrays['accounts'].Add(TJSONObject.Create(['token', Token]));
+  Config.Integers['active_account'] := AccountAddedId;
+  SaveConfig;
+
+  LoginFrameForm.Hide;
+
+  AfterLogin(Token);
+end;
+
+procedure TMainForm.AfterLogin(Token: String);
+var
+  Chat: TChat;
+  Chats: TChatsList;
+  Frame: TChatFrame;
+begin
+  // создание AugVKAPI
+  AugVK := TAugVKAPI.Create(Token);
+
+  ActiveUser := AugVK.GetUser(-1);
+
+  SelectedChat := -1;
+
+  LongpollThread := TCachedLongpoll.Create(Token);
+  LongpollThread.RegisterEventHandler(4, @NewMessageHandler);
+
+  LongpollThread.Start;
+
+  // загрузка чатов
+  Chats := AugVK.GetChats(20,0);
+  for Chat in Chats do
+  begin
+    Frame := TChatFrame.Create(MainForm.StackPanel1.Owner);
+    Frame.Name := Frame.Name+IntToStr(Chat.Id).Replace('-', '_');
+    Frame.Fill(Chat);
+    Frame.Parent := MainForm.StackPanel1;
+    //Frame.Width := MainForm.FlowPanel2.Width;
+    //MainForm.FlowPanel2.Height := MainForm.FlowPanel2.Height+Frame.Height;
+  end;
 end;
 
 procedure TMainForm.ShowBothPanels;

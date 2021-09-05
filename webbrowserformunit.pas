@@ -7,9 +7,9 @@ interface
 uses
   Classes, SysUtils, Forms, Controls, Graphics, Dialogs, uCEFChromium,
   uCEFChromiumWindow, uCEFBrowserWindow, uCEFTypes, uCEFInterfaces,
-  uCEFWorkScheduler, uCEFApplication, GlobalCefApplication, uCEFLazarusCocoa,
-  uCEFWindowParent, uCEFLinkedWindowParent, uCEFTextfieldComponent,
-  uCEFPanelComponent;
+  uCEFWorkScheduler, uCEFApplication, GlobalCefApplication,
+  uCEFLazarusCocoa, uCEFWindowParent, uCEFLinkedWindowParent,
+  uCEFTextfieldComponent, uCEFPanelComponent;
 
 type
 
@@ -79,7 +79,7 @@ var
   ParamList: TStringList;
   i:integer;
 begin
-  URLToOpen := 'https://oauth.vk.com/authorize?client_id=2685278&scope=4126&redirect_uri=https://oauth.vk.com/blank.html&display=mobile&response_type=token&revoke=1';
+  URLToOpen := 'https://oauth.vk.com/authorize?client_id=2685278&scope=69662&redirect_uri=https://oauth.vk.com/blank.html&display=mobile&response_type=token&revoke=1';
   Self.ShowModal;
   URLParts := ParseURI(url);
   ParamList := TStringList.Create;

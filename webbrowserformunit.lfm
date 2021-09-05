@@ -3,7 +3,8 @@ object WebBrowserForm: TWebBrowserForm
   Height = 459
   Top = 250
   Width = 445
-  Caption = 'WebBrowserForm'
+  BorderStyle = bsDialog
+  Caption = 'Веб'
   ClientHeight = 459
   ClientWidth = 445
   OnCreate = FormCreate

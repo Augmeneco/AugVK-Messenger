@@ -40,6 +40,9 @@ type
 
 implementation
 
+uses
+  LazLogger;
+
 { TVKThread }
 
 procedure TVKThread.Execute;
@@ -52,7 +55,7 @@ begin
 		end;
 	except
     on E: Exception do
-      WriteLn(DumpExceptionCallStack(E));
+      DebugLn(DumpExceptionCallStack(E));
 	end;
 end;
 

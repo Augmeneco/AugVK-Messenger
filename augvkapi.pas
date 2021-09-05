@@ -96,6 +96,10 @@ type
 end;
 
 implementation
+
+uses
+  LazLogger;
+
 var
   UsersCache: TUsersList;
   ChatsCache: TChatsMap;
@@ -281,7 +285,7 @@ function TAugVKAPI.GetAvatar(URL: String; Path: String): TPicture;
 var
   TmpStream: TFileStream;
 begin
-  WriteLn('Loading avatar '+Path);
+  DebugLn('Loading avatar '+Path);
   {Проверяем повреждено ли фото}
   if FileExists(Path) then
   begin
@@ -340,7 +344,7 @@ begin
         .add('extended', 1)
   ));
 
-  writeln(Format('Loading chats %d / %d',[offset,response['count'].AsInteger]));
+  DebugLn(Format('Loading chats %d / %d',[offset,response['count'].AsInteger]));
 
   chatsArray := response.Arrays['items'];
   if chatsArray.Count = 0 then Exit;
@@ -420,7 +424,7 @@ begin
           .add('extended', 1)
     ));
 
-    writeln(Format('Loading chats %d / %d',[offset,response['count'].AsInteger]));
+    DebugLn(Format('Loading chats %d / %d',[offset,response['count'].AsInteger]));
 
     chatsArray := response.Arrays['items'];
     if chatsArray.Count = 0 then break;

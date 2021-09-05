@@ -29,11 +29,14 @@ type
 
 implementation
 
+uses
+  LazLogger;
+
 function TVKAPI.Call(Method: String; Params: TParams): TJSONData;
 var
   response: TJSONObject;
 begin
-  WriteLn('Call ',Method);
+  DebugLn('Call ',Method);
   response := TJSONObject(
      requests.post(
          Format('https://api.vk.com/method/%s',[method]),
@@ -48,7 +51,7 @@ begin
     if response.getPath('error.error_code').asInteger = 6 then
     begin
       Sleep(1000);
-      writeln('Forced sleep');
+      DebugLn('Forced sleep');
       Result := call(method,params);
       Exit;
     end;
