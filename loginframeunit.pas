@@ -217,7 +217,7 @@ begin
   Requests.AllowedCodes := [200, 401];
 
   PasswordEdit.PasswordChar := Chr(149);
-  PasswordEdit.Font.Style := PasswordEdit.Font.Style + [fsBold];
+  //PasswordEdit.Font.Style := PasswordEdit.Font.Style + [fsBold];
 end;
 
 end.

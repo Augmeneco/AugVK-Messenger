@@ -15,6 +15,39 @@ object MainForm: TMainForm
   OnResize = FormResize
   ParentDoubleBuffered = False
   Position = poDesktopCenter
+  inline LoginFrameForm: TLoginFrame
+    Height = 500
+    Width = 803
+    Align = alClient
+    ClientHeight = 500
+    ClientWidth = 803
+    TabOrder = 1
+    Visible = False
+    inherited CaptchaPanel: TPanel
+      AnchorSideLeft.Control = LoginFrameForm
+      AnchorSideTop.Control = LoginFrameForm
+      AnchorSideRight.Control = LoginFrameForm
+      AnchorSideBottom.Control = LoginFrameForm
+      Left = 294
+      Top = 125
+    end
+    inherited ValidationPanel: TPanel
+      AnchorSideLeft.Control = LoginFrameForm
+      AnchorSideTop.Control = LoginFrameForm
+      AnchorSideRight.Control = LoginFrameForm
+      AnchorSideBottom.Control = LoginFrameForm
+      Left = 275
+      Top = 100
+    end
+    inherited LoginPanel: TPanel
+      AnchorSideLeft.Control = LoginFrameForm
+      AnchorSideTop.Control = LoginFrameForm
+      AnchorSideRight.Control = LoginFrameForm
+      AnchorSideBottom.Control = LoginFrameForm
+      Left = 276
+      Top = 120
+    end
+  end
   object Panel1: TPanel
     Left = 0
     Height = 500
@@ -252,39 +285,6 @@ object MainForm: TMainForm
           TabOrder = 0
         end
       end
-    end
-  end
-  inline LoginFrameForm: TLoginFrame
-    Height = 500
-    Width = 803
-    Align = alClient
-    ClientHeight = 500
-    ClientWidth = 803
-    TabOrder = 1
-    Visible = False
-    inherited CaptchaPanel: TPanel
-      AnchorSideLeft.Control = LoginFrameForm
-      AnchorSideTop.Control = LoginFrameForm
-      AnchorSideRight.Control = LoginFrameForm
-      AnchorSideBottom.Control = LoginFrameForm
-      Left = 294
-      Top = 125
-    end
-    inherited ValidationPanel: TPanel
-      AnchorSideLeft.Control = LoginFrameForm
-      AnchorSideTop.Control = LoginFrameForm
-      AnchorSideRight.Control = LoginFrameForm
-      AnchorSideBottom.Control = LoginFrameForm
-      Left = 275
-      Top = 100
-    end
-    inherited LoginPanel: TPanel
-      AnchorSideLeft.Control = LoginFrameForm
-      AnchorSideTop.Control = LoginFrameForm
-      AnchorSideRight.Control = LoginFrameForm
-      AnchorSideBottom.Control = LoginFrameForm
-      Left = 276
-      Top = 120
     end
   end
   object ActionList1: TActionList
@@ -1523,5 +1523,16 @@ object MainForm: TMainForm
     Visible = True
     OnMouseUp = TrayIcon1MouseUp
     Left = 32
+  end
+  object PopupMenu1: TPopupMenu
+    Left = 64
+    object ShowMenuItem: TMenuItem
+      Caption = 'Открыть'
+      OnClick = ShowMenuItemClick
+    end
+    object CloseMenuItem: TMenuItem
+      Caption = 'Закрыть'
+      OnClick = CloseMenuItemClick
+    end
   end
 end

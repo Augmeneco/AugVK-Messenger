@@ -26,10 +26,13 @@ type
     Memo1: TMemo;
     DialogsPanel: TPanel;
     ChatPanel: TPanel;
+    ShowMenuItem: TMenuItem;
+    CloseMenuItem: TMenuItem;
     Panel1: TPanel;
     Panel3: TPanel;
     Panel4: TPanel;
     Panel5: TPanel;
+    PopupMenu1: TPopupMenu;
     SpeedButton1: TBCSVGButton;
     Splitter1: TSplitter;
     StackPanel1: TStackPanel;
@@ -37,15 +40,19 @@ type
     TrayIcon1: TTrayIcon;
     procedure BCSVGButton1Click(Sender: TObject);
     procedure ChatScrollVScroll(Sender: TObject; var ScrollPos: Integer);
+    procedure CloseMenuItemClick(Sender: TObject);
     procedure FormCloseQuery(Sender: TObject; var CanClose: boolean);
     procedure FormCreate(Sender: TObject);
     procedure CustomExceptionHandler(Sender: TObject; E: Exception);
     procedure FormResize(Sender: TObject);
     procedure Memo1KeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
+    procedure ShowMenuItemClick(Sender: TObject);
     procedure SpeedButton1Click(Sender: TObject);
     procedure Splitter1Moved(Sender: TObject);
     procedure TrayIcon1MouseUp(Sender: TObject; Button: TMouseButton;
       Shift: TShiftState; X, Y: Integer);
+    procedure SetDialogsWidthPrcnt(AWidth: Real);
+    function GetDialogsWidthPrcnt: Real;
   private
     DialogsOffset: Integer;
     ChatPage: Integer;
@@ -55,7 +62,6 @@ type
   public
     SelectedChat: Integer;
     ActiveUser: TUser;
-    ChatListWidthPercent: Real;
     CompactView: Boolean;
 
     procedure ShowBothPanels;
@@ -66,6 +72,8 @@ type
     procedure LoadChatCallback(Response: TObject; Data: Pointer);
     procedure OpenChat(Id: Integer);
     procedure CloseChat;
+
+    property DialogsWidthPrcnt: Real read GetDialogsWidthPrcnt write SetDialogsWidthPrcnt;
   end;
 
 var
@@ -143,11 +151,12 @@ begin
     //Token := WebBrowser.GetOAuthToken;
     LoginFrameForm.OnLogined := @OnLogined;
     LoginFrameForm.Show;
+    LoginFrameForm.BringToFront;
   end
   else
     AfterLogin(Config.GetPath(TokenPath).AsString);
 
-  ChatListWidthPercent := 0.3;
+  DialogsWidthPrcnt := Config.Floats['dialogs_width'];
 end;
 
 procedure TMainForm.CustomExceptionHandler(Sender: TObject; E: Exception);
@@ -163,7 +172,7 @@ begin
     else // MEGA HAX00R HACK FOR STUPID OPTIMYZER THAT THINK INNER "if" CAN BE "and"
   else
     ShowBothPanels;
-  DialogsPanel.Width := Trunc(Width * ChatListWidthPercent);
+  DialogsPanel.Width := Trunc(Width * DialogsWidthPrcnt);
 end;
 
 procedure TMainForm.FormCloseQuery(Sender: TObject; var CanClose: boolean);
@@ -206,6 +215,16 @@ begin
   end;
 end;
 
+procedure TMainForm.ShowMenuItemClick(Sender: TObject);
+begin
+  Show;
+end;
+
+procedure TMainForm.CloseMenuItemClick(Sender: TObject);
+begin
+  Halt;
+end;
+
 procedure TMainForm.SpeedButton1Click(Sender: TObject);
 begin
   if SelectedChat <> -1 then
@@ -223,15 +242,16 @@ begin
   Update;
   DialogsPanel.Update;
   ChatPanel.Update;
-  ChatListWidthPercent := DialogsPanel.Width / Width;
-  //DebugLn(ChatListWidthPercent);
+  Config.Floats['dialogs_width'] := DialogsWidthPrcnt;
+  SaveConfig;
+  //DebugLn(DialogsWidthPrcnt);
 end;
 
 procedure TMainForm.TrayIcon1MouseUp(Sender: TObject; Button: TMouseButton;
   Shift: TShiftState; X, Y: Integer);
 begin
-  //if Button = mbRight then
-  //  PopupMenu1.PopUp;
+  if Button = mbRight then
+    PopupMenu1.PopUp;
   if Button = mbLeft then
     if Visible then
       Hide
@@ -239,11 +259,22 @@ begin
       Show;
 end;
 
+procedure TMainForm.SetDialogsWidthPrcnt(AWidth: Real);
+begin
+  DialogsPanel.Width := Trunc(Width*AWidth);
+end;
+
+function TMainForm.GetDialogsWidthPrcnt: Real;
+begin
+  Result := DialogsPanel.Width/Width;
+end;
+
 procedure TMainForm.OnLogined(Token: String; ExpiresIn, Id: Integer);
 var
   AccountAddedId: Integer;
 begin
-  AccountAddedId := Config.Arrays['accounts'].Add(TJSONObject.Create(['token', Token]));
+  AccountAddedId := Config.Arrays['accounts'].Add(
+    TJSONObject.Create(['token', Token, 'expires_in', ExpiresIn, 'user_id', Id]));
   Config.Integers['active_account'] := AccountAddedId;
   SaveConfig;
 
@@ -290,7 +321,7 @@ begin
   BCSVGButton1.Hide;
   DialogsPanel.Align := alLeft;
   Splitter1.Show;
-  ChatListWidthPercent := 0.3;
+  DialogsWidthPrcnt := Config.Floats['dialogs_width'];
   CompactView := False;
 end;
 

@@ -50,6 +50,7 @@ procedure FillNewConfig;
 begin
   Config.Add('accounts', TJSONArray.Create);
   Config.Add('active_account', 0);
+  Config.Add('dialogs_width', 0.3);
 end;
 
 initialization

@@ -249,7 +249,6 @@ object LoginFrame: TLoginFrame
       Font.Height = -20
       ParentFont = False
       TabOrder = 0
-      Text = '+7 (995) 452-9195'
       TextHint = 'Телефон или email'
     end
     object PasswordEdit: TEdit
@@ -270,7 +269,6 @@ object LoginFrame: TLoginFrame
       Font.Height = -20
       ParentFont = False
       TabOrder = 1
-      Text = 'merkeliada_on_snow'
       TextHint = 'Пароль'
     end
     object Label1: TLabel
