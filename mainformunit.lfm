@@ -1528,10 +1528,12 @@ object MainForm: TMainForm
     Left = 64
     object ShowMenuItem: TMenuItem
       Caption = 'Открыть'
+      GlyphShowMode = gsmNever
       OnClick = ShowMenuItemClick
     end
     object CloseMenuItem: TMenuItem
       Caption = 'Закрыть'
+      GlyphShowMode = gsmNever
       OnClick = CloseMenuItemClick
     end
   end

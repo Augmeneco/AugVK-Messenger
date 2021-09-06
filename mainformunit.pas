@@ -7,15 +7,24 @@ interface
 
 uses
   Classes, SysUtils, Forms, Controls, Graphics, Dialogs, ExtCtrls, Buttons,
-  StdCtrls, ComCtrls, ActnList, Menus, PairSplitter, VkLongpoll, fpjson, Utils,
-  CachedLongpoll, augvkapi, MessageFrameUnit, ChatFrameUnit, Design, StackPanel,
-  AugScrollBox, BCSVGButton, BCListBox, BCPanel, fgl, Types, AugVKApiThread,
-  ConfigUtils, {WebBrowserFormUnit,} LoginFrameUnit;
+  StdCtrls, ComCtrls, ActnList, Menus, VkLongpoll, fpjson, Utils,
+  CachedLongpoll, augvkapi, MessageFrameUnit, ChatFrameUnit, StackPanel,
+  AugScrollBox, BCSVGButton, BCListBox, fgl, Types, AugVKApiThread,
+  ConfigUtils, LoginFrameUnit;
 
 type
   { TMainForm }
 
   TChatsMap = specialize TFPGMap<Integer, TChatFrame>;
+
+  TScrollTo = (stTop, stBottom, stNotScroll);
+
+  TLoadChatData = record
+    AddToTop: Boolean;
+    ScrollTo: TScrollTo;
+  end;
+
+  PLoadChatData = ^TLoadChatData;
 
   TMainForm = class(TForm)
     BCSVGButton1: TBCSVGButton;
@@ -56,6 +65,7 @@ type
   private
     DialogsOffset: Integer;
     ChatPage: Integer;
+    ChatBlockLoad: Boolean;
 
     procedure OnLogined(Token: String; ExpiresIn, Id: Integer);
     procedure AfterLogin(Token: String);
@@ -68,7 +78,8 @@ type
     procedure ShowOnlyChat;
     procedure ShowOnlyDialogs;
     procedure ClearChat;
-    procedure LoadChat(Id: Integer; Page: Integer=0; StartMsg: Integer=-1; ToTop: Boolean=True);
+    procedure LoadChat(Id: Integer; Page: Integer=0; StartMsg: Integer=-1;
+      ToTop: Boolean=True; ScrollTo: TScrollTo=stBottom);
     procedure LoadChatCallback(Response: TObject; Data: Pointer);
     procedure OpenChat(Id: Integer);
     procedure CloseChat;
@@ -197,7 +208,7 @@ begin
     ChatPage += 1;
     LoadChat(SelectedChat, ChatPage, BorderMessage.MessageObject.Id);
     //DebugLn(BorderMessage.Top);
-    ChatScroll.VertScrollBar.Position := BorderMessage.Top;
+    //ChatScroll.VertScrollBar.Position := BorderMessage.Top;
       //Trunc(ChatScroll.VertScrollBar.Range / 2) - MainForm.ChatScroll.VertScrollBar.Page;
   end;
 end;
@@ -359,12 +370,22 @@ begin
 
 end;
 
-procedure TMainForm.LoadChat(Id: Integer; Page: Integer=0; StartMsg: Integer=-1; ToTop: Boolean=True);
+procedure TMainForm.LoadChat(Id: Integer; Page: Integer=0; StartMsg: Integer=-1;
+  ToTop: Boolean=True; ScrollTo: TScrollTo=stBottom);
+var
+  LoadChatData: PLoadChatData;
 begin
+  if ChatBlockLoad then
+    exit;
+  ChatBlockLoad := True;
   //msgs := AugVK.GetHistory(Id, 30, Page*30, StartMsg);
+  LoadChatData := New(PLoadChatData);
+  LoadChatData^.AddToTop := ToTop;
+  LoadChatData^.ScrollTo := stNotScroll;//ScrollTo;
+
   TVKThread.Create
   .AddCallback(@LoadChatCallback)
-  .AddCallbackData(Pointer(Integer(ToTop)))
+  .AddCallbackData(LoadChatData)
   .GetHistory(Id, 30, Page*30, StartMsg)
   .Start;
 end;
@@ -374,21 +395,37 @@ var
   msgs: TMSGsList;
   msg: TMSG;
   frame: TMessageFrame;
-  ToTop: Boolean;
+  LoadChatData: PLoadChatData;
+  OldHeight: Integer = 0;
 begin
-  ToTop := Boolean(Data);
+  LoadChatData := PLoadChatData(Data);
   msgs := TMSGsList(Response);
+  OldHeight := StackPanel2.Height;
 	for msg in msgs do
   begin
     Frame := TMessageFrame.Create(Self);
     Frame.Name := Frame.Name+IntToStr(msg.Id);
     Frame.Parent := StackPanel2;
     Frame.Fill(msg);
-    if ToTop then
+    case LoadChatData^.ScrollTo of
+      stTop:
+        ChatScroll.VertScrollBar.Position := 0;
+      stBottom:
+        ChatScroll.VertScrollBar.Position :=
+          ChatScroll.VertScrollBar.Range - ChatScroll.VertScrollBar.Page;
+      stNotScroll:
+      begin
+        ChatScroll.VertScrollBar.Position := StackPanel2.Height - OldHeight;
+      end;
+    end;
+    if LoadChatData^.AddToTop then
       StackPanel2.ControlCollection.Move(StackPanel2.ControlCollection.Count-1, 0);
     //MainForm.StackPanel2.Height := MainForm.StackPanel2.Height+Frame.Height;
   end;
   //free TMSGsArray(Response)
+  Dispose(LoadChatData);
+
+  ChatBlockLoad := False;
 end;
 
 procedure TMainForm.OpenChat(Id: Integer);
@@ -403,9 +440,6 @@ begin
   ClearChat;
 
   LoadChat(Id);
-
-  MainForm.ChatScroll.VertScrollBar.Position :=
-    MainForm.ChatScroll.VertScrollBar.Range - MainForm.ChatScroll.VertScrollBar.Page;
 end;
 
 procedure TMainForm.CloseChat;
