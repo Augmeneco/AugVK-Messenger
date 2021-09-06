@@ -15,6 +15,16 @@ const
 type TMSG = class;
 type TUser = class;
 
+type
+  TAttachType = (atPhoto, atVideo, atAudio, atDoc, atWall, atMarket, atPoll,
+                 atSticker, atGIF, atURL);
+  TAttachment = class
+    URL: String;
+    Preview: String;
+    AttachType: TAttachType;
+end;
+type TAttachmentsList = specialize TFPGList<TAttachment>;
+
 type TMSGsList = specialize TFPGList<TMSG>;
 
 type
@@ -25,6 +35,7 @@ type
     PeerId: Integer;
     FromId: TUser;
     Reply: TMSGsList;
+    Attachments: TAttachmentsList;
 end;
 
 type
@@ -46,12 +57,6 @@ end;
 type TChatsArray = array of TChat;
 type TChatsList = specialize TFPGList<TChat>;
 type TChatsMap = specialize TFPGMap<Integer, TChat>;
-
-type
-  TAttachment = class
-    //todo
-end;
-type TAttachmentsList = specialize TFPGList<TAttachment>;
 
 type
   TAugVKAPI = class
@@ -86,6 +91,8 @@ type
     function UpdateChatsPosition(PeerId: Integer): TChatsList;
     function GetChatsForDraw: TChatsList;
     function GetChatByIndex(Index: Integer): TChat;
+
+    function GetPhotoURL(Data: TJSONArray; MaxSize: Boolean=True): String;
 
     procedure SendMessage(Text: String; PeerId: Integer; Reply: Integer; Attachments: TAttachmentsList);
     procedure SendMessage(Text: String; PeerId: Integer); overload;
@@ -653,7 +660,48 @@ begin
   Result.Text := Data.Strings[5];
 end;
 
+function TAugVKAPI.GetPhotoURL(Data: TJSONArray; MaxSize: Boolean=True): String;
+var
+  I: Integer;
+  PhotoObject: TJSONObject;
+  JSONEnum: TJSONEnum;
+  MSize: Integer;
+  ResultObject: TJSONObject;
+begin
+  if MaxSize then
+    MSize := 0
+  else
+    MSize := MaxInt;
+
+  for JSONEnum in Data do
+  begin
+    PhotoObject := TJSONObject(JSONEnum.Value);
+    if MaxSize then
+      if (PhotoObject['height'].AsInteger * PhotoObject['width'].AsInteger) >= MSize then
+      begin
+        MSize := PhotoObject['height'].AsInteger * PhotoObject['width'].AsInteger;
+        ResultObject := PhotoObject;
+      end
+    else
+      if (PhotoObject['height'].AsInteger * PhotoObject['width'].AsInteger) <= MSize then
+      begin
+        MSize := PhotoObject['height'].AsInteger * PhotoObject['width'].AsInteger;
+        ResultObject := PhotoObject;
+      end;
+  end;
+
+  if ResultObject.IndexOfName('url') <> -1 then
+    Result := ResultObject['url'].AsString
+  else
+    Result := ResultObject['src'].AsString;
+end;
+
 function TAugVKAPI.ParseMsg(Data: TJSONObject): TMSG;
+var
+  Attachment: TAttachment;
+  AttachmentJSON: TJSONObject;
+  JSONEnum: TJSONEnum;
+  Sizes: TJSONArray;
 begin
   Result := TMSG.Create;
   Result.id := data['id'].AsInteger;
@@ -661,6 +709,45 @@ begin
   Result.fromId := getUser(data['from_id'].AsInteger);
   Result.peerId := data['peer_id'].AsInteger;
   Result.date := data['date'].AsInteger;
+
+  Result.Attachments := TAttachmentsList.Create;
+  if Data.Arrays['attachments'].Count <> -1 then
+  begin
+    for JSONEnum in Data.Arrays['attachments'] do
+    begin
+      AttachmentJSON := TJSONObject(JSONEnum.Value);
+
+      if AttachmentJSON['type'].AsString = 'photo' then
+      begin
+        Sizes := TJSONArray(AttachmentJSON.GetPath('photo.sizes'));
+
+        Attachment := TAttachment.Create;
+        Attachment.URL := GetPhotoURL(Sizes);
+        Attachment.Preview := GetPhotoURL(Sizes, False);
+        Attachment.AttachType := TAttachType.atPhoto;
+
+        Result.Attachments.Add(Attachment);
+      end;
+
+      {if AttachmentJSON['type'].AsString = 'doc' then
+      begin
+        writeln(AttachmentJSON.FormatJSON());
+        Sizes := TJSONArray(AttachmentJSON.GetPath('doc.preview.photo.sizes'));
+
+        Attachment := TAttachment.Create;
+        Attachment.URL := GetPhotoURL(Sizes);
+        Attachment.Preview := GetPhotoURL(Sizes, False);
+        Attachment.AttachType := TAttachType.atDoc;
+
+        if AttachmentJSON['doc.ext'].AsString = 'gif' then
+          Attachment.AttachType := TAttachType.atGIF;
+
+        Result.Attachments.Add(Attachment);
+      end;}
+
+
+    end;
+  end;
 end;
 
 constructor TAugVKAPI.Create(Token: String);

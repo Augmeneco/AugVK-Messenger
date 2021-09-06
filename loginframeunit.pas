@@ -32,6 +32,8 @@ type
     PasswordEdit: TEdit;
     Label1: TLabel;
     LoginPanel: TPanel;
+    procedure PasswordEditKeyDown(Sender: TObject; var Key: Word;
+      Shift: TShiftState);
     function SendLoginRequest(Login, Password: String): TResponse;
     function SendLoginRequest(Login, Password: String;
       Params: TParams): TResponse;
@@ -65,6 +67,22 @@ uses
 function TLoginFrame.SendLoginRequest(Login, Password: String): TResponse;
 begin
   Result := SendLoginRequest(Login, Password, TParams.Create);
+end;
+
+procedure TLoginFrame.PasswordEditKeyDown(Sender: TObject; var Key: Word;
+  Shift: TShiftState);
+var
+  Response: TResponse;
+  Json: TJSONObject;
+begin
+  if Key = 13 then
+  begin
+    Response := SendLoginRequest(LoginEdit.Text, PasswordEdit.Text);
+
+    ProcessResponse(Response);
+
+    Response.Free;
+  end;
 end;
 
 function TLoginFrame.SendLoginRequest(Login, Password: String;

@@ -88,8 +88,7 @@ begin
   end
   else
   begin
-
-    Msg := AugVK.ParseLPMsg(Event);//Augvk.GetMSGById(Event.Integers[1]);   //вот из-за этого мелкофризы появляются
+    Msg := {AugVK.ParseLPMsg(Event);}Augvk.GetMSGById(Event.Integers[1]);   //вот из-за этого мелкофризы появляются
     Msgs := CachedMsgs.KeyData[Msg.PeerId];
   end;
 
