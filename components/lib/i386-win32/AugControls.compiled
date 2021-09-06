@@ -1,5 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<CONFIG>
-  <Compiler Value="C:\lazarus\fpc\3.2.0\bin\x86_64-win64\fpc.exe" Date="1381338938"/>
-  <Params Value=" -Twin32 -Pi386 -MObjFPC -Scghi -O1 -g -gl -l -vewnhibq -FuC:\lazarus\packager\units\i386-win32 -FuC:\lazarus\components\lazutils\lib\i386-win32 -FuC:\lazarus\lcl\units\i386-win32 -FuC:\lazarus\lcl\units\i386-win32\qt5 -FuD:\Development\AugVK-Messenger\components\ -FUD:\Development\AugVK-Messenger\components\lib\i386-win32\ -dLCL -dLCLqt5 augcontrols.pas"/>
-</CONFIG>

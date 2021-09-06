@@ -178,6 +178,7 @@
         <Filename Value="loginframeunit.pas"/>
         <IsPartOfProject Value="True"/>
         <ComponentName Value="LoginFrame"/>
+        <HasResources Value="True"/>
         <ResourceBaseClass Value="Frame"/>
         <UnitName Value="LoginFrameUnit"/>
       </Unit8>

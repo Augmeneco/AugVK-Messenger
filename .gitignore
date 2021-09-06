@@ -1,4 +1,4 @@
-test/lib
+components/lib
 LazVK/lib
 **/backup
 #**/test

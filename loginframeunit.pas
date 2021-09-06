@@ -108,6 +108,7 @@ procedure TLoginFrame.NeedCaptcha(ErrorJson: TJSONObject);
 var
   Response: TResponse;
   MemStream: TMemoryStream;
+  Jpeg: TJPEGImage;
 begin
   LoginPanel.Hide;
   ValidationPanel.Hide;
@@ -116,9 +117,12 @@ begin
   CaptchaSid := ErrorJson.Strings['captcha_sid'];
 
   Response := Requests.Get(ErrorJson.Strings['captcha_img']);
-  MemStream.Create;
+  MemStream := TMemoryStream.Create;
   MemStream.Write(Response.Data[0], Length(Response.Data));
-  Image1.Picture.LoadFromStream(MemStream);
+  //MemStream.SaveToFile('captcha.jpg');
+  MemStream.Position := 0;
+  Image1.Picture.Graphic := TJPEGImage.Create;
+  Image1.Picture.Graphic.LoadFromStream(MemStream);
   MemStream.Free;
 end;
 

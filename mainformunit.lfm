@@ -23,7 +23,7 @@ object MainForm: TMainForm
     ClientWidth = 803
     TabOrder = 1
     Visible = False
-    inherited CaptchaPanel: TPanel
+    inherited CaptchaPanel: TPanel[0]
       AnchorSideLeft.Control = LoginFrameForm
       AnchorSideTop.Control = LoginFrameForm
       AnchorSideRight.Control = LoginFrameForm
@@ -31,7 +31,7 @@ object MainForm: TMainForm
       Left = 294
       Top = 125
     end
-    inherited ValidationPanel: TPanel
+    inherited ValidationPanel: TPanel[1]
       AnchorSideLeft.Control = LoginFrameForm
       AnchorSideTop.Control = LoginFrameForm
       AnchorSideRight.Control = LoginFrameForm
@@ -39,7 +39,7 @@ object MainForm: TMainForm
       Left = 275
       Top = 100
     end
-    inherited LoginPanel: TPanel
+    inherited LoginPanel: TPanel[2]
       AnchorSideLeft.Control = LoginFrameForm
       AnchorSideTop.Control = LoginFrameForm
       AnchorSideRight.Control = LoginFrameForm
@@ -54,7 +54,6 @@ object MainForm: TMainForm
     Top = 0
     Width = 803
     Align = alClient
-    Caption = 'Panel1'
     ClientHeight = 500
     ClientWidth = 803
     TabOrder = 0

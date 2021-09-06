@@ -10,98 +10,6 @@ object LoginFrame: TLoginFrame
   TabOrder = 0
   DesignLeft = 305
   DesignTop = 23
-  object CaptchaPanel: TPanel
-    AnchorSideLeft.Control = Owner
-    AnchorSideLeft.Side = asrCenter
-    AnchorSideTop.Control = Owner
-    AnchorSideTop.Side = asrCenter
-    AnchorSideRight.Control = Owner
-    AnchorSideRight.Side = asrCenter
-    AnchorSideBottom.Control = Owner
-    AnchorSideBottom.Side = asrCenter
-    Left = 163
-    Height = 250
-    Top = 109
-    Width = 214
-    Anchors = [akTop, akLeft, akRight, akBottom]
-    BevelOuter = bvNone
-    ClientHeight = 250
-    ClientWidth = 214
-    TabOrder = 1
-    Visible = False
-    object Label2: TLabel
-      AnchorSideLeft.Control = LoginPanel
-      AnchorSideLeft.Side = asrCenter
-      AnchorSideTop.Side = asrCenter
-      AnchorSideRight.Control = CaptchaPanel
-      AnchorSideRight.Side = asrCenter
-      AnchorSideBottom.Side = asrCenter
-      Left = 7
-      Height = 37
-      Top = 0
-      Width = 199
-      Alignment = taCenter
-      Anchors = [akTop, akLeft, akRight]
-      Caption = 'Введите капчу'
-      Font.Color = 16090919
-      Font.Height = -27
-      ParentColor = False
-      ParentFont = False
-    end
-    object Image1: TImage
-      AnchorSideLeft.Control = CaptchaPanel
-      AnchorSideLeft.Side = asrCenter
-      AnchorSideRight.Control = CaptchaPanel
-      AnchorSideRight.Side = asrCenter
-      Left = 42
-      Height = 50
-      Top = 48
-      Width = 130
-      Anchors = [akTop, akLeft, akRight]
-      AutoSize = True
-    end
-    object CaptchaEdit: TEdit
-      AnchorSideLeft.Control = CaptchaPanel
-      AnchorSideLeft.Side = asrCenter
-      AnchorSideTop.Side = asrCenter
-      AnchorSideRight.Control = CaptchaPanel
-      AnchorSideRight.Side = asrCenter
-      AnchorSideBottom.Side = asrCenter
-      Left = 8
-      Height = 28
-      Top = 112
-      Width = 198
-      Anchors = [akTop, akRight]
-      AutoSelect = False
-      BorderStyle = bsNone
-      Color = 16118770
-      Font.Height = -20
-      ParentFont = False
-      TabOrder = 0
-      TextHint = 'Символы с картинки'
-    end
-    object CaptchaButton: TBCMaterialDesignButton
-      AnchorSideLeft.Control = CaptchaPanel
-      AnchorSideLeft.Side = asrCenter
-      AnchorSideRight.Control = CaptchaPanel
-      AnchorSideRight.Side = asrCenter
-      AnchorSideBottom.Side = asrCenter
-      Left = 7
-      Height = 32
-      Top = 152
-      Width = 200
-      NormalColor = 16090919
-      NormalColorEffect = 14383395
-      Shadow = False
-      TextColor = clWhite
-      TextShadow = False
-      TextFont = 'default'
-      TextQuality = fqSystemClearType
-      Anchors = [akTop, akLeft, akRight]
-      Caption = 'Отправить'
-      OnClick = CaptchaButtonClick
-    end
-  end
   object ValidationPanel: TPanel
     AnchorSideLeft.Control = Owner
     AnchorSideLeft.Side = asrCenter
@@ -324,6 +232,98 @@ object LoginFrame: TLoginFrame
       ParentColor = False
       ParentFont = False
       WordWrap = True
+    end
+  end
+  object CaptchaPanel: TPanel
+    AnchorSideLeft.Control = Owner
+    AnchorSideLeft.Side = asrCenter
+    AnchorSideTop.Control = Owner
+    AnchorSideTop.Side = asrCenter
+    AnchorSideRight.Control = Owner
+    AnchorSideRight.Side = asrCenter
+    AnchorSideBottom.Control = Owner
+    AnchorSideBottom.Side = asrCenter
+    Left = 163
+    Height = 250
+    Top = 109
+    Width = 214
+    Anchors = [akTop, akLeft, akRight, akBottom]
+    BevelOuter = bvNone
+    ClientHeight = 250
+    ClientWidth = 214
+    TabOrder = 1
+    Visible = False
+    object Label2: TLabel
+      AnchorSideLeft.Control = LoginPanel
+      AnchorSideLeft.Side = asrCenter
+      AnchorSideTop.Side = asrCenter
+      AnchorSideRight.Control = CaptchaPanel
+      AnchorSideRight.Side = asrCenter
+      AnchorSideBottom.Side = asrCenter
+      Left = 7
+      Height = 37
+      Top = 0
+      Width = 199
+      Alignment = taCenter
+      Anchors = [akTop, akLeft, akRight]
+      Caption = 'Введите капчу'
+      Font.Color = 16090919
+      Font.Height = -27
+      ParentColor = False
+      ParentFont = False
+    end
+    object Image1: TImage
+      AnchorSideLeft.Control = CaptchaPanel
+      AnchorSideLeft.Side = asrCenter
+      AnchorSideRight.Control = CaptchaPanel
+      AnchorSideRight.Side = asrCenter
+      Left = 42
+      Height = 50
+      Top = 48
+      Width = 130
+      Anchors = [akTop, akLeft, akRight]
+      AutoSize = True
+    end
+    object CaptchaEdit: TEdit
+      AnchorSideLeft.Control = CaptchaPanel
+      AnchorSideLeft.Side = asrCenter
+      AnchorSideTop.Side = asrCenter
+      AnchorSideRight.Control = CaptchaPanel
+      AnchorSideRight.Side = asrCenter
+      AnchorSideBottom.Side = asrCenter
+      Left = 8
+      Height = 28
+      Top = 112
+      Width = 198
+      Anchors = [akTop, akRight]
+      AutoSelect = False
+      BorderStyle = bsNone
+      Color = 16118770
+      Font.Height = -20
+      ParentFont = False
+      TabOrder = 0
+      TextHint = 'Символы с картинки'
+    end
+    object CaptchaButton: TBCMaterialDesignButton
+      AnchorSideLeft.Control = CaptchaPanel
+      AnchorSideLeft.Side = asrCenter
+      AnchorSideRight.Control = CaptchaPanel
+      AnchorSideRight.Side = asrCenter
+      AnchorSideBottom.Side = asrCenter
+      Left = 7
+      Height = 32
+      Top = 152
+      Width = 200
+      NormalColor = 16090919
+      NormalColorEffect = 14383395
+      Shadow = False
+      TextColor = clWhite
+      TextShadow = False
+      TextFont = 'default'
+      TextQuality = fqSystemClearType
+      Anchors = [akTop, akLeft, akRight]
+      Caption = 'Отправить'
+      OnClick = CaptchaButtonClick
     end
   end
 end
