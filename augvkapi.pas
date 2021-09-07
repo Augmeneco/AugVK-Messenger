@@ -10,7 +10,9 @@ uses
   vkontakteapi, Graphics;
 
 const
-  IMAGE_PATH = 'data/image';
+  AVATARS_PATH = 'data/avatars';
+  THUMBNAILS_PATH = 'data/thumbnails';
+
 
 type TMSG = class;
 type TUser = class;
@@ -20,7 +22,7 @@ type
                  atSticker, atGIF, atURL);
   TAttachment = class
     URL: String;
-    Preview: String;
+    Preview: TPicture;
     AttachType: TAttachType;
 end;
 type TAttachmentsList = specialize TFPGList<TAttachment>;
@@ -64,7 +66,7 @@ type
     Requests: TRequests;
     VKAPI: TVKAPI;
 
-    function GetAvatar(URL: String; Path: String): TPicture;
+    function LoadPhoto(URL: String; Path: String): TPicture;
 
   public
     function ParseMsg(Data: TJSONObject): TMSG;
@@ -93,6 +95,8 @@ type
     function GetChatByIndex(Index: Integer): TChat;
 
     function GetPhotoURL(Data: TJSONArray; MaxSize: Boolean=True): String;
+
+    function GetAttachmentName(AttachObject: TJSONObject): String; overload;
 
     procedure SendMessage(Text: String; PeerId: Integer; Reply: Integer; Attachments: TAttachmentsList);
     procedure SendMessage(Text: String; PeerId: Integer); overload;
@@ -278,9 +282,9 @@ begin
     ResultVar.Form := ChatObject.Strings['type'];
     ResultVar.Id := ChatObject.Integers['id'];
     ResultVar.PreviewMsg := Nil;
-    ResultVar.Image := GetAvatar(
+    ResultVar.Image := LoadPhoto(
       ChatObject['photo_50'].AsString,
-      Format(IMAGE_PATH+'/%d.jpg',[2000000000+ResultVar.id])
+      Format(AVATARS_PATH+'/%d.jpg',[2000000000+ResultVar.id])
     );
 
     ChatsCache.Add(ResultVar.Id, ResultVar);
@@ -288,11 +292,11 @@ begin
 
 end;
 
-function TAugVKAPI.GetAvatar(URL: String; Path: String): TPicture;
+function TAugVKAPI.LoadPhoto(URL: String; Path: String): TPicture;
 var
   TmpStream: TFileStream;
 begin
-  DebugLn('Loading avatar '+Path);
+  DebugLn('Loading photo '+Path);
   {Проверяем повреждено ли фото}
   if FileExists(Path) then
   begin
@@ -392,9 +396,9 @@ begin
         ResultVar.Image := ResultVar.PreviewMsg.FromId.Image;
       end
       else
-        ResultVar.Image := GetAvatar(
+        ResultVar.Image := LoadPhoto(
           ChatObject.GetPath('conversation.chat_settings.photo.photo_50').AsString,
-          Format(IMAGE_PATH+'/%d.jpg',[ResultVar.id])
+          Format(AVATARS_PATH+'/%d.jpg',[ResultVar.id])
         );
     end
     else
@@ -472,9 +476,9 @@ begin
           ResultVar.Image := ResultVar.PreviewMsg.FromId.Image;
         end
         else
-          ResultVar.Image := GetAvatar(
+          ResultVar.Image := LoadPhoto(
             ChatObject.GetPath('conversation.chat_settings.photo.photo_50').AsString,
-            Format(IMAGE_PATH+'/%d.jpg',[ResultVar.id])
+            Format(AVATARS_PATH+'/%d.jpg',[ResultVar.id])
           );
       end
       else
@@ -518,9 +522,9 @@ begin
   Result.name := data['first_name'].AsString + ' ' +
                  data['last_name'].AsString;
 
-  Result.Image := GetAvatar(
+  Result.Image := LoadPhoto(
     data['photo_50'].AsString,
-    Format(IMAGE_PATH+'/%d.jpg',[data['id'].AsInteger])
+    Format(AVATARS_PATH+'/%d.jpg',[data['id'].AsInteger])
   );
 
   addUser(Result);
@@ -535,9 +539,9 @@ begin
     Result.id := data['id'].AsInteger * -1;
     Result.name := data['name'].AsString;
 
-    Result.Image := GetAvatar(
+    Result.Image := LoadPhoto(
       data['photo_50'].AsString,
-      Format(IMAGE_PATH+'/%d.jpg',[data['id'].AsInteger*-1])
+      Format(AVATARS_PATH+'/%d.jpg',[data['id'].AsInteger*-1])
     );
 
     addUser(Result);
@@ -696,12 +700,23 @@ begin
     Result := ResultObject['src'].AsString;
 end;
 
+function TAugVKAPI.GetAttachmentName(AttachObject: TJSONObject): String;
+var
+  AttachType: String;
+begin
+  AttachType := AttachObject['type'].AsString;
+
+  Result := AttachType + AttachObject.GetPath(AttachType+'.owner_id').AsString+
+                         '_' + AttachObject.GetPath(AttachType+'.id').AsString;
+end;
+
 function TAugVKAPI.ParseMsg(Data: TJSONObject): TMSG;
 var
   Attachment: TAttachment;
   AttachmentJSON: TJSONObject;
   JSONEnum: TJSONEnum;
   Sizes: TJSONArray;
+  PhotoURL: String;
 begin
   Result := TMSG.Create;
   Result.id := data['id'].AsInteger;
@@ -723,7 +738,13 @@ begin
 
         Attachment := TAttachment.Create;
         Attachment.URL := GetPhotoURL(Sizes);
-        Attachment.Preview := GetPhotoURL(Sizes, False);
+
+        PhotoURL := GetPhotoURL(Sizes, False);
+
+        Attachment.Preview := LoadPhoto(
+          PhotoURL,
+          THUMBNAILS_PATH+'/'+GetAttachmentName(AttachmentJSON)+'.jpg'
+        );
         Attachment.AttachType := TAttachType.atPhoto;
 
         Result.Attachments.Add(Attachment);
@@ -763,7 +784,9 @@ begin
   UsersCache := TUsersList.Create;
   DrawedChats := TChatsList.Create;
   ChatsCache := TChatsMap.Create;
-  ForceDirectories(IMAGE_PATH);
+
+  ForceDirectories(AVATARS_PATH);
+  ForceDirectories(THUMBNAILS_PATH);
 end;
 
 end.
