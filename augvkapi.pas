@@ -21,6 +21,7 @@ type
   TAttachType = (atPhoto, atVideo, atAudio, atDoc, atWall, atMarket, atPoll,
                  atSticker, atGIF, atURL);
   TAttachment = class
+    Name: String;
     URL: String;
     Preview: TPicture;
     AttachType: TAttachType;
@@ -666,7 +667,6 @@ end;
 
 function TAugVKAPI.GetPhotoURL(Data: TJSONArray; MaxSize: Boolean=True): String;
 var
-  I: Integer;
   PhotoObject: TJSONObject;
   JSONEnum: TJSONEnum;
   MSize: Integer;
@@ -681,11 +681,13 @@ begin
   begin
     PhotoObject := TJSONObject(JSONEnum.Value);
     if MaxSize then
+    begin
       if (PhotoObject['height'].AsInteger * PhotoObject['width'].AsInteger) >= MSize then
       begin
         MSize := PhotoObject['height'].AsInteger * PhotoObject['width'].AsInteger;
         ResultObject := PhotoObject;
       end
+    end
     else
       if (PhotoObject['height'].AsInteger * PhotoObject['width'].AsInteger) <= MSize then
       begin
@@ -738,6 +740,7 @@ begin
 
         Attachment := TAttachment.Create;
         Attachment.URL := GetPhotoURL(Sizes);
+        Attachment.Name := GetAttachmentName(AttachmentJSON);
 
         PhotoURL := GetPhotoURL(Sizes, False);
 
@@ -750,21 +753,36 @@ begin
         Result.Attachments.Add(Attachment);
       end;
 
-      {if AttachmentJSON['type'].AsString = 'doc' then
+      if AttachmentJSON['type'].AsString = 'doc' then
       begin
-        writeln(AttachmentJSON.FormatJSON());
-        Sizes := TJSONArray(AttachmentJSON.GetPath('doc.preview.photo.sizes'));
-
         Attachment := TAttachment.Create;
-        Attachment.URL := GetPhotoURL(Sizes);
-        Attachment.Preview := GetPhotoURL(Sizes, False);
+
+        if AttachmentJSON.Objects['doc'].IndexOfName('preview') = -1 then
+        begin
+          Attachment.Preview := LoadPhoto(
+            'https://sun9-57.userapi.com/impg/8eSBy-qs5hGTfda0rMXDzNdsY3TJbKmylFABRg/PB3ANc3ngBg.jpg?size=60x60&quality=96&sign=b2c1b375366032f3dfbc0b947dd90ffe&type=album',
+            THUMBNAILS_PATH+'/doc.jpg'
+          );
+        end
+        else
+        begin
+          Sizes := TJSONArray(AttachmentJSON.GetPath('doc.preview.photo.sizes'));
+          Attachment.Preview := LoadPhoto(
+            GetPhotoURL(Sizes, False),
+            THUMBNAILS_PATH+'/'+GetAttachmentName(AttachmentJSON)+'.jpg'
+          );
+          Attachment.URL := GetPhotoURL(Sizes);
+        end;
+
+        Attachment.Name := AttachmentJSON.GetPath('doc.title').AsString;
+        Attachment.URL := AttachmentJSON.GetPath('doc.url').AsString;
         Attachment.AttachType := TAttachType.atDoc;
 
-        if AttachmentJSON['doc.ext'].AsString = 'gif' then
+        if AttachmentJSON.GetPath('doc.ext').AsString = 'gif' then
           Attachment.AttachType := TAttachType.atGIF;
 
         Result.Attachments.Add(Attachment);
-      end;}
+      end;
 
 
     end;

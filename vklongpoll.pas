@@ -49,6 +49,7 @@ begin
 	                .add('lp_version', 3)
               )
             );
+
   LpServer := lpInfo.Strings['server'];
   LpKey := lpInfo.Strings['key'];
   LpTS := lpInfo.Integers['ts'];
