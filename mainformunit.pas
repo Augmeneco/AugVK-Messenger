@@ -22,6 +22,7 @@ type
   TLoadChatData = record
     AddToTop: Boolean;
     ScrollTo: TScrollTo;
+    FrameCollection: TStackPanelControlCollection;
   end;
 
   PLoadChatData = ^TLoadChatData;
@@ -422,7 +423,6 @@ begin
       StackPanel2.ControlCollection.Move(StackPanel2.ControlCollection.Count-1, 0);
     //MainForm.StackPanel2.Height := MainForm.StackPanel2.Height+Frame.Height;
   end;
-  //free TMSGsArray(Response)
   Dispose(LoadChatData);
 
   ChatBlockLoad := False;

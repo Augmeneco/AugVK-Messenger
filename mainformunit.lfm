@@ -15,6 +15,7 @@ object MainForm: TMainForm
   OnResize = FormResize
   ParentDoubleBuffered = False
   Position = poDesktopCenter
+  LCLVersion = '2.0.12.0'
   inline LoginFrameForm: TLoginFrame
     Height = 500
     Width = 803
@@ -23,29 +24,56 @@ object MainForm: TMainForm
     ClientWidth = 803
     TabOrder = 1
     Visible = False
-    inherited CaptchaPanel: TPanel[0]
-      AnchorSideLeft.Control = LoginFrameForm
-      AnchorSideTop.Control = LoginFrameForm
-      AnchorSideRight.Control = LoginFrameForm
-      AnchorSideBottom.Control = LoginFrameForm
-      Left = 294
-      Top = 125
-    end
-    inherited ValidationPanel: TPanel[1]
+    inherited ValidationPanel: TPanel
       AnchorSideLeft.Control = LoginFrameForm
       AnchorSideTop.Control = LoginFrameForm
       AnchorSideRight.Control = LoginFrameForm
       AnchorSideBottom.Control = LoginFrameForm
       Left = 275
       Top = 100
+      inherited Label4: TLabel
+        Height = 30
+      end
+      inherited ValidCodeEdit: TEdit
+        Height = 28
+      end
+      inherited ForceSMSLabel: TLabel
+        Height = 15
+        Width = 165
+      end
     end
-    inherited LoginPanel: TPanel[2]
+    inherited LoginPanel: TPanel
       AnchorSideLeft.Control = LoginFrameForm
       AnchorSideTop.Control = LoginFrameForm
       AnchorSideRight.Control = LoginFrameForm
       AnchorSideBottom.Control = LoginFrameForm
       Left = 276
       Top = 120
+      inherited LoginEdit: TEdit
+        Height = 28
+      end
+      inherited PasswordEdit: TEdit
+        Height = 28
+      end
+      inherited Label1: TLabel
+        Left = 65
+        Height = 54
+        Width = 121
+      end
+    end
+    inherited CaptchaPanel: TPanel
+      AnchorSideLeft.Control = LoginFrameForm
+      AnchorSideTop.Control = LoginFrameForm
+      AnchorSideRight.Control = LoginFrameForm
+      AnchorSideBottom.Control = LoginFrameForm
+      Left = 294
+      Top = 125
+      inherited Label2: TLabel
+        Height = 37
+      end
+      inherited CaptchaEdit: TEdit
+        Height = 28
+      end
     end
   end
   object Panel1: TPanel

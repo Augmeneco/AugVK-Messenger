@@ -68,10 +68,23 @@ begin
   begin
     LpResult := TJSONObject(GetJSON(TFPHTTPClient.SimpleGet(
       Format('https://%s?act=a_check&key=%s&ts=%d&wait=25&mode=2&version=3', [LpServer, LpKey, LpTS]))));
+    if LpResult.Find('failed') <> nil then
+      case LpResult.Integers['failed'] of
+        1:
+        begin
+          LpTS := LpResult.Integers['ts'];
+          continue;
+        end;
+        2, 3:
+        begin
+          UpdateLPInfo;
+          continue;
+        end;
+      end;
     LpTS := LpResult.Integers['ts'];
     for Event in LpResult.Arrays['updates'] do
       ProcessEvent(TJSONArray(Event.Value));
-    end;
+  end;
 end;
 
 procedure TLongpollThread.ProcessEvent(Event: TJSONArray);

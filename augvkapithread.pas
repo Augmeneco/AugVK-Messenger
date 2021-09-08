@@ -21,9 +21,12 @@ type
 		Method: String;
     Args: Array of Variant;
 
+    // Должна быть очищена после выполнения всех коллбеков
     ResponseData: TObject;
+    // Должна быть очищена в коллбеке
     CallbackData: Pointer;
     Callback: TVKThreadCallBack;
+    ThreadedCallback: TVKThreadCallBack;
 
   protected
     procedure Execute; override;
@@ -31,7 +34,9 @@ type
 
   public
 		constructor Create;
+    destructor Free;
     function AddCallback(ACallback: TVKThreadCallBack): TVKThread;
+    function AddThreadedCallback(AThreadedCallback: TVKThreadCallBack): TVKThread;
     function AddCallbackData(AData: Pointer): TVKThread;
 
 		function GetHistory(PeerId: Integer; Count: Integer; Offset: Integer;
@@ -51,8 +56,16 @@ begin
 	  if Method = 'GetHistory' then
 	  begin
 	    ResponseData := AugVK.GetHistory(Integer(Args[0]), Integer(Args[1]), Integer(Args[2]), Integer(Args[3]));
-	    Synchronize(@RunCallback);
+
+      if Assigned(ThreadedCallback) then
+        ThreadedCallback(ResponseData, CallbackData);
+
+      if Assigned(Callback) then
+	      Synchronize(@RunCallback);
 		end;
+
+    if Assigned(ResponseData) then
+      ResponseData.Free;
 	except
     on E: Exception do
       DebugLn(DumpExceptionCallStack(E));
@@ -72,9 +85,20 @@ begin
     [Config.Integers['active_account']])).AsString);
 end;
 
+destructor TVKThread.Free;
+begin
+  AugVK.Free;
+end;
+
 function TVKThread.AddCallback(ACallback: TVKThreadCallBack): TVKThread;
 begin
   Callback := ACallback;
+  Result := Self;
+end;
+
+function TVKThread.AddThreadedCallback(AThreadedCallback: TVKThreadCallBack): TVKThread;
+begin
+  ThreadedCallback := AThreadedCallback;
   Result := Self;
 end;
 

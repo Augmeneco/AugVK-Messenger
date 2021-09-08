@@ -30,7 +30,7 @@
           </Target>
           <SearchPaths>
             <IncludeFiles Value="$(ProjOutDir)"/>
-            <OtherUnitFiles Value="lib/dslayout"/>
+            <OtherUnitFiles Value="lib/dslayout;fpkeyring"/>
             <UnitOutputDirectory Value="precompile/$(TargetCPU)-$(TargetOS)-$(LCLWidgetType)"/>
           </SearchPaths>
           <CodeGeneration>
@@ -59,7 +59,7 @@
           </Target>
           <SearchPaths>
             <IncludeFiles Value="$(ProjOutDir)"/>
-            <OtherUnitFiles Value="lib/dslayout"/>
+            <OtherUnitFiles Value="lib/dslayout;fpkeyring"/>
             <UnitOutputDirectory Value="precompile/$(TargetCPU)-$(TargetOS)-$(LCLWidgetType)"/>
           </SearchPaths>
           <CodeGeneration>
@@ -82,7 +82,7 @@
           </Target>
           <SearchPaths>
             <IncludeFiles Value="$(ProjOutDir)"/>
-            <OtherUnitFiles Value="lib/cef"/>
+            <OtherUnitFiles Value="lib/cef;fpkeyring"/>
             <UnitOutputDirectory Value="precompile/$(TargetCPU)-$(TargetOS)-$(LCLWidgetType)"/>
           </SearchPaths>
           <CodeGeneration>
@@ -191,7 +191,7 @@
     </Target>
     <SearchPaths>
       <IncludeFiles Value="$(ProjOutDir)"/>
-      <OtherUnitFiles Value="lib/dslayout"/>
+      <OtherUnitFiles Value="lib/dslayout;fpkeyring"/>
       <UnitOutputDirectory Value="precompile/$(TargetCPU)-$(TargetOS)-$(LCLWidgetType)"/>
     </SearchPaths>
     <CodeGeneration>
