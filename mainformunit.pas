@@ -478,6 +478,7 @@ begin
   //  Frame.Fill(LastMessage);
   //end;
 
+
   LoadChat(Id, 0, MsgId);
 end;
 
