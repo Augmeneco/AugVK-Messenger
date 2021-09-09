@@ -29,6 +29,7 @@ type
     MessageObject: augvkapi.TMSG;
     procedure Fill(Msg: augvkapi.TMSG);
     procedure RecalcSize;
+    destructor Free;
   end;
 
 implementation
@@ -157,6 +158,11 @@ begin
   AutoSizeHeight := AvatarImage.BorderSpacing.Top+NameLabel.Height+MessageTextLabel.Height+10;
   if AutoSizeHeight > Constraints.MinHeight then
     Height := AutoSizeHeight;
+end;
+
+destructor TMessageFrame.Free;
+begin
+  FreeAndNil(MessageObject);
 end;
 
 end.

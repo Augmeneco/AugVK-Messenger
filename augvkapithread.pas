@@ -39,8 +39,8 @@ type
     function AddThreadedCallback(AThreadedCallback: TVKThreadCallBack): TVKThread;
     function AddCallbackData(AData: Pointer): TVKThread;
 
-		function GetHistory(PeerId: Integer; Count: Integer; Offset: Integer;
-			StartMessageId: Integer): TVKThread;
+		function GetHistory(PeerId, Count, Offset, StartMessageId: Integer): TVKThread;
+    function GetChats(Count, Offset: Integer): TVKThread;
 	end;
 
 implementation
@@ -53,16 +53,18 @@ uses
 procedure TVKThread.Execute;
 begin
   try
-	  if Method = 'GetHistory' then
-	  begin
-	    ResponseData := AugVK.GetHistory(Integer(Args[0]), Integer(Args[1]), Integer(Args[2]), Integer(Args[3]));
+	  case Method of
+      'GetHistory':
+	      ResponseData := AugVK.GetHistory(Integer(Args[0]), Integer(Args[1]), Integer(Args[2]), Integer(Args[3]));
+      'GetChats':
+        ResponseData := AugVK.GetChats(Integer(Args[0]), Integer(Args[1]));
+    end;
 
-      if Assigned(ThreadedCallback) then
-        ThreadedCallback(ResponseData, CallbackData);
+    if Assigned(ThreadedCallback) then
+      ThreadedCallback(ResponseData, CallbackData);
 
-      if Assigned(Callback) then
-	      Synchronize(@RunCallback);
-		end;
+    if Assigned(Callback) then
+	    Synchronize(@RunCallback);
 
     if Assigned(ResponseData) then
       ResponseData.Free;
@@ -108,12 +110,17 @@ begin
   Result := Self;
 end;
 
-function TVKThread.GetHistory(PeerId: Integer; Count: Integer;
-	Offset: Integer; StartMessageId: Integer): TVKThread;
+function TVKThread.GetHistory(PeerId, Count, Offset, StartMessageId: Integer): TVKThread;
 begin
   Method := 'GetHistory';
   Args := [PeerId, Count, Offset, StartMessageId];
-  Callback := Callback;
+  Result := Self;
+end;
+
+function TVKThread.GetChats(Count, Offset: Integer): TVKThread;
+begin
+  Method := 'GetChats';
+  Args := [Count, Offset];
   Result := Self;
 end;
 

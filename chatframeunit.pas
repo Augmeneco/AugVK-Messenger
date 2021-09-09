@@ -6,7 +6,7 @@ interface
 
 uses
   Classes, SysUtils, Forms, Controls, StdCtrls, ExtCtrls, Graphics, augvkapi,
-  Design, DividerBevel, Types;
+  Design, Types;
 
 type
 
@@ -24,15 +24,17 @@ type
   private
 
   public
+    ChatObject: TChat;
     Id: Integer;
     procedure Fill(Chat: TChat);
-    constructor Create(TheOwner: TComponent);
+    constructor Create(TheOwner: TComponent); override;
+    destructor Free;
   end;
 
 implementation
 
 uses
-  MainFormUnit, MessageFrameUnit, LCLType, LCLIntf, LMessages;
+  MainFormUnit, LCLType, LCLIntf, LMessages;
 
 {$R *.lfm}
 
@@ -40,7 +42,7 @@ uses
 
 procedure TChatFrame.FrameClick(Sender: TObject);
 begin
-  MainForm.OpenChat(Id);
+  MainForm.OpenChat(Id, ChatObject.PreviewMsg);
 end;
 
 procedure TChatFrame.FrameMouseEnter(Sender: TObject);
@@ -57,9 +59,9 @@ procedure TChatFrame.FrameMouseWheel(Sender: TObject; Shift: TShiftState;
   WheelDelta: Integer; MousePos: TPoint; var Handled: Boolean);
 begin
   if WheelDelta > 0 then
-    SendMessage(MainForm.ChatListScroll.Handle, LM_VSCROLL, SB_LINEUP, 0)
+    SendMessage(MainForm.DialogsScroll.Handle, LM_VSCROLL, SB_LINEUP, 0)
   else
-    SendMessage(MainForm.ChatListScroll.Handle, LM_VSCROLL, SB_LINEDOWN, 0);
+    SendMessage(MainForm.DialogsScroll.Handle, LM_VSCROLL, SB_LINEDOWN, 0);
 end;
 
 procedure TChatFrame.Fill(Chat: TChat);
@@ -68,12 +70,18 @@ begin
   TitleLabel.Caption := Chat.name;
   LastMessageLabel.Caption := Chat.previewMsg.text;
   Id := Chat.Id;
+  ChatObject := Chat;
 end;
 
 constructor TChatFrame.Create(TheOwner: TComponent);
 begin
   inherited Create(TheOwner);
   ControlStyle := ControlStyle + [csOpaque];
+end;
+
+destructor TChatFrame.Free;
+begin
+  FreeAndNil(ChatObject);
 end;
 
 end.

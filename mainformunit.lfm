@@ -15,7 +15,6 @@ object MainForm: TMainForm
   OnResize = FormResize
   ParentDoubleBuffered = False
   Position = poDesktopCenter
-  LCLVersion = '2.0.12.0'
   inline LoginFrameForm: TLoginFrame
     Height = 500
     Width = 803
@@ -218,12 +217,12 @@ object MainForm: TMainForm
         TabOrder = 2
         TabStop = True
         OnVScroll = ChatScrollVScroll
-        object StackPanel2: TStackPanel
+        object ChatStack: TStackPanel
           Left = 0
           Height = 0
-          Top = 0
+          Top = 409
           Width = 630
-          Align = alTop
+          Align = alBottom
           AutoSize = True
           BevelOuter = bvNone
           Constraints.MinWidth = 100
@@ -276,7 +275,7 @@ object MainForm: TMainForm
         ParentFont = False
         TabOrder = 0
       end
-      object ChatListScroll: TScrollBox
+      object DialogsScroll: TAugScrollBox
         Left = 0
         Height = 448
         Top = 50
@@ -294,10 +293,11 @@ object MainForm: TMainForm
         ParentFont = False
         TabOrder = 1
         TabStop = True
-        object StackPanel1: TStackPanel
-          AnchorSideLeft.Control = ChatListScroll
-          AnchorSideTop.Control = ChatListScroll
-          AnchorSideRight.Control = ChatListScroll
+        OnVScroll = DialogsScrollVScroll
+        object DialogsStack: TStackPanel
+          AnchorSideLeft.Control = DialogsScroll
+          AnchorSideTop.Control = DialogsScroll
+          AnchorSideRight.Control = DialogsScroll
           AnchorSideRight.Side = asrBottom
           Left = 0
           Height = 0
