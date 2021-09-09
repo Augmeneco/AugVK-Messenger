@@ -151,28 +151,6 @@ object MainForm: TMainForm
         ParentColor = False
         ParentFont = False
         TabOrder = 1
-        object Memo1: TMemo
-          Left = 5
-          Height = 16
-          Top = 9
-          Width = 589
-          HelpType = htKeyword
-          Align = alClient
-          BorderSpacing.Left = 5
-          BorderSpacing.Top = 9
-          BorderSpacing.Bottom = 14
-          BorderStyle = bsNone
-          Color = clWhite
-          Font.CharSet = RUSSIAN_CHARSET
-          Font.Color = clBlack
-          Font.Height = -13
-          Font.Name = 'Segoe UI'
-          Font.Pitch = fpVariable
-          Font.Quality = fqDraft
-          OnKeyDown = Memo1KeyDown
-          ParentFont = False
-          TabOrder = 0
-        end
         object SpeedButton1: TBCSVGButton
           Cursor = crHandPoint
           Left = 594
@@ -194,6 +172,49 @@ object MainForm: TMainForm
           )
           Position = 0
           Maximum = 0
+        end
+        object BCSVGButton2: TBCSVGButton
+          AnchorSideLeft.Control = Panel5
+          AnchorSideTop.Control = Panel5
+          AnchorSideBottom.Control = Panel5
+          AnchorSideBottom.Side = asrBottom
+          Cursor = crHandPoint
+          Left = 0
+          Height = 39
+          Top = 0
+          Width = 36
+          Anchors = [akTop, akLeft, akBottom]
+          SVGString = '<?xml version="1.0" encoding="utf-8"?>'#13#10'<svg role="img" width="1em" xmlns="http://www.w3.org/2000/svg" height="1em" viewBox="0 0 16 16" aria-hidden="true" xmlns:xlink="http://www.w3.org/1999/xlink" preserveAspectRatio="xMidYMid meet">'#13#10'  <g fill="none">'#13#10'    <path d="M3.257 8.707l4.597-4.596a2.5 2.5 0 0 1 3.535 3.536L6.086 12.95a1 1 0 0 1-1.414-1.414l5.303-5.304a.5.5 0 0 0-.707-.707L3.964 10.83a2 2 0 1 0 2.829 2.828l5.303-5.303a3.5 3.5 0 0 0-4.95-4.95L2.55 8a.5.5 0 1 0 .707.707z" fill="#5f8dd3"/>'#13#10'  </g>'#13#10'</svg>'#13#10
+          Color = clWhite
+          ColorOpacity = 128
+          OnClick = BCSVGButton2Click
+          Caption = 'BCSVGButton2'
+          SVGNormalXML.Strings = (
+            '<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true" role="img" width="1em" height="1em" preserveAspectRatio="xMidYMid meet" viewBox="0 0 16 16"><g fill="none"><path d="M3.257 8.707l4.597-4.596a2.5 2.5 0 0 1 3.535 3.536L6.086 12.95a1 1 0 0 1-1.414-1.414l5.303-5.304a.5.5 0 0 0-.707-.707L3.964 10.83a2 2 0 1 0 2.829 2.828l5.303-5.303a3.5 3.5 0 0 0-4.95-4.95L2.55 8a.5.5 0 1 0 .707.707z" fill="#5f8dd3"/></g></svg>'
+          )
+          Position = 0
+          Maximum = 0
+        end
+        object Memo1: TMemo
+          AnchorSideLeft.Control = BCSVGButton2
+          AnchorSideLeft.Side = asrBottom
+          AnchorSideTop.Control = Panel5
+          AnchorSideRight.Control = SpeedButton1
+          AnchorSideBottom.Control = Panel5
+          AnchorSideBottom.Side = asrBottom
+          Left = 36
+          Height = 16
+          Top = 9
+          Width = 558
+          Anchors = [akTop, akLeft, akRight, akBottom]
+          BorderSpacing.Top = 9
+          BorderSpacing.Bottom = 14
+          BorderStyle = bsNone
+          Lines.Strings = (
+            'Memo1'
+          )
+          OnChange = Memo1Change
+          TabOrder = 0
         end
       end
       object ChatScroll: TAugScrollBox

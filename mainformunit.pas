@@ -7,9 +7,9 @@ interface
 
 uses
   Classes, SysUtils, Forms, Controls, Graphics, Dialogs, ExtCtrls, Buttons,
-  StdCtrls, ComCtrls, ActnList, Menus, VkLongpoll, fpjson, Utils,
+  StdCtrls, ComCtrls, ActnList, Menus, Arrow, VkLongpoll, fpjson, Utils,
   CachedLongpoll, augvkapi, MessageFrameUnit, ChatFrameUnit, StackPanel,
-  AugScrollBox, BCSVGButton, BCListBox, fgl, Types, AugVKApiThread,
+  AugScrollBox, BCSVGButton, BCListBox, BGRAShape, fgl, Types, AugVKApiThread,
   ConfigUtils, LoginFrameUnit;
 
 type
@@ -29,12 +29,13 @@ type
   TMainForm = class(TForm)
     BCSVGButton1: TBCSVGButton;
     ActionList1: TActionList;
+    BCSVGButton2: TBCSVGButton;
     DialogsScroll: TAugScrollBox;
     ChatScroll: TAugScrollBox;
     LoginFrameForm: TLoginFrame;
-    Memo1: TMemo;
     DialogsPanel: TPanel;
     ChatPanel: TPanel;
+    Memo1: TMemo;
     ShowMenuItem: TMenuItem;
     CloseMenuItem: TMenuItem;
     Panel1: TPanel;
@@ -48,6 +49,7 @@ type
     ChatStack: TStackPanel;
     TrayIcon1: TTrayIcon;
     procedure BCSVGButton1Click(Sender: TObject);
+    procedure BCSVGButton2Click(Sender: TObject);
     procedure DialogsScrollVScroll(Sender: TObject; var ScrollPos: Integer);
     procedure ChatScrollVScroll(Sender: TObject; var ScrollPos: Integer);
     procedure CloseMenuItemClick(Sender: TObject);
@@ -55,6 +57,7 @@ type
     procedure FormCreate(Sender: TObject);
     procedure CustomExceptionHandler(Sender: TObject; E: Exception);
     procedure FormResize(Sender: TObject);
+    procedure Memo1Change(Sender: TObject);
     procedure Memo1KeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
     procedure ShowMenuItemClick(Sender: TObject);
     procedure SpeedButton1Click(Sender: TObject);
@@ -176,6 +179,8 @@ begin
     AfterLogin(Config.GetPath(TokenPath).AsString);
 
   DialogsWidthPrcnt := Config.Floats['dialogs_width'];
+
+  Memo1.Font.Height:=Abs(Memo1.Font.Size*Memo1.Font.PixelsPerInch div Screen.PixelsPerInch); // I do this on the Tform OnCreate event, to ensure only done once
 end;
 
 procedure TMainForm.CustomExceptionHandler(Sender: TObject; E: Exception);
@@ -194,6 +199,11 @@ begin
   DialogsPanel.Width := Trunc(Width * DialogsWidthPrcnt);
 end;
 
+procedure TMainForm.Memo1Change(Sender: TObject);
+begin
+  Memo1.Height:=1+Memo1.Lines.Count*Abs(Memo1.Font.Height*Screen.PixelsPerInch div 72); // I do this anywhere after adding the text and/or after editing it
+end;
+
 procedure TMainForm.FormCloseQuery(Sender: TObject; var CanClose: boolean);
 begin
   MainForm.Hide;
@@ -203,6 +213,11 @@ end;
 procedure TMainForm.BCSVGButton1Click(Sender: TObject);
 begin
   ShowOnlyDialogs;
+end;
+
+procedure TMainForm.BCSVGButton2Click(Sender: TObject);
+begin
+
 end;
 
 procedure TMainForm.DialogsScrollVScroll(Sender: TObject;
