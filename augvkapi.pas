@@ -25,6 +25,8 @@ type
     URL: String;
     Preview: TPicture;
     AttachType: TAttachType;
+
+    destructor Destroy; override;
 end;
 type TAttachmentsList = specialize TFPGList<TAttachment>;
 
@@ -39,6 +41,8 @@ type
     FromId: TUser;
     Reply: TMSGsList;
     Attachments: TAttachmentsList;
+
+    destructor Destroy; override;
 end;
 
 type
@@ -116,6 +120,33 @@ var
   UsersCache: TUsersList;
   ChatsCache: TChatsMap;
   DrawedChats: TChatsList;
+
+
+destructor TAttachment.Destroy;
+begin
+  FreeAndNil(Self.Preview);
+
+  inherited;
+end;
+
+destructor TMSG.Destroy;
+var
+  Attachment: TAttachment;
+begin
+  while Self.Attachments.Count > 0 do
+  begin
+    try
+      Attachment := Self.Attachments[0];
+      FreeAndNil(Attachment);
+    finally
+    end;
+  end;
+
+  FreeAndNil(Self.Attachments);
+  FreeAndNil(Attachment);
+
+  inherited;
+end;
 
 procedure TAugVKAPI.SendMessage(Text: String; PeerId: Integer); overload;
 begin
