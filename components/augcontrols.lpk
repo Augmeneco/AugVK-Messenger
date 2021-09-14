@@ -11,7 +11,7 @@
         <UnitOutputDirectory Value="lib\$(TargetCPU)-$(TargetOS)"/>
       </SearchPaths>
     </CompilerOptions>
-    <Files Count="3">
+    <Files Count="4">
       <Item1>
         <Filename Value="stackpanel.pas"/>
         <HasRegisterProc Value="True"/>
@@ -26,6 +26,11 @@
         <HasRegisterProc Value="True"/>
         <UnitName Value="AugScrollBox"/>
       </Item3>
+      <Item4>
+        <Filename Value="augimage.pas"/>
+        <HasRegisterProc Value="True"/>
+        <UnitName Value="AugImage"/>
+      </Item4>
     </Files>
     <RequiredPkgs Count="2">
       <Item1>

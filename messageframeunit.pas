@@ -6,6 +6,7 @@ interface
 
 uses
   Classes, SysUtils, Forms, Controls, ExtCtrls, StdCtrls, Graphics, augvkapi,
+  AugImage, BGRAShape, atshapelinebgra, BCRoundedImage, BGRASpriteAnimation,
   Types;
 
 type
@@ -14,15 +15,19 @@ type
 
   TMessageFrame = class(TFrame)
     AvatarImage: TImage;
+    BGRAShape1: TBGRAShape;
     DateTimeLabel: TLabel;
+    ImagesFlow: TFlowPanel;
     MessageTextLabel: TLabel;
 		NameLabel: TLabel;
     Panel1: TPanel;
+    AttachmentsPanel: TPanel;
     procedure FrameMouseWheel(Sender: TObject; Shift: TShiftState;
       WheelDelta: Integer; MousePos: TPoint; var Handled: Boolean);
     procedure FrameResize(Sender: TObject);
     procedure ChangeDesignToRight;
     procedure MakeRoundImage(Bmp: TBitmap);
+    procedure FillImagePanel;
   private
 
   public
@@ -36,7 +41,8 @@ implementation
 
 {$R *.lfm}
 
-uses MainFormUnit, DateUtils, LCLType, LCLIntf, LMessages;
+uses
+  MainFormUnit, DateUtils, LCLType, LCLIntf, LMessages, Math;
 
 { TMessageFrame }
 
@@ -57,60 +63,73 @@ begin
 end;
 
 procedure TMessageFrame.ChangeDesignToRight;
+  procedure SwapAnchors(Control: TControl);
+    function InvertSideRef(SideRef: TAnchorSideReference): TAnchorSideReference;
+    begin
+      if SideRef = asrTop then
+        Result := asrBottom
+      else if SideRef = asrBottom then
+        Result := asrTop;
+    end;
+
+  var
+    TempControl: TControl;
+    TempBorder: Integer;
+  begin
+    with Control do
+    begin
+      if not ((akRight in Anchors) and (akLeft in Anchors)) then
+      begin
+        if akRight in Anchors then
+        begin
+          Anchors := Anchors - [akRight];
+          Anchors := Anchors + [akLeft];
+        end;
+        if akLeft in Anchors then
+        begin
+          Anchors := Anchors - [akLeft];
+          Anchors := Anchors + [akRight];
+        end;
+      end;
+
+      TempControl := AnchorSideLeft.Control;
+      TempBorder := BorderSpacing.Left;
+
+      AnchorSideLeft.Control := AnchorSideRight.Control;
+      BorderSpacing.Left := BorderSpacing.Right;
+
+      AnchorSideRight.Control := TempControl;
+      BorderSpacing.Right := TempBorder;
+    end;
+  end;
+
 var
   Temp: Integer;
 begin
   with Panel1 do
   begin
-    Anchors := [akTop, akRight];
-    AnchorSideLeft.Control := nil;
-    AnchorSideRight.Control := Self;
     AnchorSideRight.Side := asrRight;
-    // обмен значениями
-    Temp := BorderSpacing.Right;
-    BorderSpacing.Right := BorderSpacing.Left;
-    BorderSpacing.Left := Temp;
-    // обмен значениями
+    SwapAnchors(Panel1);
   end;
 
   with MessageTextLabel do
   begin
     Alignment := taRightJustify;
-    AnchorSideLeft.Control := Self;
     AnchorSideLeft.Side := asrLeft;
-    AnchorSideRight.Control := Panel1;
     AnchorSideRight.Side := asrLeft;
-    // обмен значениями
-    Temp := BorderSpacing.Right;
-    BorderSpacing.Right := BorderSpacing.Left;
-    BorderSpacing.Left := Temp;
-    // обмен значениями
+    SwapAnchors(MessageTextLabel);
   end;
 
   with NameLabel do
   begin
-    Anchors := [akTop, akRight];
-    AnchorSideLeft.Control := nil;
-    AnchorSideRight.Control := Panel1;
     AnchorSideRight.Side := asrLeft;
-    // обмен значениями
-    Temp := BorderSpacing.Right;
-    BorderSpacing.Right := BorderSpacing.Left;
-    BorderSpacing.Left := Temp;
-    // обмен значениями
+    SwapAnchors(NameLabel);
   end;
 
   with DateTimeLabel do
   begin
-    Anchors := [akTop, akRight];
-    AnchorSideLeft.Control := nil;
-    AnchorSideRight.Control := NameLabel;
     AnchorSideRight.Side := asrLeft;
-    // обмен значениями
-    Temp := BorderSpacing.Right;
-    BorderSpacing.Right := BorderSpacing.Left;
-    BorderSpacing.Left := Temp;
-    // обмен значениями
+    SwapAnchors(DateTimeLabel);
   end;
 end;
 
@@ -129,24 +148,48 @@ begin
 
 end;
 
+procedure TMessageFrame.FillImagePanel;
+
+
+var
+  Attach: TAttachment;
+  Image: TAugImage;
+  I: Integer;
+begin
+  for Attach in MessageObject.Attachments do
+  begin
+    if Attach.AttachType = atPhoto then
+    begin
+      Image := TAugImage.Create(Self);
+      Image.Parent := ImagesFlow;
+      Image.BorderSpacing.Around := 2;
+      Image.Center := True;
+      Image.Cover := True;
+      Image.Picture := Attach.Preview;
+    end;
+  end;
+end;
+
 procedure TMessageFrame.Fill(Msg: augvkapi.TMSG);
 var
   Date: TDateTime;
 begin
+  MessageObject := Msg;
   AvatarImage.Picture := Msg.fromId.Image;
   //MakeRoundImage(AvatarImage.Picture.Bitmap);
   //SetRoundRectRegion(Panel1, 50, 50);
   NameLabel.Caption := Msg.fromId.Name;
   MessageTextLabel.Caption := Msg.Text;
-  MessageObject := Msg;
   Date := UnixToDateTime(Msg.Date);
   if DaysBetween(Now, Date) >= 1 then
     DateTimeLabel.Caption := FormatDateTime('DD.MM.YYYY h:nn', Date)
   else
     DateTimeLabel.Caption := FormatDateTime('h:nn', Date);
 
-  if msg.FromId.Id = MainForm.ActiveUser.Id then
-    ChangeDesignToRight;
+  FillImagePanel;
+
+  //if msg.FromId.Id = MainForm.ActiveUser.Id then
+  //  ChangeDesignToRight;
 
   RecalcSize;
 end;
@@ -154,10 +197,38 @@ end;
 procedure TMessageFrame.RecalcSize;
 var
   AutoSizeHeight: Integer;
+  i: Integer;
+  ImagesMod: Integer;
+  ImagesCount: Integer;
 begin
-  AutoSizeHeight := AvatarImage.BorderSpacing.Top+NameLabel.Height+MessageTextLabel.Height+10;
+  ImagesCount := ImagesFlow.ControlList.Count;
+  if ImagesCount = 1 then
+  begin
+    with TAugImage(ImagesFlow.ControlList[0].Control) do
+    begin
+      Width := ImagesFlow.Width;
+      Height := Trunc(Picture.Height*(ImagesFlow.Width/Picture.Width));
+    end;
+  end
+  else
+  begin
+    ImagesMod := ImagesCount mod 3;
+    for i:=0 to ImagesCount-1 do
+    begin
+      ImagesFlow.ControlList[i].Control.Height := 150;
+      if i < ImagesCount-ImagesMod then
+        ImagesFlow.ControlList[i].Control.Width := Trunc(ImagesFlow.Width/3)-4-1
+      else
+        ImagesFlow.ControlList[i].Control.Width := Trunc(ImagesFlow.Width/ImagesMod)-4-1;
+    end;
+  end;
+
+  AutoSizeHeight := AttachmentsPanel.Top+AttachmentsPanel.Height+10;
+    //AvatarImage.BorderSpacing.Top+NameLabel.Height+MessageTextLabel.Height+10;
   if AutoSizeHeight > Constraints.MinHeight then
-    Height := AutoSizeHeight;
+    Height := AutoSizeHeight
+  else
+    Height := Constraints.MinHeight;
 end;
 
 destructor TMessageFrame.Free;

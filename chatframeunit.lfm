@@ -1,13 +1,13 @@
 object ChatFrame: TChatFrame
   Cursor = crHandPoint
   Left = 0
-  Height = 69
+  Height = 70
   Top = 0
-  Width = 306
+  Width = 299
   HorzScrollBar.Page = 1
   VertScrollBar.Page = 1
-  ClientHeight = 69
-  ClientWidth = 306
+  ClientHeight = 70
+  ClientWidth = 299
   Color = clNone
   OnClick = FrameClick
   OnMouseEnter = FrameMouseEnter
@@ -15,8 +15,8 @@ object ChatFrame: TChatFrame
   OnMouseWheel = FrameMouseWheel
   ParentColor = False
   TabOrder = 0
-  DesignLeft = 271
-  DesignTop = -12
+  DesignLeft = 262
+  DesignTop = -21
   object ChatAvatarImage: TImage
     AnchorSideLeft.Control = Owner
     AnchorSideTop.Control = Owner
@@ -42,7 +42,7 @@ object ChatFrame: TChatFrame
     Left = 65
     Height = 15
     Top = 13
-    Width = 231
+    Width = 224
     Anchors = [akTop, akLeft, akRight]
     AutoSize = False
     BorderSpacing.Left = 5
@@ -68,7 +68,7 @@ object ChatFrame: TChatFrame
     Left = 65
     Height = 15
     Top = 40
-    Width = 231
+    Width = 224
     Anchors = [akLeft, akRight, akBottom]
     AutoSize = False
     BorderSpacing.Left = 5

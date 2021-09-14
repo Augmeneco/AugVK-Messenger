@@ -1,18 +1,18 @@
 object MessageFrame: TMessageFrame
   AnchorSideRight.Side = asrBottom
   Left = 0
-  Height = 70
+  Height = 106
   Top = 0
-  Width = 338
+  Width = 409
   BorderSpacing.InnerBorder = 10
-  ClientHeight = 70
-  ClientWidth = 338
+  ClientHeight = 106
+  ClientWidth = 409
   Constraints.MinHeight = 70
   OnMouseWheel = FrameMouseWheel
   OnResize = FrameResize
   TabOrder = 0
-  DesignLeft = 244
-  DesignTop = -39
+  DesignLeft = 228
+  DesignTop = -55
   object NameLabel: TLabel
     AnchorSideLeft.Control = Panel1
     AnchorSideLeft.Side = asrBottom
@@ -38,9 +38,7 @@ object MessageFrame: TMessageFrame
     Top = 10
     Width = 79
     Caption = 'DateTimeLabel'
-    Font.Color = clGray
     ParentColor = False
-    ParentFont = False
   end
   object MessageTextLabel: TLabel
     AnchorSideLeft.Control = Panel1
@@ -52,19 +50,13 @@ object MessageFrame: TMessageFrame
     Left = 65
     Height = 15
     Top = 25
-    Width = 263
+    Width = 334
     Anchors = [akTop, akLeft, akRight]
     BorderSpacing.Left = 5
     BorderSpacing.Right = 10
     Caption = 'MessageTextLabel'
-    Font.CharSet = RUSSIAN_CHARSET
-    Font.Color = clBlack
-    Font.Height = -12
-    Font.Name = 'Arial'
-    Font.Pitch = fpVariable
-    Font.Quality = fqDraft
+    Constraints.MaxWidth = 400
     ParentColor = False
-    ParentFont = False
     WordWrap = True
   end
   object Panel1: TPanel
@@ -87,6 +79,45 @@ object MessageFrame: TMessageFrame
       Height = 50
       Top = 0
       Width = 50
+    end
+  end
+  object AttachmentsPanel: TPanel
+    AnchorSideLeft.Control = Panel1
+    AnchorSideLeft.Side = asrBottom
+    AnchorSideTop.Control = MessageTextLabel
+    AnchorSideTop.Side = asrBottom
+    AnchorSideRight.Control = Owner
+    AnchorSideRight.Side = asrBottom
+    Left = 65
+    Height = 0
+    Top = 45
+    Width = 334
+    Anchors = [akTop, akLeft, akRight]
+    AutoSize = True
+    BorderSpacing.Left = 5
+    BorderSpacing.Top = 5
+    BorderSpacing.Right = 10
+    BevelOuter = bvNone
+    ClientHeight = 0
+    ClientWidth = 334
+    Constraints.MaxWidth = 400
+    TabOrder = 1
+    object ImagesFlow: TFlowPanel
+      AnchorSideLeft.Control = AttachmentsPanel
+      AnchorSideTop.Control = AttachmentsPanel
+      AnchorSideRight.Control = AttachmentsPanel
+      AnchorSideRight.Side = asrBottom
+      Left = 0
+      Height = 0
+      Top = 0
+      Width = 334
+      Anchors = [akTop, akLeft, akRight]
+      AutoSize = True
+      BevelOuter = bvNone
+      ControlList = <>
+      FlowLayout = tlTop
+      FlowStyle = fsLeftRightTopBottom
+      TabOrder = 0
     end
   end
 end

@@ -9,8 +9,8 @@ uses
   Classes, SysUtils, Forms, Controls, Graphics, Dialogs, ExtCtrls, Buttons,
   StdCtrls, ComCtrls, ActnList, Menus, Arrow, VkLongpoll, fpjson, Utils,
   CachedLongpoll, augvkapi, MessageFrameUnit, ChatFrameUnit, StackPanel,
-  AugScrollBox, BCSVGButton, BCListBox, BGRAShape, fgl, Types, AugVKApiThread,
-  ConfigUtils, LoginFrameUnit;
+  AugScrollBox, AugImage, BCSVGButton, BCListBox, BGRAShape, atshapelinebgra,
+  fgl, Types, AugVKApiThread, ConfigUtils, LoginFrameUnit, Math;
 
 type
   { TMainForm }
@@ -36,6 +36,10 @@ type
     DialogsPanel: TPanel;
     ChatPanel: TPanel;
     Memo1: TMemo;
+    OpenDialog1: TOpenDialog;
+    ShapeLineBGRA1: TShapeLineBGRA;
+    ShapeLineBGRA2: TShapeLineBGRA;
+    ShapeLineBGRA3: TShapeLineBGRA;
     ShowMenuItem: TMenuItem;
     CloseMenuItem: TMenuItem;
     Panel1: TPanel;
@@ -180,7 +184,7 @@ begin
 
   DialogsWidthPrcnt := Config.Floats['dialogs_width'];
 
-  Memo1.Font.Height:=Abs(Memo1.Font.Size*Memo1.Font.PixelsPerInch div Screen.PixelsPerInch); // I do this on the Tform OnCreate event, to ensure only done once
+  Memo1.Height := Memo1.Font.Size+6;
 end;
 
 procedure TMainForm.CustomExceptionHandler(Sender: TObject; E: Exception);
@@ -201,7 +205,9 @@ end;
 
 procedure TMainForm.Memo1Change(Sender: TObject);
 begin
-  Memo1.Height:=1+Memo1.Lines.Count*Abs(Memo1.Font.Height*Screen.PixelsPerInch div 72); // I do this anywhere after adding the text and/or after editing it
+  if Memo1.Lines.Count <= 12 then
+    Memo1.Height := (Memo1.Font.Size+6)*IfThen(Memo1.Lines.Count=0, 1, Memo1.Lines.Count);
+  //Memo1.Height:=1+Memo1.Lines.Count*Abs(Memo1.Font.Height*Screen.PixelsPerInch div 72); // I do this anywhere after adding the text and/or after editing it
 end;
 
 procedure TMainForm.FormCloseQuery(Sender: TObject; var CanClose: boolean);
@@ -216,8 +222,14 @@ begin
 end;
 
 procedure TMainForm.BCSVGButton2Click(Sender: TObject);
+var
+  FileName: String;
 begin
-
+  if OpenDialog1.Execute then
+    for FileName in OpenDialog1.Files do
+      begin
+        ShowMessage(FileName);
+      end;
 end;
 
 procedure TMainForm.DialogsScrollVScroll(Sender: TObject;

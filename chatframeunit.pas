@@ -6,7 +6,7 @@ interface
 
 uses
   Classes, SysUtils, Forms, Controls, StdCtrls, ExtCtrls, Graphics, augvkapi,
-  Design, Types;
+  Design, atshapelinebgra, BGRASpriteAnimation, Types;
 
 type
 
