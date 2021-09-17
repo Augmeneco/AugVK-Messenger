@@ -822,9 +822,14 @@ end;
 
 constructor TAugVKAPI.Create(Token: String);
 begin
-  requests := TRequests.Create;
-  vkapi := TVKAPI.Create;
-  vkapi.access_token := token;
+  Requests := TRequests.Create;
+  Requests.AddHeader(
+    'User-Agent',
+    'KateMobileAndroid/48.2 lite-433 (Android 8.9.0; SDK 16; armeabi-v7a; LGE LG-E615; ru)'
+  );
+
+  VKAPI := TVKAPI.Create;
+  VKAPI.Access_Token := Token;
   //GetChats;
 end;
 
