@@ -38,6 +38,7 @@ type
     function Get(URL: String): TResponse; overload;
     procedure Get(URL: String; Stream: TStream); overload;
     function Post(URL: String; Params: TParams): TResponse;
+    function AddHeader(Key: String; Value: String): TRequests;
 end;
 
 function URLEncode(URL: String): String;
@@ -93,6 +94,7 @@ var
 begin
   BS := TBytesStream.Create;
   Response := TResponse.Create;
+
   Client.FormPost(
      URL,
      Params.BuildPost(),
@@ -110,6 +112,12 @@ constructor TRequests.Create;
 begin
   Client := TFPHTTPClient.Create(nil);
   AllowedCodes := [200];
+end;
+
+function TRequests.AddHeader(Key: String; Value: String): TRequests;
+begin
+  Client.AddHeader(Key, Value);
+  Result := Self;
 end;
 
 function TParams.BuildUrl(): String;

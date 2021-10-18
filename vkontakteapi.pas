@@ -68,9 +68,14 @@ end;
 
 constructor TVKAPI.Create;
 begin
-  requests := TRequests.Create;
-  requests.get('https://api.vk.com/method/users.get'); //говно-костыль  
-  version := DEFAULT_API_VERSION;
+  Requests := TRequests.Create;
+  Requests.AddHeader(
+    'User-Agent',
+    'KateMobileAndroid/48.2 lite-433 (Android 8.9.0; SDK 16; armeabi-v7a; LGE LG-E615; ru)'
+  );
+  Requests.Get('https://api.vk.com/method/users.get'); //говно-костыль
+
+  Version := DEFAULT_API_VERSION;
 
   inherited Create;
 end;
