@@ -10,12 +10,36 @@ object WebBrowserForm: TWebBrowserForm
   OnCreate = FormCreate
   OnShow = FormShow
   Position = poDesktopCenter
-  object BrowserWindow1: TBrowserWindow
+  object FrameBrowser1: TFrameBrowser
+    Cursor = crArrow
     Left = 0
     Height = 459
     Top = 0
     Width = 445
+    CharSet = DEFAULT_CHARSET
+    CodePage = 0
+    DefBackground = clWhite
+    DefFontColor = 16090919
+    DefFontName = 'Arial'
+    HistoryIndex = 0
+    HistoryMaxCount = 0
+    NoSelect = True
+    PrintMarginBottom = 2
+    PrintMarginLeft = 2
+    PrintMarginRight = 2
+    PrintMarginTop = 2
+    PrintScale = 1
+    OnImageRequest = FrameBrowser1ImageRequest
     Align = alClient
     TabOrder = 0
+    OnGetPostRequestEx = FrameBrowser1GetPostRequestEx
+  end
+  object FPHTTPClient1: TFPHTTPClient
+    KeepConnection = False
+    IOTimeout = 0
+    ConnectTimeout = 3000
+    HTTPversion = '1.1'
+    AllowRedirect = False
+    OnRedirect = FPHTTPClient1Redirect
   end
 end

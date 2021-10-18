@@ -5,30 +5,36 @@ unit WebBrowserFormUnit;
 interface
 
 uses
-  Classes, SysUtils, Forms, Controls, Graphics, Dialogs, uCEFChromium,
-  uCEFChromiumWindow, uCEFBrowserWindow, uCEFTypes, uCEFInterfaces,
-  uCEFWorkScheduler, uCEFApplication, GlobalCefApplication,
-  uCEFLazarusCocoa, uCEFWindowParent, uCEFLinkedWindowParent,
-  uCEFTextfieldComponent, uCEFPanelComponent;
+  Classes, SysUtils, Forms, Controls, Graphics, Dialogs, FramBrwz, HtmlView,
+  UrlConn, HtmlGlobals, fprequests, HTMLUn2, fphttpclient, LazLoggerBase;
 
 type
 
 	{ TWebBrowserForm }
 
   TWebBrowserForm = class(TForm)
-    BrowserWindow1: TBrowserWindow;
+    FPHTTPClient1: TFPHTTPClient;
+    FrameBrowser1: TFrameBrowser;
     procedure FormCreate(Sender: TObject);
     procedure FormShow(Sender: TObject);
-    procedure BrowserWindow1AddressChange(Sender: TObject;
-      const browser: ICefBrowser; const frame: ICefFrame; const url: ustring);
+    procedure FPHTTPClient1Redirect(Sender: TObject; const ASrc: String;
+      var ADest: String);
+    procedure FrameBrowser1GetPostRequestEx(Sender: TObject; IsGet: Boolean;
+      const URL, Query, EncType, Referer: ThtString; Reload: Boolean;
+      var NewURL: ThtString; var DocType: ThtmlFileType; var Stream: TStream);
+    procedure FrameBrowser1ImageRequest(Sender: TObject; const SRC: ThtString;
+      var Stream: TStream);
   private
+    Redirected: Boolean;
     FURL: String;
-    procedure SetURL(URL: String);
+    //Requests: TRequests;
+    procedure SetURL(AURL: String);
     function GetURL: String;
   public
     URLToOpen: String;
+    Token: String;
     function GetOAuthToken: String;
-    property URL: String read GetURL write SetURL;
+    property LoadedURL: String read GetURL write SetURL;
   end;
 
 implementation
@@ -42,29 +48,75 @@ uses
 
 procedure TWebBrowserForm.FormShow(Sender: TObject);
 begin
-  URL := URLToOpen;
+  //LoadedURL := URLToOpen;
 end;
 
-procedure TWebBrowserForm.BrowserWindow1AddressChange(Sender: TObject;
-  const browser: ICefBrowser; const frame: ICefFrame; const url: ustring);
-var
-  URLParts: TURI;
+procedure TWebBrowserForm.FPHTTPClient1Redirect(Sender: TObject;
+  const ASrc: String; var ADest: String);
 begin
-  FURL := url;
-  URLParts := ParseURI(url);
-  if (URLParts.Host+URLParts.Path+URLParts.Document) = 'oauth.vk.com/blank.html' then
-    Self.Close;
+  FURL := ADest;
+  Redirected := True;
+end;
+
+procedure TWebBrowserForm.FrameBrowser1GetPostRequestEx(Sender: TObject;
+  IsGet: Boolean; const URL, Query, EncType, Referer: ThtString;
+  Reload: Boolean; var NewURL: ThtString; var DocType: ThtmlFileType;
+  var Stream: TStream);
+var
+  uri: TURI;
+  ss: TStringStream;
+begin
+  Redirected := False;
+  uri := ParseURI(url);
+  //if String(URL).IndexOf('css') > 0 then
+  //  exit;
+  if IsGet then
+  begin
+    if uri.Protocol = 'file' then
+    begin
+      Stream := TFileStream.Create(uri.Host, fmOpenRead);
+      DocType := ThtmlFileType.HTMLType;
+      exit;
+    end;
+    Stream := TBytesStream.Create;
+    FPHTTPClient1.Get(URL, Stream);
+    DocType := THtmlFileType.HTMLType;
+  end
+  else
+  begin
+    Stream := TBytesStream.Create;
+    FPHTTPClient1.FormPost(URL, Query, Stream);
+    DocType := THtmlFileType.HTMLType;
+  end;
+
+  if not Redirected then
+    FURL := URL
+  else
+    NewURL := FURL;
+end;
+
+procedure TWebBrowserForm.FrameBrowser1ImageRequest(Sender: TObject;
+  const SRC: ThtString; var Stream: TStream);
+var
+  Filename: String;
+begin
+  Stream := TBytesStream.Create;
+  //Filename := FrameBrowser1.HTMLExpandFilename(SRC);
+  //Requests.Get(Filename, Stream);
+  FPHTTPClient1.Get(SRC, Stream);
 end;
 
 procedure TWebBrowserForm.FormCreate(Sender: TObject);
 begin
-  BrowserWindow1.Chromium.OnAddressChange := @BrowserWindow1AddressChange;
+  //Requests := TRequests.Create;
+  //Requests.AllowedCodes := [200, 301];
+  FPHTTPClient1.AllowRedirect := True;
 end;
 
-procedure TWebBrowserForm.SetURL(URL: String);
+procedure TWebBrowserForm.SetURL(AURL: String);
 begin
-  //IpHtmlPanel1.OpenURL(URL);
-  BrowserWindow1.LoadURL(URL);
+  FrameBrowser1.LoadURL(AURL);
+  //FrameBrowser1.LoadFromFile('vk.html');
 end;
 
 function TWebBrowserForm.GetURL: String;
@@ -81,7 +133,7 @@ var
 begin
   URLToOpen := 'https://oauth.vk.com/authorize?client_id=2685278&scope=69662&redirect_uri=https://oauth.vk.com/blank.html&display=mobile&response_type=token&revoke=1';
   Self.ShowModal;
-  URLParts := ParseURI(url);
+  URLParts := ParseURI(LoadedURL);
   ParamList := TStringList.Create;
   ParamList.Delimiter := '&';
   ParamList.StrictDelimiter := True;
@@ -89,26 +141,6 @@ begin
   Result := ParamList.Values['access_token'];
   ParamList.Free;
 end;
-
-initialization
-  {$IFDEF DARWIN}  // $IFDEF MACOSX
-  AddCrDelegate;
-  {$ENDIF}
-  if GlobalCEFApp = nil then begin
-    CreateGlobalCEFApp;
-    if not GlobalCEFApp.StartMainProcess then begin
-      DestroyGlobalCEFApp;
-      DestroyGlobalCEFWorkScheduler;
-      halt(0); // exit the subprocess
-    end;
-  end;
-
-finalization
-  (* Destroy from this unit, which is used after "Interfaces". So this happens before the Application object is destroyed *)
-  if GlobalCEFWorkScheduler <> nil then
-    GlobalCEFWorkScheduler.StopScheduler;
-  DestroyGlobalCEFApp;
-  DestroyGlobalCEFWorkScheduler;
 
 end.
 

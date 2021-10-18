@@ -7,10 +7,11 @@ interface
 
 uses
   Classes, SysUtils, Forms, Controls, Graphics, Dialogs, ExtCtrls, Buttons,
-  StdCtrls, ComCtrls, ActnList, Menus, Arrow, VkLongpoll, fpjson, Utils,
+  StdCtrls, ComCtrls, ActnList, Menus, VkLongpoll, fpjson, Utils,
   CachedLongpoll, augvkapi, MessageFrameUnit, ChatFrameUnit, StackPanel,
-  AugScrollBox, AugImage, BCSVGButton, BCListBox, BGRAShape, atshapelinebgra,
-  fgl, Types, AugVKApiThread, ConfigUtils, LoginFrameUnit, Math;
+  AugScrollBox, BCSVGButton, BCListBox, atshapelinebgra, fgl, Types,
+  AugVKApiThread, ConfigUtils, LoginFrameUnit, CefLoginFrameUnit,
+  Math, MediaViewerFormUnit;
 
 type
   { TMainForm }
@@ -30,6 +31,7 @@ type
     BCSVGButton1: TBCSVGButton;
     ActionList1: TActionList;
     BCSVGButton2: TBCSVGButton;
+    CefLoginFrame1: TCefLoginFrame;
     DialogsScroll: TAugScrollBox;
     ChatScroll: TAugScrollBox;
     LoginFrameForm: TLoginFrame;
@@ -57,6 +59,7 @@ type
     procedure DialogsScrollVScroll(Sender: TObject; var ScrollPos: Integer);
     procedure ChatScrollVScroll(Sender: TObject; var ScrollPos: Integer);
     procedure CloseMenuItemClick(Sender: TObject);
+    procedure FormClose(Sender: TObject; var CloseAction: TCloseAction);
     procedure FormCloseQuery(Sender: TObject; var CanClose: boolean);
     procedure FormCreate(Sender: TObject);
     procedure CustomExceptionHandler(Sender: TObject; E: Exception);
@@ -163,21 +166,16 @@ end;
 
 procedure TMainForm.FormCreate(Sender: TObject);
 var
-  Token: string;
-  //WebBrowser: TWebBrowserForm;
   TokenPath: String;
 begin
 	Application.OnException := @CustomExceptionHandler;
+  CefLoginFrame1.OnLogined := @OnLogined;
 
   // Получение токена
   TokenPath := Format('accounts[%d].token', [Config.Integers['active_account']]);
   if Config.FindPath(TokenPath) = nil then
   begin
-    //WebBrowser := TWebBrowserForm.Create(MainForm);
-    //Token := WebBrowser.GetOAuthToken;
-    LoginFrameForm.OnLogined := @OnLogined;
-    LoginFrameForm.Show;
-    LoginFrameForm.BringToFront;
+    CefLoginFrame1.OpenLoginPage;
   end
   else
     AfterLogin(Config.GetPath(TokenPath).AsString);
@@ -285,6 +283,11 @@ begin
   Halt;
 end;
 
+procedure TMainForm.FormClose(Sender: TObject; var CloseAction: TCloseAction);
+begin
+  TrayIcon1.Hide;
+end;
+
 procedure TMainForm.SpeedButton1Click(Sender: TObject);
 begin
   if SelectedChat <> -1 then
@@ -338,7 +341,7 @@ begin
   Config.Integers['active_account'] := AccountAddedId;
   SaveConfig;
 
-  LoginFrameForm.Hide;
+  CefLoginFrame1.Hide;
 
   AfterLogin(Token);
 end;

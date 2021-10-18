@@ -7,7 +7,7 @@ interface
 uses
   Classes, SysUtils, Forms, Controls, ExtCtrls, StdCtrls, Graphics, augvkapi,
   AugImage, BGRAShape, atshapelinebgra, BCRoundedImage, BGRASpriteAnimation,
-  Types;
+  RichView, Types;
 
 type
 

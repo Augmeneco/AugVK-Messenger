@@ -12,8 +12,8 @@ uses
    {$ENDIF}
    Interfaces, // this includes the LCL widgetset
    Forms, MainFormUnit, Net, ChatFrameUnit, {VkontakteApi,
-	 VkLongpoll,} {WebBrowserFormUnit,} Utils, design, ConfigUtils,
-   LoginFrameUnit;
+	 VkLongpoll,} {WebBrowserFormUnit,} Utils, design, ConfigUtils, LoginFrameUnit,
+   MediaViewerFormUnit, lazrichview;
 
 {$R *.res}
 

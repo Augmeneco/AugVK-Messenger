@@ -1,0 +1,87 @@
+object OAuthLoginFrame: TOAuthLoginFrame
+  Left = 0
+  Height = 240
+  Top = 0
+  Width = 320
+  ClientHeight = 240
+  ClientWidth = 320
+  TabOrder = 0
+  DesignLeft = 308
+  DesignTop = 26
+  object FrameBrowser1: TFrameBrowser
+    Left = 0
+    Height = 240
+    Top = 0
+    Width = 320
+    CharSet = DEFAULT_CHARSET
+    CodePage = 0
+    HistoryIndex = 0
+    HistoryMaxCount = 0
+    NoSelect = False
+    PrintMarginBottom = 2
+    PrintMarginLeft = 2
+    PrintMarginRight = 2
+    PrintMarginTop = 2
+    PrintScale = 1
+    OnImageRequest = FrameBrowser1ImageRequest
+    Align = alClient
+    TabOrder = 0
+    OnGetPostRequestEx = FrameBrowser1GetPostRequestEx
+  end
+  object FPHTTPClient1: TFPHTTPClient
+    KeepConnection = False
+    IOTimeout = 0
+    ConnectTimeout = 3000
+    HTTPversion = '1.1'
+    Cookies.Strings = (
+      'remixir=DELETED'
+      'expires=Thu, 01 Jan 1970 00:00:01 GMT'
+      'path=/'
+      'domain=.vk.com'
+      'secure'
+      'HttpOnly'
+      'remixlang=0'
+      'expires=Fri, 21 Oct 2022 23:54:54 GMT'
+      'path=/'
+      'domain=.vk.com'
+      'remixstid=985369958_jI3524WOhP6fcU8YZlvCvY9WnixFHJzcT6KleZtwVmz'
+      'expires=Tue, 18 Oct 2022 23:42:04 GMT'
+      'path=/'
+      'domain=.vk.com'
+      'secure'
+      'remixlgck=dc594d3776b9126b97'
+      'expires=Sun, 09 Oct 2022 04:47:34 GMT'
+      'path=/'
+      'domain=.vk.com'
+      'secure'
+      'HttpOnly'
+      'remixlhk=85db60b7eb203d4903'
+      'expires=Tue, 11 Oct 2022 13:35:07 GMT'
+      'path=/'
+      'domain=.vk.com'
+      'secure'
+      'remixQUIC=1'
+      'expires=Mon, 10 Oct 2022 06:07:37 GMT'
+      'path=/'
+      'domain=.vk.com'
+      'secure'
+      'remixaudio_show_alert_today=0'
+      'expires=Sun, 17 Oct 2021 13:49:14 GMT'
+      'path=/'
+      'domain=.vk.com'
+      'secure'
+      'remixff=0'
+      'expires=Tue, 26 Oct 2021 13:49:14 GMT'
+      'path=/'
+      'domain=.vk.com'
+      'secure'
+      'remixua=-1%7C-1%7C-1%7C2390312892'
+      'expires=Wed, 19 Oct 2022 03:26:51 GMT'
+      'path=/'
+      'domain=.vk.com'
+      'secure'
+    )
+    AllowRedirect = True
+    OnRedirect = FPHTTPClient1Redirect
+  end
+end

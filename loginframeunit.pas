@@ -42,6 +42,7 @@ type
     procedure NeedCaptcha(ErrorJson: TJSONObject);
     procedure CaptchaButtonClick(Sender: TObject);
     procedure NeedValidation(ErrorJson: TJSONObject);
+    procedure OpenLoginPage;
     procedure ValidationButtonClick(Sender: TObject);
     procedure ForceSMSLabelClick(Sender: TObject);
     procedure ProcessResponse(Response: TResponse);
@@ -179,6 +180,13 @@ begin
       ForceSMSLabel.Show;
     end;
   end;
+end;
+
+procedure TLoginFrame.OpenLoginPage;
+begin
+  NeedLogin(nil);
+  Show;
+  BringToFront;
 end;
 
 procedure TLoginFrame.ValidationButtonClick(Sender: TObject);

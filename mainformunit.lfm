@@ -11,11 +11,24 @@ object MainForm: TMainForm
   Constraints.MinWidth = 300
   DoubleBuffered = True
   Font.Name = 'Arial'
+  OnClose = FormClose
   OnCloseQuery = FormCloseQuery
   OnCreate = FormCreate
   OnResize = FormResize
   ParentDoubleBuffered = False
   Position = poDesktopCenter
+  inline CefLoginFrame1: TCefLoginFrame
+    Height = 500
+    Width = 803
+    Align = alClient
+    ClientHeight = 500
+    ClientWidth = 803
+    TabOrder = 2
+    inherited BrowserWindow1: TBrowserWindow
+      Height = 500
+      Width = 803
+    end
+  end
   inline LoginFrameForm: TLoginFrame
     Height = 500
     Width = 803
