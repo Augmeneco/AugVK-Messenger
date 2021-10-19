@@ -3,7 +3,7 @@ unit Utils;
 interface
 
 uses
-  jsonConf, fpjson, jsonparser, sysutils;
+  jsonConf, fpjson, jsonparser, sysutils, augvkapi;
 
 type
   TLogType = (logNormal, logGood, logError, logWarning);
@@ -18,7 +18,7 @@ procedure LogWrite(str: String; logType: TLogType=TLogType.logNormal);
 function VeryBadToLower(str: String): String;
 function UnescapeHTML ( const S : String ) : String;
 function DumpExceptionCallStack(E: Exception): String;
-
+function GeneratePreviewText(PreviewMessage: TMSG): String;
 
 implementation
 
@@ -106,6 +106,31 @@ begin
   Result := Report;
   //ShowMessage(Report);
   //Halt; // End of program execution
+end;
+
+function GeneratePreviewText(PreviewMessage: TMSG): String;
+begin
+  if PreviewMessage.Attachments.Count > 0 then
+  begin
+    case PreviewMessage.Attachments[0].AttachType of
+      atPhoto: Result += 'Фотография';
+      atVideo: Result += 'Видео';
+      atAudio: Result += 'Аудиозапись';
+      atDoc  : Result += 'Документ';
+      atWall : Result += 'Запись';
+      atMarket:Result += 'Товар';
+      atPoll : Result += 'Опрос';
+      atSticker:Result += 'Стикер';
+      atGIF  : Result += 'Гифка';
+      atURL  : Result += 'Ссылка';
+    end;
+
+    if PreviewMessage.Text.Length > 0 then
+      Result += ', ';
+  end;
+
+  if PreviewMessage.Text.Length > 0 then
+    Result += PreviewMessage.Text;
 end;
 
 begin

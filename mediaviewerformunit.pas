@@ -6,7 +6,7 @@ interface
 
 uses
   Classes, SysUtils, Forms, Controls, Graphics, Dialogs, StdCtrls, AugImage,
-  BCSVGButton, BGRASpriteAnimation;
+  BCSVGButton;
 
 type
 
@@ -15,6 +15,7 @@ type
   TMediaViewerForm = class(TForm)
     AugImage1: TAugImage;
     BCSVGButton1: TBCSVGButton;
+    procedure AugImage1Click(Sender: TObject);
     procedure BCSVGButton1Click(Sender: TObject);
     procedure BCSVGButton1MouseEnter(Sender: TObject);
     procedure BCSVGButton1MouseLeave(Sender: TObject);
@@ -31,9 +32,17 @@ implementation
 
 {$R *.lfm}
 
+uses
+  MainFormUnit;
+
 { TMediaViewerForm }
 
 procedure TMediaViewerForm.BCSVGButton1Click(Sender: TObject);
+begin
+  Self.Close;
+end;
+
+procedure TMediaViewerForm.AugImage1Click(Sender: TObject);
 begin
   Self.Close;
 end;
@@ -48,5 +57,7 @@ begin
   BCSVGButton1.ColorOpacity := 50;
 end;
 
+initialization
+  MediaViewerForm := TMediaViewerForm.Create(MainForm);
 end.
 

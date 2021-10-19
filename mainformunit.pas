@@ -11,7 +11,7 @@ uses
   CachedLongpoll, augvkapi, MessageFrameUnit, ChatFrameUnit, StackPanel,
   AugScrollBox, BCSVGButton, BCListBox, atshapelinebgra, fgl, Types,
   AugVKApiThread, ConfigUtils, LoginFrameUnit, CefLoginFrameUnit,
-  Math, MediaViewerFormUnit;
+  Math;
 
 type
   { TMainForm }
@@ -28,9 +28,9 @@ type
   PLoadScrollData = ^TLoadScrollData;
 
   TMainForm = class(TForm)
-    BCSVGButton1: TBCSVGButton;
+    ReturnButton: TBCSVGButton;
     ActionList1: TActionList;
-    BCSVGButton2: TBCSVGButton;
+    AttachButton: TBCSVGButton;
     CefLoginFrame1: TCefLoginFrame;
     DialogsScroll: TAugScrollBox;
     ChatScroll: TAugScrollBox;
@@ -49,13 +49,13 @@ type
     Panel4: TPanel;
     Panel5: TPanel;
     PopupMenu1: TPopupMenu;
-    SpeedButton1: TBCSVGButton;
+    SendButton: TBCSVGButton;
     Splitter1: TSplitter;
     DialogsStack: TStackPanel;
     ChatStack: TStackPanel;
     TrayIcon1: TTrayIcon;
-    procedure BCSVGButton1Click(Sender: TObject);
-    procedure BCSVGButton2Click(Sender: TObject);
+    procedure ReturnButtonClick(Sender: TObject);
+    procedure AttachButtonClick(Sender: TObject);
     procedure DialogsScrollVScroll(Sender: TObject; var ScrollPos: Integer);
     procedure ChatScrollVScroll(Sender: TObject; var ScrollPos: Integer);
     procedure CloseMenuItemClick(Sender: TObject);
@@ -67,7 +67,7 @@ type
     procedure Memo1Change(Sender: TObject);
     procedure Memo1KeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
     procedure ShowMenuItemClick(Sender: TObject);
-    procedure SpeedButton1Click(Sender: TObject);
+    procedure SendButtonClick(Sender: TObject);
     procedure Splitter1Moved(Sender: TObject);
     procedure TrayIcon1MouseUp(Sender: TObject; Button: TMouseButton;
       Shift: TShiftState; X, Y: Integer);
@@ -123,7 +123,9 @@ var
   Found: Boolean = False;
   Frame: TMessageFrame;
   OnBottom: Boolean = False;
+  LastMessage: TMSG;
 begin
+  LastMessage := LongpollThread.GetCache(Event.Integers[3], 1)[0];
   // перемещение наверх
   for Idx:=0 to MainForm.DialogsStack.ControlCollection.Count-1 do
   begin
@@ -136,7 +138,7 @@ begin
   if Found = False then
     exit;
 
-  TChatFrame(MainForm.DialogsStack.ControlCollection[Idx].Control).LastMessageLabel.Caption := Event.Strings[5];
+  TChatFrame(MainForm.DialogsStack.ControlCollection[Idx].Control).LastMessageLabel.Caption := GeneratePreviewText(LastMessage);
   MainForm.DialogsStack.ControlCollection.Move(Idx, 0);
 
   // если чат не выбран то выйти
@@ -150,7 +152,7 @@ begin
   begin
     Frame := TMessageFrame.Create(MainForm.ChatStack.Owner);
     Frame.Name := Frame.Name+IntToStr(Event.Integers[1]);
-    Frame.Fill(LongpollThread.GetCache(Event.Integers[3], 1)[0]);
+    Frame.Fill(LastMessage);
     Frame.Parent := MainForm.ChatStack;
     //Frame.Constraints.MaxWidth := MainForm.FlowPanel1.Width;
     //Frame.Width := MainForm.FlowPanel1.Width;
@@ -214,20 +216,20 @@ begin
   CanClose:=False;
 end;
 
-procedure TMainForm.BCSVGButton1Click(Sender: TObject);
+procedure TMainForm.ReturnButtonClick(Sender: TObject);
 begin
   ShowOnlyDialogs;
 end;
 
-procedure TMainForm.BCSVGButton2Click(Sender: TObject);
+procedure TMainForm.AttachButtonClick(Sender: TObject);
 var
   FileName: String;
 begin
   if OpenDialog1.Execute then
     for FileName in OpenDialog1.Files do
-      begin
-        ShowMessage(FileName);
-      end;
+    begin
+      ShowMessage(FileName);
+    end;
 end;
 
 procedure TMainForm.DialogsScrollVScroll(Sender: TObject;
@@ -288,7 +290,7 @@ begin
   TrayIcon1.Hide;
 end;
 
-procedure TMainForm.SpeedButton1Click(Sender: TObject);
+procedure TMainForm.SendButtonClick(Sender: TObject);
 begin
   if SelectedChat <> -1 then
   begin
@@ -366,7 +368,7 @@ procedure TMainForm.ShowBothPanels;
 begin
   DialogsPanel.Show;
   ChatPanel.Show;
-  BCSVGButton1.Hide;
+  ReturnButton.Hide;
   DialogsPanel.Align := alLeft;
   Splitter1.Show;
   DialogsWidthPrcnt := Config.Floats['dialogs_width'];
@@ -377,7 +379,7 @@ procedure TMainForm.ShowOnlyChat;
 begin
   DialogsPanel.Hide;
   ChatPanel.Show;
-  BCSVGButton1.Show;
+  ReturnButton.Show;
   Splitter1.Hide;
   DialogsPanel.Align := alClient;
   CompactView := True;

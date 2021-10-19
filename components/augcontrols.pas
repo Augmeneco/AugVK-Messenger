@@ -8,7 +8,8 @@ unit AugControls;
 interface
 
 uses
-  StackPanel, DelphiCompatibility, AugScrollBox, AugImage, LazarusPackageIntf;
+  StackPanel, DelphiCompatibility, AugScrollBox, AugImage, NavigationDrawer, 
+  LazarusPackageIntf;
 
 implementation
 
@@ -17,6 +18,7 @@ begin
   RegisterUnit('StackPanel', @StackPanel.Register);
   RegisterUnit('AugScrollBox', @AugScrollBox.Register);
   RegisterUnit('AugImage', @AugImage.Register);
+  RegisterUnit('NavigationDrawer', @NavigationDrawer.Register);
 end;
 
 initialization

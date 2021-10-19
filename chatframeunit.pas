@@ -34,7 +34,7 @@ type
 implementation
 
 uses
-  MainFormUnit, LCLType, LCLIntf, LMessages;
+  MainFormUnit, LCLType, LCLIntf, LMessages, Utils;
 
 {$R *.lfm}
 
@@ -68,7 +68,7 @@ procedure TChatFrame.Fill(Chat: TChat);
 begin
   ChatAvatarImage.Picture := Chat.Image;
   TitleLabel.Caption := Chat.name;
-  LastMessageLabel.Caption := Chat.previewMsg.text;
+  LastMessageLabel.Caption := GeneratePreviewText(Chat.PreviewMsg);
   Id := Chat.Id;
   ChatObject := Chat;
 end;

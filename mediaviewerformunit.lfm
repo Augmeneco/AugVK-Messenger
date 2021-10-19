@@ -1,24 +1,24 @@
 object MediaViewerForm: TMediaViewerForm
   Left = -8
-  Height = 351
+  Height = 342
   Top = -8
-  Width = 351
+  Width = 379
   AlphaBlendValue = 50
   BorderStyle = bsNone
   Caption = 'MediaViewerForm'
-  ClientHeight = 351
-  ClientWidth = 351
+  ClientHeight = 342
+  ClientWidth = 379
   Color = 5329233
   FormStyle = fsSystemStayOnTop
-  Visible = True
   WindowState = wsFullScreen
   object AugImage1: TAugImage
     Left = 0
-    Height = 351
+    Height = 342
     Top = 0
-    Width = 351
+    Width = 379
     Align = alClient
     Center = True
+    OnClick = AugImage1Click
     Picture.Data = {
       055449636F6EC96D00000000010001000000000001002000B36D000016000000
       89504E470D0A1A0A0000000D4948445200000200000002000806000000F478D4
@@ -908,7 +908,7 @@ object MediaViewerForm: TMediaViewerForm
     AnchorSideTop.Control = Owner
     AnchorSideRight.Control = Owner
     AnchorSideRight.Side = asrBottom
-    Left = 271
+    Left = 299
     Height = 80
     Top = 0
     Width = 80

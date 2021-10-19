@@ -6,7 +6,7 @@ unit augvkapi;
 interface
 
 uses
-  Classes, SysUtils, fprequests, fpjson, jsonparser, utils, fgl,
+  Classes, SysUtils, fprequests, fpjson, jsonparser, fgl,
   vkontakteapi, Graphics;
 
 const

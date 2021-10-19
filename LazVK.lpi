@@ -221,6 +221,7 @@
         <Filename Value="cefloginframeunit.pas"/>
         <IsPartOfProject Value="True"/>
         <ComponentName Value="CefLoginFrame"/>
+        <HasResources Value="True"/>
         <ResourceBaseClass Value="Frame"/>
         <UnitName Value="CefLoginFrameUnit"/>
       </Unit13>

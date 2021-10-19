@@ -25,6 +25,7 @@ type
     procedure FrameMouseWheel(Sender: TObject; Shift: TShiftState;
       WheelDelta: Integer; MousePos: TPoint; var Handled: Boolean);
     procedure FrameResize(Sender: TObject);
+    procedure ImageClick(Sender: TObject);
     procedure ChangeDesignToRight;
     procedure MakeRoundImage(Bmp: TBitmap);
     procedure FillImagePanel;
@@ -42,7 +43,7 @@ implementation
 {$R *.lfm}
 
 uses
-  MainFormUnit, DateUtils, LCLType, LCLIntf, LMessages, Math;
+  MainFormUnit, DateUtils, LCLType, LCLIntf, LMessages, Math, MediaViewerFormUnit;
 
 { TMessageFrame }
 
@@ -60,6 +61,12 @@ end;
 procedure TMessageFrame.FrameResize(Sender: TObject);
 begin
   RecalcSize;
+end;
+
+procedure TMessageFrame.ImageClick(Sender: TObject);
+begin
+  MediaViewerForm.AugImage1.Picture := TAugImage(Sender).Picture;
+  MediaViewerForm.Show;
 end;
 
 procedure TMessageFrame.ChangeDesignToRight;
@@ -149,8 +156,6 @@ begin
 end;
 
 procedure TMessageFrame.FillImagePanel;
-
-
 var
   Attach: TAttachment;
   Image: TAugImage;
@@ -166,6 +171,7 @@ begin
       Image.Center := True;
       Image.Cover := True;
       Image.Picture := Attach.Preview;
+      Image.OnClick := @ImageClick;
     end;
   end;
 end;

@@ -130,7 +130,7 @@ object MainForm: TMainForm
         ParentColor = False
         ParentFont = False
         TabOrder = 0
-        object BCSVGButton1: TBCSVGButton
+        object ReturnButton: TBCSVGButton
           Cursor = crHandPoint
           Left = 0
           Height = 50
@@ -144,8 +144,8 @@ object MainForm: TMainForm
           StretchMode = smNone
           Color = clWhite
           ColorOpacity = 128
-          OnClick = BCSVGButton1Click
-          Caption = 'BCSVGButton1'
+          OnClick = ReturnButtonClick
+          Caption = 'ReturnButton'
           SVGNormalXML.Strings = (
             '<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true" role="img" width="1em" height="1em" preserveAspectRatio="xMidYMid meet" viewBox="0 0 16 16"><g fill="none"><path d="M14 8a.75.75 0 0 1-.75.75H4.463l3.287 2.941a.75.75 0 1 1-1 1.118L2 8.559A.75.75 0 0 1 2 7.44l4.75-4.25a.75.75 0 1 1 1 1.118L4.463 7.25h8.787A.75.75 0 0 1 14 8z" fill="#5f8dd3"/></g></svg>'
           )
@@ -167,7 +167,7 @@ object MainForm: TMainForm
         ParentColor = False
         ParentFont = False
         TabOrder = 1
-        object SpeedButton1: TBCSVGButton
+        object SendButton: TBCSVGButton
           AnchorSideTop.Side = asrCenter
           AnchorSideRight.Control = Panel5
           AnchorSideRight.Side = asrBottom
@@ -186,7 +186,7 @@ object MainForm: TMainForm
           StretchMode = smNone
           Color = clWhite
           ColorOpacity = 128
-          OnClick = SpeedButton1Click
+          OnClick = SendButtonClick
           Caption = 'SendAction'
           SVGNormalXML.Strings = (
             '<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true" role="img" width="1em" height="1em" preserveAspectRatio="xMidYMid meet" viewBox="0 0 16 16"><g fill="none"><path d="M1.724 1.053a.5.5 0 0 0-.714.545l1.403 4.85a.5.5 0 0 0 .397.354l5.69.953c.268.053.268.437 0 .49l-5.69.953a.5.5 0 0 0-.397.354l-1.403 4.85a.5.5 0 0 0 .714.545l13-6.5a.5.5 0 0 0 0-.894l-13-6.5z" fill="#5f8dd3"/></g></svg>'
@@ -194,7 +194,7 @@ object MainForm: TMainForm
           Position = 0
           Maximum = 0
         end
-        object BCSVGButton2: TBCSVGButton
+        object AttachButton: TBCSVGButton
           AnchorSideLeft.Control = Panel5
           AnchorSideTop.Side = asrCenter
           AnchorSideBottom.Control = Panel5
@@ -208,8 +208,8 @@ object MainForm: TMainForm
           SVGString = '<?xml version="1.0" encoding="utf-8"?>'#13#10'<svg role="img" width="1em" xmlns="http://www.w3.org/2000/svg" height="1em" viewBox="0 0 16 16" aria-hidden="true" xmlns:xlink="http://www.w3.org/1999/xlink" preserveAspectRatio="xMidYMid meet">'#13#10'  <g fill="none">'#13#10'    <path d="M3.257 8.707l4.597-4.596a2.5 2.5 0 0 1 3.535 3.536L6.086 12.95a1 1 0 0 1-1.414-1.414l5.303-5.304a.5.5 0 0 0-.707-.707L3.964 10.83a2 2 0 1 0 2.829 2.828l5.303-5.303a3.5 3.5 0 0 0-4.95-4.95L2.55 8a.5.5 0 1 0 .707.707z" fill="#5f8dd3"/>'#13#10'  </g>'#13#10'</svg>'#13#10
           Color = clWhite
           ColorOpacity = 128
-          OnClick = BCSVGButton2Click
-          Caption = 'BCSVGButton2'
+          OnClick = AttachButtonClick
+          Caption = 'AttachButton'
           SVGNormalXML.Strings = (
             '<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true" role="img" width="1em" height="1em" preserveAspectRatio="xMidYMid meet" viewBox="0 0 16 16"><g fill="none"><path d="M3.257 8.707l4.597-4.596a2.5 2.5 0 0 1 3.535 3.536L6.086 12.95a1 1 0 0 1-1.414-1.414l5.303-5.304a.5.5 0 0 0-.707-.707L3.964 10.83a2 2 0 1 0 2.829 2.828l5.303-5.303a3.5 3.5 0 0 0-4.95-4.95L2.55 8a.5.5 0 1 0 .707.707z" fill="#5f8dd3"/></g></svg>'
           )
@@ -217,11 +217,11 @@ object MainForm: TMainForm
           Maximum = 0
         end
         object Memo1: TMemo
-          AnchorSideLeft.Control = BCSVGButton2
+          AnchorSideLeft.Control = AttachButton
           AnchorSideLeft.Side = asrBottom
           AnchorSideTop.Control = Panel5
           AnchorSideTop.Side = asrCenter
-          AnchorSideRight.Control = SpeedButton1
+          AnchorSideRight.Control = SendButton
           AnchorSideBottom.Side = asrCenter
           Left = 34
           Height = 16
