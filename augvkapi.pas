@@ -12,6 +12,7 @@ uses
 const
   AVATARS_PATH = 'data/avatars';
   THUMBNAILS_PATH = 'data/thumbnails';
+  IMAGE_PATH = 'data/images';
 
 
 type TMSG = class;
@@ -65,12 +66,15 @@ type TChatsArray = array of TChat;
 type TChatsList = specialize TFPGList<TChat>;
 type TChatsMap = specialize TFPGMap<Integer, TChat>;
 
+type TPhotoSize = (pzSmall, pzMedium, pzBig);
+
 type
   TAugVKAPI = class
   private
     Requests: TRequests;
     VKAPI: TVKAPI;
 
+  public
     function LoadPhoto(URL: String; Path: String): TPicture;
 
   public
@@ -99,7 +103,7 @@ type
     function GetChatsForDraw: TChatsList;
     function GetChatByIndex(Index: Integer): TChat;
 
-    function GetPhotoURL(Data: TJSONArray; MaxSize: Boolean=True): String;
+    function GetPhotoURL(Data: TJSONArray; NeededSize: TPhotoSize=pzBig): String;
 
     function GetAttachmentName(AttachObject: TJSONObject): String; overload;
 
@@ -114,7 +118,7 @@ end;
 implementation
 
 uses
-  LazLogger;
+  LazLogger, StrUtils, Utils;
 
 var
   UsersCache: TUsersList;
@@ -137,13 +141,13 @@ begin
   begin
     try
       Attachment := Self.Attachments[0];
+      Self.Attachments.Delete(0);
       FreeAndNil(Attachment);
     finally
     end;
   end;
 
   FreeAndNil(Self.Attachments);
-  FreeAndNil(Attachment);
 
   inherited;
 end;
@@ -696,35 +700,56 @@ begin
   Result.Text := Data.Strings[5];
 end;
 
-function TAugVKAPI.GetPhotoURL(Data: TJSONArray; MaxSize: Boolean=True): String;
+function SortSizes(Item1, Item2: Pointer): Integer;
+const
+  Sizes: Array [0..9] of String = ('s','m','x','o','p','q','r','y','z','w');
+var
+  S1, S2: Integer;
+begin
+  S1 := IndexStr(TJSONObject(Item1).Strings['type'], Sizes);
+  S2 := IndexStr(TJSONObject(Item2).Strings['type'], Sizes);
+  if      S1 > S2 then Result := 1
+  else if S1 = S2 then Result := 0
+  else if S1 < S2 then Result := -1;
+end;
+
+function TAugVKAPI.GetPhotoURL(Data: TJSONArray; NeededSize: TPhotoSize=pzBig): String;
 var
   PhotoObject: TJSONObject;
   JSONEnum: TJSONEnum;
   MSize: Integer;
   ResultObject: TJSONObject;
 begin
-  if MaxSize then
-    MSize := 0
-  else
-    MSize := MaxInt;
+  //if MaxSize then
+  //  MSize := 0
+  //else
+  //  MSize := MaxInt;
+  //
+  //for JSONEnum in Data do
+  //begin
+  //  PhotoObject := TJSONObject(JSONEnum.Value);
+  //  if MaxSize then
+  //  begin
+  //    if (PhotoObject['height'].AsInteger * PhotoObject['width'].AsInteger) >= MSize then
+  //    begin
+  //      MSize := PhotoObject['height'].AsInteger * PhotoObject['width'].AsInteger;
+  //      ResultObject := PhotoObject;
+  //    end
+  //  end
+  //  else
+  //    if (PhotoObject['height'].AsInteger * PhotoObject['width'].AsInteger) <= MSize then
+  //    begin
+  //      MSize := PhotoObject['height'].AsInteger * PhotoObject['width'].AsInteger;
+  //      ResultObject := PhotoObject;
+  //    end;
+  //end;
 
-  for JSONEnum in Data do
-  begin
-    PhotoObject := TJSONObject(JSONEnum.Value);
-    if MaxSize then
-    begin
-      if (PhotoObject['height'].AsInteger * PhotoObject['width'].AsInteger) >= MSize then
-      begin
-        MSize := PhotoObject['height'].AsInteger * PhotoObject['width'].AsInteger;
-        ResultObject := PhotoObject;
-      end
-    end
-    else
-      if (PhotoObject['height'].AsInteger * PhotoObject['width'].AsInteger) <= MSize then
-      begin
-        MSize := PhotoObject['height'].AsInteger * PhotoObject['width'].AsInteger;
-        ResultObject := PhotoObject;
-      end;
+  Data.Sort(@SortSizes);
+
+  case NeededSize of
+    pzSmall: ResultObject := Data.Objects[0];
+    pzBig: ResultObject := Data.Objects[Data.Count-1];
+    pzMedium: ResultObject := Data.Objects[Trunc(Data.Count/2)];
   end;
 
   if ResultObject.IndexOfName('url') <> -1 then
@@ -773,7 +798,7 @@ begin
         Attachment.URL := GetPhotoURL(Sizes);
         Attachment.Name := GetAttachmentName(AttachmentJSON);
 
-        PhotoURL := GetPhotoURL(Sizes, False);
+        PhotoURL := GetPhotoURL(Sizes, pzMedium);
 
         Attachment.Preview := LoadPhoto(
           PhotoURL,
@@ -799,7 +824,7 @@ begin
         begin
           Sizes := TJSONArray(AttachmentJSON.GetPath('doc.preview.photo.sizes'));
           Attachment.Preview := LoadPhoto(
-            GetPhotoURL(Sizes, False),
+            GetPhotoURL(Sizes, pzSmall),
             THUMBNAILS_PATH+'/'+GetAttachmentName(AttachmentJSON)+'.jpg'
           );
           Attachment.URL := GetPhotoURL(Sizes);
@@ -841,6 +866,7 @@ begin
 
   ForceDirectories(AVATARS_PATH);
   ForceDirectories(THUMBNAILS_PATH);
+  ForceDirectories(IMAGE_PATH);
 end;
 
 end.

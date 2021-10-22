@@ -3,7 +3,7 @@ unit Utils;
 interface
 
 uses
-  jsonConf, fpjson, jsonparser, sysutils, augvkapi;
+  jsonConf, fpjson, jsonparser, sysutils, augvkapi, fgl;
 
 type
   TLogType = (logNormal, logGood, logError, logWarning);
@@ -18,12 +18,12 @@ procedure LogWrite(str: String; logType: TLogType=TLogType.logNormal);
 function VeryBadToLower(str: String): String;
 function UnescapeHTML ( const S : String ) : String;
 function DumpExceptionCallStack(E: Exception): String;
-function GeneratePreviewText(PreviewMessage: TMSG): String;
+procedure ClearObjectInList(List: TFPSList);
 
 implementation
 
 uses
-  Forms, classes;
+  Forms, Classes;
 
 var
   enableColors: Boolean = True;
@@ -108,29 +108,20 @@ begin
   //Halt; // End of program execution
 end;
 
-function GeneratePreviewText(PreviewMessage: TMSG): String;
+procedure ClearObjectInList(List: TFPSList);
+var
+  Obj: TObject;
 begin
-  if PreviewMessage.Attachments.Count > 0 then
-  begin
-    case PreviewMessage.Attachments[0].AttachType of
-      atPhoto: Result += 'Фотография';
-      atVideo: Result += 'Видео';
-      atAudio: Result += 'Аудиозапись';
-      atDoc  : Result += 'Документ';
-      atWall : Result += 'Запись';
-      atMarket:Result += 'Товар';
-      atPoll : Result += 'Опрос';
-      atSticker:Result += 'Стикер';
-      atGIF  : Result += 'Гифка';
-      atURL  : Result += 'Ссылка';
+  if Assigned(List) then
+    while List.Count > 0 do
+    begin
+      try
+        Obj := TObject(List[0]);
+        List.Delete(0);
+        FreeAndNil(Obj);
+      finally
+      end;
     end;
-
-    if PreviewMessage.Text.Length > 0 then
-      Result += ', ';
-  end;
-
-  if PreviewMessage.Text.Length > 0 then
-    Result += PreviewMessage.Text;
 end;
 
 begin

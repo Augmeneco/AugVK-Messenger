@@ -9,8 +9,8 @@ uses
   Classes, SysUtils, Forms, Controls, Graphics, Dialogs, ExtCtrls, Buttons,
   StdCtrls, ComCtrls, ActnList, Menus, VkLongpoll, fpjson, Utils,
   CachedLongpoll, augvkapi, MessageFrameUnit, ChatFrameUnit, StackPanel,
-  AugScrollBox, BCSVGButton, BCListBox, atshapelinebgra, fgl, Types,
-  AugVKApiThread, ConfigUtils, LoginFrameUnit, CefLoginFrameUnit,
+  AugScrollBox, BCSVGButton, BCListBox, atshapelinebgra, BGRASpriteAnimation,
+  fgl, Types, AugVKApiThread, ConfigUtils, LoginFrameUnit, CefLoginFrameUnit,
   Math;
 
 type
@@ -138,7 +138,7 @@ begin
   if Found = False then
     exit;
 
-  TChatFrame(MainForm.DialogsStack.ControlCollection[Idx].Control).LastMessageLabel.Caption := GeneratePreviewText(LastMessage);
+  TChatFrame(MainForm.DialogsStack.ControlCollection[Idx].Control).LastMessageLabel.Caption := TChatFrame.GeneratePreviewText(LastMessage);
   MainForm.DialogsStack.ControlCollection.Move(Idx, 0);
 
   // если чат не выбран то выйти
@@ -154,9 +154,6 @@ begin
     Frame.Name := Frame.Name+IntToStr(Event.Integers[1]);
     Frame.Fill(LastMessage);
     Frame.Parent := MainForm.ChatStack;
-    //Frame.Constraints.MaxWidth := MainForm.FlowPanel1.Width;
-    //Frame.Width := MainForm.FlowPanel1.Width;
-    //MainForm.FlowPanel1.Height := MainForm.FlowPanel1.Height+Frame.Height;
   end;
 
   if OnBottom then

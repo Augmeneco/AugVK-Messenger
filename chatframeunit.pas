@@ -27,8 +27,9 @@ type
     ChatObject: TChat;
     Id: Integer;
     procedure Fill(Chat: TChat);
+    class function GeneratePreviewText(PreviewMessage: augvkapi.TMSG): String;
     constructor Create(TheOwner: TComponent); override;
-    destructor Free;
+    destructor Destroy; override;
   end;
 
 implementation
@@ -73,15 +74,42 @@ begin
   ChatObject := Chat;
 end;
 
+class function TChatFrame.GeneratePreviewText(PreviewMessage: augvkapi.TMSG): String;
+begin
+  Result := '';
+  if PreviewMessage.Attachments.Count > 0 then
+  begin
+    case PreviewMessage.Attachments[0].AttachType of
+      atPhoto: Result += 'Фотография';
+      atVideo: Result += 'Видео';
+      atAudio: Result += 'Аудиозапись';
+      atDoc  : Result += 'Документ';
+      atWall : Result += 'Запись';
+      atMarket:Result += 'Товар';
+      atPoll : Result += 'Опрос';
+      atSticker:Result += 'Стикер';
+      atGIF  : Result += 'Гифка';
+      atURL  : Result += 'Ссылка';
+    end;
+
+    if PreviewMessage.Text.Length > 0 then
+      Result += ', ';
+  end;
+
+  if PreviewMessage.Text.Length > 0 then
+    Result += PreviewMessage.Text;
+end;
+
 constructor TChatFrame.Create(TheOwner: TComponent);
 begin
   inherited Create(TheOwner);
   ControlStyle := ControlStyle + [csOpaque];
 end;
 
-destructor TChatFrame.Free;
+destructor TChatFrame.Destroy;
 begin
   FreeAndNil(ChatObject);
+  inherited;
 end;
 
 end.

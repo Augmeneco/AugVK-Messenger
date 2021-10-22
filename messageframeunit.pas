@@ -25,7 +25,7 @@ type
     procedure FrameMouseWheel(Sender: TObject; Shift: TShiftState;
       WheelDelta: Integer; MousePos: TPoint; var Handled: Boolean);
     procedure FrameResize(Sender: TObject);
-    procedure ImageClick(Sender: TObject);
+    procedure AttachmentClick(Sender: TObject);
     procedure ChangeDesignToRight;
     procedure MakeRoundImage(Bmp: TBitmap);
     procedure FillImagePanel;
@@ -35,7 +35,7 @@ type
     MessageObject: augvkapi.TMSG;
     procedure Fill(Msg: augvkapi.TMSG);
     procedure RecalcSize;
-    destructor Free;
+    destructor Destroy; override;
   end;
 
 implementation
@@ -63,10 +63,22 @@ begin
   RecalcSize;
 end;
 
-procedure TMessageFrame.ImageClick(Sender: TObject);
+procedure TMessageFrame.AttachmentClick(Sender: TObject);
+var
+  Attach: TAttachment;
 begin
-  MediaViewerForm.AugImage1.Picture := TAugImage(Sender).Picture;
-  MediaViewerForm.Show;
+  Attach := TAttachment(TComponent(Sender).Tag);
+  case Attach.AttachType of
+    atPhoto:
+    begin
+      MediaViewerForm.AugImage1.Picture :=
+      augvk.LoadPhoto(
+        Attach.URL,
+        augvkapi.IMAGE_PATH+'/'+Attach.Name+'.jpg'
+      );
+      MediaViewerForm.Show;
+    end;
+  end;
 end;
 
 procedure TMessageFrame.ChangeDesignToRight;
@@ -170,8 +182,10 @@ begin
       Image.BorderSpacing.Around := 2;
       Image.Center := True;
       Image.Cover := True;
+      Image.AntialiasingMode := amOn;
       Image.Picture := Attach.Preview;
-      Image.OnClick := @ImageClick;
+      Image.OnClick := @AttachmentClick;
+      Image.Tag := PtrInt(Pointer(Attach));
     end;
   end;
 end;
@@ -186,7 +200,7 @@ begin
   //SetRoundRectRegion(Panel1, 50, 50);
   NameLabel.Caption := Msg.fromId.Name;
   MessageTextLabel.Caption := Msg.Text;
-  Date := UnixToDateTime(Msg.Date);
+  Date := UniversalTimeToLocal(UnixToDateTime(Msg.Date));
   if DaysBetween(Now, Date) >= 1 then
     DateTimeLabel.Caption := FormatDateTime('DD.MM.YYYY h:nn', Date)
   else
@@ -237,9 +251,11 @@ begin
     Height := Constraints.MinHeight;
 end;
 
-destructor TMessageFrame.Free;
+destructor TMessageFrame.Destroy;
 begin
   FreeAndNil(MessageObject);
+
+  inherited;
 end;
 
 end.

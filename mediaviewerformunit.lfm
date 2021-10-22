@@ -1,21 +1,22 @@
 object MediaViewerForm: TMediaViewerForm
   Left = -8
-  Height = 342
+  Height = 407
   Top = -8
-  Width = 379
+  Width = 439
   AlphaBlendValue = 50
   BorderStyle = bsNone
   Caption = 'MediaViewerForm'
-  ClientHeight = 342
-  ClientWidth = 379
+  ClientHeight = 407
+  ClientWidth = 439
   Color = 5329233
   FormStyle = fsSystemStayOnTop
   WindowState = wsFullScreen
   object AugImage1: TAugImage
     Left = 0
-    Height = 342
+    Height = 407
     Top = 0
-    Width = 379
+    Width = 439
+    AntialiasingMode = amOn
     Align = alClient
     Center = True
     OnClick = AugImage1Click
@@ -901,14 +902,13 @@ object MediaViewerForm: TMediaViewerForm
       4367685739BAFA0000000049454E44AE426082
     }
     Proportional = True
-    Stretch = True
     Cover = False
   end
   object BCSVGButton1: TBCSVGButton
     AnchorSideTop.Control = Owner
     AnchorSideRight.Control = Owner
     AnchorSideRight.Side = asrBottom
-    Left = 299
+    Left = 359
     Height = 80
     Top = 0
     Width = 80

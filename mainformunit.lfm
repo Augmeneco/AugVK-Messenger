@@ -238,6 +238,7 @@ object MainForm: TMainForm
           OnChange = Memo1Change
           ParentFont = False
           TabOrder = 0
+          WantReturns = False
         end
       end
       object ChatScroll: TAugScrollBox
