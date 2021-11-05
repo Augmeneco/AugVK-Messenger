@@ -111,27 +111,24 @@
       <FormatVersion Value="2"/>
       <Modes Count="0"/>
     </RunParams>
-    <RequiredPackages Count="6">
+    <RequiredPackages Count="5">
       <Item1>
-        <PackageName Value="CEF4Delphi_Lazarus"/>
+        <PackageName Value="weblaz"/>
       </Item1>
       <Item2>
-        <PackageName Value="weblaz"/>
+        <PackageName Value="lazrichview"/>
       </Item2>
       <Item3>
-        <PackageName Value="lazrichview"/>
+        <PackageName Value="AugControls"/>
       </Item3>
       <Item4>
-        <PackageName Value="AugControls"/>
+        <PackageName Value="bgracontrols"/>
       </Item4>
       <Item5>
-        <PackageName Value="bgracontrols"/>
-      </Item5>
-      <Item6>
         <PackageName Value="LCL"/>
-      </Item6>
+      </Item5>
     </RequiredPackages>
-    <Units Count="14">
+    <Units Count="19">
       <Unit0>
         <Filename Value="LazVK.lpr"/>
         <IsPartOfProject Value="True"/>
@@ -225,6 +222,39 @@
         <ResourceBaseClass Value="Frame"/>
         <UnitName Value="CefLoginFrameUnit"/>
       </Unit13>
+      <Unit14>
+        <Filename Value="dialogpanel.pas"/>
+        <IsPartOfProject Value="True"/>
+      </Unit14>
+      <Unit15>
+        <Filename Value="shadow.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="ShadowForm"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Form"/>
+        <UnitName Value="Shadow"/>
+      </Unit15>
+      <Unit16>
+        <Filename Value="dialogformunit.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="DialogForm"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Form"/>
+        <UnitName Value="DialogFormUnit"/>
+      </Unit16>
+      <Unit17>
+        <Filename Value="slaveforms.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="SlaveForms"/>
+      </Unit17>
+      <Unit18>
+        <Filename Value="photoattachframeunit.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="PhotoAttachFrame"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Frame"/>
+        <UnitName Value="PhotoAttachFrameUnit"/>
+      </Unit18>
     </Units>
   </ProjectOptions>
   <CompilerOptions>

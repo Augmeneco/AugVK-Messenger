@@ -72,6 +72,8 @@ object MessageFrame: TMessageFrame
     BevelOuter = bvNone
     ClientHeight = 50
     ClientWidth = 50
+    DoubleBuffered = False
+    ParentDoubleBuffered = False
     TabOrder = 0
     object AvatarImage: TImage
       AnchorSideRight.Side = asrBottom
@@ -101,6 +103,8 @@ object MessageFrame: TMessageFrame
     ClientHeight = 0
     ClientWidth = 334
     Constraints.MaxWidth = 400
+    DoubleBuffered = False
+    ParentDoubleBuffered = False
     TabOrder = 1
     object ImagesFlow: TFlowPanel
       AnchorSideLeft.Control = AttachmentsPanel
@@ -115,8 +119,10 @@ object MessageFrame: TMessageFrame
       AutoSize = True
       BevelOuter = bvNone
       ControlList = <>
+      DoubleBuffered = False
       FlowLayout = tlTop
       FlowStyle = fsLeftRightTopBottom
+      ParentDoubleBuffered = False
       TabOrder = 0
     end
   end

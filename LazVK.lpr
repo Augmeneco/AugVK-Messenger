@@ -13,11 +13,12 @@ uses
    Interfaces, // this includes the LCL widgetset
    Forms, MainFormUnit, Net, ChatFrameUnit, {VkontakteApi,
 	 VkLongpoll,} {WebBrowserFormUnit,} Utils, design, ConfigUtils, LoginFrameUnit,
-   MediaViewerFormUnit, lazrichview;
+   MediaViewerFormUnit, lazrichview, LResources, dialogpanel, DialogFormUnit;
 
 {$R *.res}
 
 begin
+  {$I AugVK.lrs}
   RequireDerivedFormResource:=True;
 	Application.Scaled:=True;
   Application.Initialize;

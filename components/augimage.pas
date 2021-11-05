@@ -14,12 +14,18 @@ type
   TAugImage = class(TImage)
   private
     FCover: Boolean;
+    FOffsetX: Integer;
+    FOffsetY: Integer;
+    procedure SetOffsetX(AValue: Integer);
+    procedure SetOffsetY(AValue: Integer);
   protected
 
   public
     function DestRect: TRect; override;
   published
-    property Cover: Boolean read FCover write FCover;
+    property Cover: Boolean read FCover write FCover default False;
+    property OffsetX: Integer read FOffsetX write SetOffsetX default 0;
+    property OffsetY: Integer read FOffsetY write SetOffsetY default 0;
   end;
 
 procedure Register;
@@ -36,6 +42,20 @@ begin
 end;
 
 { TAugImage }
+
+procedure TAugImage.SetOffsetX(AValue: Integer);
+begin
+  if FOffsetX = AValue then exit;
+  FOffsetX := AValue;
+  PictureChanged(Self);
+end;
+
+procedure TAugImage.SetOffsetY(AValue: Integer);
+begin
+  if FOffsetY = AValue then exit;
+  FOffsetY := AValue;
+  PictureChanged(Self);
+end;
 
 function TAugImage.DestRect: TRect;
 var
@@ -60,6 +80,9 @@ begin
       finalWidth := Width;
       finalHeight := Trunc(Width * imgRatio);
     end;
+
+    finalWidth := finalWidth+FOffsetX;
+    finalHeight := finalHeight+FOffsetY;
 
     Result := Rect(0,0,finalWidth,finalHeight);
 

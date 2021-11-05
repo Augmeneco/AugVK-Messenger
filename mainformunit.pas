@@ -9,9 +9,9 @@ uses
   Classes, SysUtils, Forms, Controls, Graphics, Dialogs, ExtCtrls, Buttons,
   StdCtrls, ComCtrls, ActnList, Menus, VkLongpoll, fpjson, Utils,
   CachedLongpoll, augvkapi, MessageFrameUnit, ChatFrameUnit, StackPanel,
-  AugScrollBox, BCSVGButton, BCListBox, atshapelinebgra, BGRASpriteAnimation,
-  fgl, Types, AugVKApiThread, ConfigUtils, LoginFrameUnit, CefLoginFrameUnit,
-  Math;
+  AugScrollBox, BCSVGButton, BCListBox, atshapelinebgra, BCButton, fgl, Types,
+  AugVKApiThread, ConfigUtils, LoginFrameUnit, Math, AugImage, Shadow,
+  DialogFormUnit, Contnrs, SlaveForms;
 
 type
   { TMainForm }
@@ -27,11 +27,19 @@ type
 
   PLoadScrollData = ^TLoadScrollData;
 
-  TMainForm = class(TForm)
+  TMainForm = class(TMasterForm)
+    AttachmentsFlow: TFlowPanel;
+    AttachmentsPanel: TPanel;
+    BCButton1: TBCButton;
+    Image1: TImage;
+    Label1: TLabel;
+    ShadowPanel: TPanel;
+    Panel6: TPanel;
+    Panel7: TPanel;
+    Panel8: TPanel;
     ReturnButton: TBCSVGButton;
     ActionList1: TActionList;
     AttachButton: TBCSVGButton;
-    CefLoginFrame1: TCefLoginFrame;
     DialogsScroll: TAugScrollBox;
     ChatScroll: TAugScrollBox;
     LoginFrameForm: TLoginFrame;
@@ -39,6 +47,7 @@ type
     ChatPanel: TPanel;
     Memo1: TMemo;
     OpenDialog1: TOpenDialog;
+    Shape1: TShape;
     ShapeLineBGRA1: TShapeLineBGRA;
     ShapeLineBGRA2: TShapeLineBGRA;
     ShapeLineBGRA3: TShapeLineBGRA;
@@ -54,8 +63,14 @@ type
     DialogsStack: TStackPanel;
     ChatStack: TStackPanel;
     TrayIcon1: TTrayIcon;
+    procedure AttachButtonMouseEnter(Sender: TObject);
+    procedure AttachButtonMouseLeave(Sender: TObject);
+    procedure BCButton1Click(Sender: TObject);
+    procedure Button1Click(Sender: TObject);
+    procedure FormDropFiles(Sender: TObject; const FileNames: array of String);
+    procedure FormHide(Sender: TObject);
+    procedure FormShow(Sender: TObject);
     procedure ReturnButtonClick(Sender: TObject);
-    procedure AttachButtonClick(Sender: TObject);
     procedure DialogsScrollVScroll(Sender: TObject; var ScrollPos: Integer);
     procedure ChatScrollVScroll(Sender: TObject; var ScrollPos: Integer);
     procedure CloseMenuItemClick(Sender: TObject);
@@ -79,6 +94,7 @@ type
     DialogsPage: Integer;
     ChatBlockLoad: Boolean;
     DialogsBlockLoad: Boolean;
+    ActiveDialogFrame: TFrame;
 
     procedure OnLogined(Token: String; ExpiresIn, Id: Integer);
     procedure AfterLogin(Token: String);
@@ -86,16 +102,23 @@ type
     SelectedChat: Integer;
     ActiveUser: TUser;
     CompactView: Boolean;
+    AttachedFiles: TStringList;
+
+    constructor Create(TheOwner: TComponent); override;
+    destructor Destroy; override;
 
     procedure ShowBothPanels;
     procedure ShowOnlyChat;
     procedure ShowOnlyDialogs;
 
+    procedure ShowDialog(Frame: TFrame; Title: String; Buttons: array of const; Callback: TNotifyEvent);
+    procedure CloseDialog;
+
     procedure ClearChat;
     procedure LoadChat(Id: Integer; Page: Integer=0; StartMsg: Integer=-1;
       ToTop: Boolean=True; ScrollTo: TScrollTo=stNotScroll);
     procedure LoadChatCallback(Response: TObject; Data: Pointer);
-    procedure OpenChat(Id: Integer; LastMessage: TMSG=nil);
+    procedure OpenChat(Id: Integer; LastMessage: augvkapi.TMSG=nil);
     procedure CloseChat;
 
     procedure LoadDialogs(Page: Integer=0; ToTop: Boolean=False;
@@ -113,7 +136,7 @@ var
 implementation
 
 uses
-  LazLogger;
+  LazLogger, URIParser, LCLIntf, fpmimetypes, PhotoAttachFrameUnit;
 
 {$R *.lfm}
 
@@ -123,7 +146,7 @@ var
   Found: Boolean = False;
   Frame: TMessageFrame;
   OnBottom: Boolean = False;
-  LastMessage: TMSG;
+  LastMessage: augvkapi.TMSG;
 begin
   LastMessage := LongpollThread.GetCache(Event.Integers[3], 1)[0];
   // перемещение наверх
@@ -163,18 +186,59 @@ end;
 
 { TMainForm }
 
+procedure GetToken;
+var
+  ModalResult: TModalResult;
+  URL: String;
+  BookmarkParsed: TStringList;
+begin
+  ModalResult := QuestionDlg('Авторизация',
+    'Вы будете перенаправлены в браузер для авторизации.'+LineEnding+
+    'Скопируйте URL в след диалог после успешной авторизации',
+    mtCustom,
+    [mrYes, 'Открыть', mrNo, 'Выйти', 'IsDefault'], '');
+  if (ModalResult = mrNo) or (ModalResult = mrCancel) then
+    Halt;
+
+  OpenURL('https://oauth.vk.com/authorize?client_id=7950449&scope=69662&redirect_uri=https://oauth.vk.com/blank.html&display=mobile&response_type=token&revoke=1');
+
+  if not InputQuery('Авторизация', 'Введите токен', URL) then
+    Halt;
+
+  BookmarkParsed := TStringList.Create;
+  BookmarkParsed.Delimiter := '&';
+  BookmarkParsed.StrictDelimiter := True;
+  BookmarkParsed.DelimitedText := ParseURI(Url).Bookmark;
+
+  MainForm.OnLogined(BookmarkParsed.Values['access_token'],
+      BookmarkParsed.Values['expires_in'].ToInteger,
+      BookmarkParsed.Values['user_id'].ToInteger);
+  BookmarkParsed.Free;
+end;
+
 procedure TMainForm.FormCreate(Sender: TObject);
 var
   TokenPath: String;
+  dialog: TDialogForm;
+  shadow: TShadowForm;
 begin
+  //dialog := TDialogForm.Create(self);
+  //AddSlaveForm(dialog);
+  //dialog.Show;
+  //shadow := TShadowForm.CreateShadow(self);
+  //AddSlaveForm(shadow);
+  //shadow.Show;
+
+  AttachedFiles := TStringList.Create;
 	Application.OnException := @CustomExceptionHandler;
-  CefLoginFrame1.OnLogined := @OnLogined;
+  //CefLoginFrame1.OnLogined := @OnLogined;
 
   // Получение токена
   TokenPath := Format('accounts[%d].token', [Config.Integers['active_account']]);
   if Config.FindPath(TokenPath) = nil then
   begin
-    CefLoginFrame1.OpenLoginPage;
+    //CefLoginFrame1.OpenLoginPage;
+    GetToken;
   end
   else
     AfterLogin(Config.GetPath(TokenPath).AsString);
@@ -218,15 +282,66 @@ begin
   ShowOnlyDialogs;
 end;
 
-procedure TMainForm.AttachButtonClick(Sender: TObject);
-var
-  FileName: String;
+procedure TMainForm.FormHide(Sender: TObject);
 begin
-  if OpenDialog1.Execute then
-    for FileName in OpenDialog1.Files do
-    begin
-      ShowMessage(FileName);
-    end;
+  //if Assigned(Shadow) then Shadow.Hide;
+end;
+
+procedure TMainForm.Button1Click(Sender: TObject);
+var
+  R: TRect;
+begin
+  //ShadowPanel.BevelOuter := bvNone;
+  //R := Panel1.ClientRect;
+  //image1.Canvas.CopyRect(R, Panel1.Canvas, R);
+  //image1.Canvas.Line(500,100,100,500);
+  //ShadowPanel.BringToFront;
+  //Invalidate;
+  ShadowPanel.ControlStyle := ShadowPanel.ControlStyle - [csOpaque] + [csParentBackground];
+end;
+
+procedure TMainForm.AttachButtonMouseEnter(Sender: TObject);
+var
+  FormPoint: TPoint;
+begin
+  FormPoint := ScreenToClient(AttachButton.ClientToScreen(Point(0,0)));
+  Panel8.Left := FormPoint.X-1;
+  Panel8.Top := FormPoint.Y-Panel8.Height;
+  Panel8.BringToFront;
+  Panel8.Show;
+end;
+
+procedure TMainForm.AttachButtonMouseLeave(Sender: TObject);
+begin
+  Panel8.SendToBack;
+  Panel8.Hide;
+end;
+
+procedure TMainForm.BCButton1Click(Sender: TObject);
+var
+  Frame: TPhotoAttachFrame;
+begin
+  Frame := TPhotoAttachFrame.Create(Self);
+  ShowDialog(Frame, 'Фотография', ['Отмена', 0], @Frame.DialogButtonClick);
+end;
+
+procedure TMainForm.FormDropFiles(Sender: TObject;
+  const FileNames: array of String);
+begin
+    //  MousePoint := ScreenToClient(Mouse.CursorPos);
+    //Control := ControlAtPos(MousePoint, [capfRecursive, capfAllowWinControls]);
+    //
+    //{capfAllowDisabled,   // include controls with Enabled=false
+    // capfAllowWinControls,// include TWinControls
+    // capfOnlyClientAreas, // use the client areas, not the whole child area
+    // capfRecursive,       // search recursively in grand childrens
+    // capfHasScrollOffset, // do not add the scroll offset to Pos (already included)
+    // capfOnlyWinControls  // include only TWinControls (ignore TControls) }
+
+end;
+
+procedure TMainForm.FormShow(Sender: TObject);
+begin
 end;
 
 procedure TMainForm.DialogsScrollVScroll(Sender: TObject;
@@ -340,7 +455,7 @@ begin
   Config.Integers['active_account'] := AccountAddedId;
   SaveConfig;
 
-  CefLoginFrame1.Hide;
+  //CefLoginFrame1.Hide;
 
   AfterLogin(Token);
 end;
@@ -359,6 +474,18 @@ begin
   LongpollThread.Start;
 
   LoadDialogs(0, False, stTop);
+end;
+
+constructor TMainForm.Create(TheOwner: TComponent);
+begin
+  SlaveFormsList := TObjectList.Create;
+  inherited Create(TheOwner);
+end;
+
+destructor TMainForm.Destroy;
+begin
+  SlaveFormsList.Free;
+  inherited Destroy;
 end;
 
 procedure TMainForm.ShowBothPanels;
@@ -389,6 +516,48 @@ begin
   Splitter1.Hide;
   ChatPanel.Align := alClient;
   CompactView := True;
+end;
+
+procedure TMainForm.ShowDialog(Frame: TFrame; Title: String; Buttons: array of const; Callback: TNotifyEvent);
+var
+  Button: TButton;
+  i: Integer = 0;
+begin
+  if (Length(Buttons) mod 2) = 0 then
+  begin
+    //error
+  end;
+  while i <= High(Buttons) do
+  begin
+    if (Buttons[i].VType <> vtString) and (Buttons[i+1].VType <> vtInteger) then
+    begin
+      //error
+    end;
+    Button := TButton.Create(Self);
+    Button.Caption := String(Buttons[i].VString);
+    Button.Tag := Buttons[i+1].VInteger;
+    Button.OnClick := Callback;
+    Button.Parent := Panel7;
+    Button.Align := alRight;
+    i += 2;
+  end;
+  ActiveDialogFrame := Frame;
+  ActiveDialogFrame.Parent := Panel6;
+  Label1.Caption := Title;
+  ShadowPanel.BringToFront;
+end;
+
+procedure TMainForm.CloseDialog;
+var
+  Item: TControl;
+begin
+  while Panel7.ControlCount > 0 do
+  begin
+    Item := Panel7.Controls[0];
+    Item.Free;
+  end;
+  ActiveDialogFrame.Free;
+  ShadowPanel.SendToBack;
 end;
 
 procedure TMainForm.ClearChat;
@@ -429,7 +598,7 @@ end;
 procedure TMainForm.LoadChatCallback(Response: TObject; Data: Pointer);
 var
   msgs: TMSGsList;
-  msg: TMSG;
+  msg: augvkapi.TMSG;
   frame: TMessageFrame;
   LoadChatData: PLoadScrollData;
   OldHeight: Integer = 0;
@@ -469,7 +638,7 @@ begin
   Dispose(LoadChatData);
 end;
 
-procedure TMainForm.OpenChat(Id: Integer; LastMessage: TMSG=nil);
+procedure TMainForm.OpenChat(Id: Integer; LastMessage: augvkapi.TMSG=nil);
 var
   Frame: TMessageFrame;
   MsgId: Integer = -1;
@@ -566,6 +735,5 @@ begin
 end;
 
 { Actions }
-
 
 end.

@@ -1,0 +1,36 @@
+object DialogForm: TDialogForm
+  Left = 309
+  Height = 256
+  Top = 250
+  Width = 365
+  BorderStyle = bsNone
+  BorderWidth = 10
+  Caption = 'DialogForm'
+  ClientHeight = 256
+  ClientWidth = 365
+  Color = clWhite
+  PopupMode = pmExplicit
+  ShowInTaskBar = stNever
+  object ContentPanel: TPanel
+    Left = 10
+    Height = 206
+    Top = 10
+    Width = 345
+    Align = alClient
+    BevelOuter = bvNone
+    Caption = 'ContentPanel'
+    ParentColor = False
+    TabOrder = 0
+  end
+  object ButtonPanel: TPanel
+    Left = 10
+    Height = 30
+    Top = 216
+    Width = 345
+    Align = alBottom
+    BevelOuter = bvNone
+    Caption = 'ButtonPanel'
+    ParentColor = False
+    TabOrder = 1
+  end
+end
