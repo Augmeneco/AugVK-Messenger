@@ -14,7 +14,6 @@ type
 
   TPhotoAttachFrame = class(TFrame)
     BCSVGViewer1: TBCSVGViewer;
-    Label1: TLabel;
     OpenDialog1: TOpenDialog;
     Panel1: TPanel;
     procedure Panel1Click(Sender: TObject);
@@ -61,14 +60,15 @@ begin
     for Filename in OpenDialog1.Files do
     begin
       MainForm.AttachedFiles.Append(Filename);
-      Image := TAugImage.Create(Self);
-      Image.Height := 30;
-      Image.Width := 30;
+      Image := TAugImage.Create(MainForm);
+      Image.Height := 50;
+      Image.Width := 50;
       Image.Picture.LoadFromFile(Filename);
       Image.Cover := True;
       Image.Center := True;
       Image.Parent := MainForm.AttachmentsFlow;
     end;
+    //MainForm.CloseDialog;
 end;
 
 procedure TPhotoAttachFrame.DialogButtonClick(Sender: TObject);

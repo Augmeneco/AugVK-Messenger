@@ -29,7 +29,7 @@ end;
 
 type
   TRequests = class (TInterfacedObject)
-  private
+  public
     Client: TFPHTTPClient;
   public
     AllowedCodes: Array of Integer;
@@ -105,7 +105,6 @@ begin
   Response.Data := BS.Bytes;
 
   Result := Response;
-
 end;
 
 constructor TRequests.Create;

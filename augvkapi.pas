@@ -69,6 +69,9 @@ type TChatsMap = specialize TFPGMap<Integer, TChat>;
 type TPhotoSize = (pzSmall, pzMedium, pzBig);
 
 type
+  
+  { TAugVKAPI }
+
   TAugVKAPI = class
   private
     Requests: TRequests;
@@ -76,6 +79,8 @@ type
 
   public
     function LoadPhoto(URL: String; Path: String): TPicture;
+    function UploadPhoto(Attach: TPicture): String;
+    function UploadPhoto(Filename: String): String;
 
   public
     function ParseMsg(Data: TJSONObject): TMSG;
@@ -107,10 +112,10 @@ type
 
     function GetAttachmentName(AttachObject: TJSONObject): String; overload;
 
-    procedure SendMessage(Text: String; PeerId: Integer; Reply: Integer; Attachments: TAttachmentsList);
+    procedure SendMessage(Text: String; PeerId: Integer; Reply: Integer; Attachments: TStringArray);
     procedure SendMessage(Text: String; PeerId: Integer); overload;
     procedure SendMessage(Text: String; PeerId: Integer; Reply: Integer); overload;
-    procedure SendMessage(Text: String; PeerId: Integer; Attachments: TAttachmentsList); overload;
+    procedure SendMessage(Text: String; PeerId: Integer; Attachments: TStringArray); overload;
 
     constructor Create(Token: String);
 end;
@@ -154,20 +159,20 @@ end;
 
 procedure TAugVKAPI.SendMessage(Text: String; PeerId: Integer); overload;
 begin
-  SendMessage(Text,PeerId,-1,Nil);
+  SendMessage(Text,PeerId,-1,[]);
 end;
 
 procedure TAugVKAPI.SendMessage(Text: String; PeerId: Integer; Reply: Integer); overload;
 begin
-  SendMessage(Text,PeerId,Reply,Nil);
+  SendMessage(Text,PeerId,Reply,[]);
 end;
 
-procedure TAugVKAPI.SendMessage(Text: String; PeerId: Integer; Attachments: TAttachmentsList); overload;
+procedure TAugVKAPI.SendMessage(Text: String; PeerId: Integer; Attachments: TStringArray); overload;
 begin
   SendMessage(Text,PeerId,-1,Attachments);
 end;
 
-procedure TAugVKAPI.SendMessage(Text: String; PeerId: Integer; Reply: Integer; Attachments: TAttachmentsList);
+procedure TAugVKAPI.SendMessage(Text: String; PeerId: Integer; Reply: Integer; Attachments: TStringArray);
 var
   Params: TParams;
 begin
@@ -179,6 +184,9 @@ begin
 
   if Reply <> -1 then
      Params.Add('reply_to',Reply);
+
+  if Length(Attachments) > 0 then
+     Params.Add('attachment', String.Join(',', Attachments));
 
   VKAPI.Call(
      'messages.send',
@@ -367,6 +375,56 @@ begin
 
   Result.LoadFromStream(TmpStream);
   TmpStream.Free;
+end;
+
+function TAugVKAPI.UploadPhoto(Attach: TPicture): String;
+var
+  jsonServer, jsonUpload, jsonSave: TJSONObject;
+  UploadStream, ResponseStream: TBytesStream;
+begin
+  jsonServer := TJSONObject(vkapi.call('photos.getMessagesUploadServer', TParams.Create));
+  UploadStream := TBytesStream.Create;
+  Attach.SaveToStream(UploadStream);
+  ResponseStream := TBytesStream.Create;
+  Requests.Client.StreamFormPost(jsonServer.Strings['upload_url'], 'photo', 'photo.bmp', UploadStream, ResponseStream);
+  jsonUpload := TJSONObject(GetJSON(ResponseStream));
+  jsonSave := TJSONObject(vkapi.call('photos.saveMessagesPhoto',
+    TParams.Create
+    .Add('photo', jsonUpload.Strings['photo'])
+    .Add('server', jsonUpload.Strings['server'])
+    .Add('hash', jsonUpload.Strings['hash'])));
+  Result := jsonSave.Strings['owner_id']+'_'+jsonSave.Strings['id'];
+
+  UploadStream.Free;
+  ResponseStream.Free;
+  jsonServer.Free;
+  jsonUpload.Free;
+  jsonSave.Free;
+end;
+
+function TAugVKAPI.UploadPhoto(Filename: String): String;
+var
+  jsonServer, jsonUpload: TJSONObject;
+  jsonSave: TJSONArray;
+  ResponseStream: TBytesStream;
+begin
+  jsonServer := TJSONObject(vkapi.call('photos.getMessagesUploadServer', TParams.Create));
+  ResponseStream := TBytesStream.Create;
+  Requests.Client.FileFormPost(jsonServer.Strings['upload_url'], 'photo', Filename, ResponseStream);
+  ResponseStream.Position := 0;
+  jsonUpload := TJSONObject(GetJSON(ResponseStream));
+  jsonSave := TJSONArray(vkapi.call('photos.saveMessagesPhoto',
+    TParams.Create
+    .Add('photo', jsonUpload.Strings['photo'])
+    .Add('server', jsonUpload.Strings['server'])
+    .Add('hash', jsonUpload.Strings['hash'])));
+  DebugLn([jsonSave.AsJSON]);
+  Result := 'photo'+jsonSave.Objects[0].Strings['owner_id']+'_'+jsonSave.Objects[0].Strings['id'];
+
+  ResponseStream.Free;
+  jsonServer.Free;
+  jsonUpload.Free;
+  jsonSave.Free;
 end;
 
 function TAugVKAPI.GetChats(Count: Integer; Offset: Integer = 0): TChatsList;
@@ -593,7 +651,7 @@ begin
   UsersCache.Add(User);
 end;
 
-function TAugVKAPI.GetUser(id: Integer): TUser;
+function TAugVKAPI.GetUser(Id: Integer): TUser;
 begin
   Result := GetUsers([id])[0];
 end;

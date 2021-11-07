@@ -10,8 +10,7 @@ uses
   StdCtrls, ComCtrls, ActnList, Menus, VkLongpoll, fpjson, Utils,
   CachedLongpoll, augvkapi, MessageFrameUnit, ChatFrameUnit, StackPanel,
   AugScrollBox, BCSVGButton, BCListBox, atshapelinebgra, BCButton, fgl, Types,
-  AugVKApiThread, ConfigUtils, LoginFrameUnit, Math, AugImage, Shadow,
-  DialogFormUnit, Contnrs, SlaveForms;
+  AugVKApiThread, ConfigUtils, LoginFrameUnit, Math, AugImage, Contnrs;
 
 type
   { TMainForm }
@@ -27,7 +26,7 @@ type
 
   PLoadScrollData = ^TLoadScrollData;
 
-  TMainForm = class(TMasterForm)
+  TMainForm = class(TForm)
     AttachmentsFlow: TFlowPanel;
     AttachmentsPanel: TPanel;
     BCButton1: TBCButton;
@@ -81,6 +80,7 @@ type
     procedure FormResize(Sender: TObject);
     procedure Memo1Change(Sender: TObject);
     procedure Memo1KeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
+    procedure ShadowPanelClick(Sender: TObject);
     procedure ShowMenuItemClick(Sender: TObject);
     procedure SendButtonClick(Sender: TObject);
     procedure Splitter1Moved(Sender: TObject);
@@ -219,16 +219,7 @@ end;
 procedure TMainForm.FormCreate(Sender: TObject);
 var
   TokenPath: String;
-  dialog: TDialogForm;
-  shadow: TShadowForm;
 begin
-  //dialog := TDialogForm.Create(self);
-  //AddSlaveForm(dialog);
-  //dialog.Show;
-  //shadow := TShadowForm.CreateShadow(self);
-  //AddSlaveForm(shadow);
-  //shadow.Show;
-
   AttachedFiles := TStringList.Create;
 	Application.OnException := @CustomExceptionHandler;
   //CefLoginFrame1.OnLogined := @OnLogined;
@@ -387,6 +378,11 @@ begin
   end;
 end;
 
+procedure TMainForm.ShadowPanelClick(Sender: TObject);
+begin
+  CloseDialog;
+end;
+
 procedure TMainForm.ShowMenuItemClick(Sender: TObject);
 begin
   Show;
@@ -403,11 +399,30 @@ begin
 end;
 
 procedure TMainForm.SendButtonClick(Sender: TObject);
+var
+  AttachIDs: TStringArray;
+  AttachPath: String;
+  AttachID: String;
+  Item: TControl;
 begin
   if SelectedChat <> -1 then
   begin
-    AugVK.SendMessage(Memo1.Text, SelectedChat);
+    if AttachedFiles.Count > 0 then
+    begin
+      for AttachPath in AttachedFiles do
+      begin
+        AttachID := AugVK.UploadPhoto(AttachPath);
+        Insert(AttachID, AttachIDs, Length(AttachIDs));
+      end;
+    end;
+    AugVK.SendMessage(Memo1.Text, SelectedChat, AttachIDs);
     Memo1.Clear;
+    while AttachmentsFlow.ControlCount > 0 do
+    begin
+      Item := AttachmentsFlow.Controls[0];
+      Item.Free;
+    end;
+    AttachedFiles.Clear;
   end;
 end;
 
@@ -478,13 +493,11 @@ end;
 
 constructor TMainForm.Create(TheOwner: TComponent);
 begin
-  SlaveFormsList := TObjectList.Create;
   inherited Create(TheOwner);
 end;
 
 destructor TMainForm.Destroy;
 begin
-  SlaveFormsList.Free;
   inherited Destroy;
 end;
 

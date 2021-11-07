@@ -7,17 +7,17 @@ object PhotoAttachFrame: TPhotoAttachFrame
   ClientHeight = 258
   ClientWidth = 279
   TabOrder = 0
-  DesignLeft = 303
-  DesignTop = 21
+  DesignLeft = 302
+  DesignTop = 20
   object Panel1: TPanel
     Cursor = crHandPoint
     Left = 0
-    Height = 196
-    Top = 62
+    Height = 258
+    Top = 0
     Width = 279
     Align = alClient
     BevelOuter = bvNone
-    ClientHeight = 196
+    ClientHeight = 258
     ClientWidth = 279
     TabOrder = 0
     OnClick = Panel1Click
@@ -26,31 +26,21 @@ object PhotoAttachFrame: TPhotoAttachFrame
       AnchorSideLeft.Side = asrCenter
       AnchorSideTop.Control = Panel1
       AnchorSideTop.Side = asrCenter
-      AnchorSideRight.Control = Owner
+      AnchorSideRight.Control = Panel1
       AnchorSideRight.Side = asrCenter
-      AnchorSideBottom.Control = Owner
+      AnchorSideBottom.Control = Panel1
       AnchorSideBottom.Side = asrCenter
-      Left = 101
-      Height = 71
-      Top = 63
-      Width = 77
-      SVGString = '<?xml version="1.0" encoding="utf-8"?>'#13#10'<svg role="img" width="1em" xmlns="http://www.w3.org/2000/svg" height="1em" viewBox="0 0 20 20" aria-hidden="true" xmlns:xlink="http://www.w3.org/1999/xlink" preserveAspectRatio="xMidYMid meet">'#13#10'  <g fill="none">'#13#10'    <path d="M6.784 2.826A1.5 1.5 0 0 1 8.124 2h3.764a1.5 1.5 0 0 1 1.342.83L13.815 4h1.69a2.5 2.5 0 0 1 2.5 2.5v3.761a5.478 5.478 0 0 0-4.122-1.227A4.002 4.002 0 0 0 6 10a4.002 4.002 0 0 0 3.034 3.883A5.477 5.477 0 0 0 9.6 17H4.506a2.5 2.5 0 0 1-2.5-2.5v-8a2.5 2.5 0 0 1 2.5-2.5h1.69l.589-1.174z" fill="#5f8dd3"/>'#13#10'    <path d="M10 7c1.393 0 2.564.95 2.902 2.236a5.512 5.512 0 0 0-3.666 3.666A3.001 3.001 0 0 1 10 7z" fill="#5f8dd3"/>'#13#10'    <path d="M19 14.5a4.5 4.5 0 1 1-9 0a4.5 4.5 0 0 1 9 0zm-4-2a.5.5 0 0 0-1 0V14h-1.5a.5.5 0 1 0 0 1H14v1.5a.5.5 0 1 0 1 0V15h1.5a.5.5 0 0 0 0-1H15v-1.5z" fill="#5f8dd3"/>'#13#10'  </g>'#13#10'</svg>'#13#10
+      Cursor = crHandPoint
+      Left = 97
+      Height = 74
+      Top = 92
+      Width = 85
+      SVGString = '<?xml version="1.0" encoding="utf-8"?>'#10'<svg role="img" width="1em" xmlns="http://www.w3.org/2000/svg" height="1em" viewBox="0 0 20 20" aria-hidden="true" xmlns:xlink="http://www.w3.org/1999/xlink" preserveAspectRatio="xMidYMid meet">'#10'  <g fill="none">'#10'    <path d="M6.784 2.826A1.5 1.5 0 0 1 8.124 2h3.764a1.5 1.5 0 0 1 1.342.83L13.815 4h1.69a2.5 2.5 0 0 1 2.5 2.5v3.761a5.478 5.478 0 0 0-4.122-1.227A4.002 4.002 0 0 0 6 10a4.002 4.002 0 0 0 3.034 3.883A5.477 5.477 0 0 0 9.6 17H4.506a2.5 2.5 0 0 1-2.5-2.5v-8a2.5 2.5 0 0 1 2.5-2.5h1.69l.589-1.174z" fill="#5f8dd3"/>'#10'    <path d="M10 7c1.393 0 2.564.95 2.902 2.236a5.512 5.512 0 0 0-3.666 3.666A3.001 3.001 0 0 1 10 7z" fill="#5f8dd3"/>'#10'    <path d="M19 14.5a4.5 4.5 0 1 1-9 0a4.5 4.5 0 0 1 9 0zm-4-2a.5.5 0 0 0-1 0V14h-1.5a.5.5 0 1 0 0 1H14v1.5a.5.5 0 1 0 1 0V15h1.5a.5.5 0 0 0 0-1H15v-1.5z" fill="#5f8dd3"/>'#10'  </g>'#10'</svg>'#10
       Color = clWhite
       ColorOpacity = 128
+      OnClick = Panel1Click
       Caption = 'BCSVGViewer1'
     end
-  end
-  object Label1: TLabel
-    Left = 0
-    Height = 62
-    Top = 0
-    Width = 279
-    Align = alTop
-    Alignment = taCenter
-    Caption = 'Перетащите или '#13#10'выберите в диалоге'
-    Font.Height = -23
-    ParentColor = False
-    ParentFont = False
   end
   object OpenDialog1: TOpenDialog
     Filter = 'Images|*.jpg;*.jpeg;*.png;*.bmp;*.gif'
