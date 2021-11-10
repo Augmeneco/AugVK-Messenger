@@ -13,6 +13,7 @@ const
   AVATARS_PATH = 'data/avatars';
   THUMBNAILS_PATH = 'data/thumbnails';
   IMAGE_PATH = 'data/images';
+  STICKERS_PATH = 'data/stickers';
 
 
 type TMSG = class;
@@ -848,6 +849,21 @@ begin
     begin
       AttachmentJSON := TJSONObject(JSONEnum.Value);
 
+      if AttachmentJSON['type'].AsString = 'sticker' then
+      begin
+        Attachment := TAttachment.Create;
+        Sizes := TJSONArray(AttachmentJSON.GetPath('sticker.images_with_background'));
+        Attachment.URL := Sizes.Objects[Sizes.Count-1]['url'].AsString;
+        Attachment.Name := 'Sticker'+AttachmentJSON.Objects['sticker']['sticker_id'].AsString;
+        Attachment.Preview := LoadPhoto(
+          Attachment.URL,
+          STICKERS_PATH+'/'+Attachment.Name+'.png'
+        );
+        Attachment.AttachType := atPhoto;  //замени на atSticker;
+
+        Result.Attachments.Add(Attachment);
+      end;
+
       if AttachmentJSON['type'].AsString = 'photo' then
       begin
         Sizes := TJSONArray(AttachmentJSON.GetPath('photo.sizes'));
@@ -925,6 +941,7 @@ begin
   ForceDirectories(AVATARS_PATH);
   ForceDirectories(THUMBNAILS_PATH);
   ForceDirectories(IMAGE_PATH);
+  ForceDirectories(STICKERS_PATH);
 end;
 
 end.

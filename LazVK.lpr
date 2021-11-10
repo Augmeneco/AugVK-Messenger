@@ -13,7 +13,7 @@ uses
    Interfaces, // this includes the LCL widgetset
    Forms, MainFormUnit, Net, ChatFrameUnit, {VkontakteApi,
 	 VkLongpoll,} {WebBrowserFormUnit,} Utils, design, ConfigUtils, LoginFrameUnit,
-   MediaViewerFormUnit, lazrichview, LResources, dialogpanel, DialogFormUnit;
+   MediaViewerFormUnit, lazrichview, LResources, dialogpanel;
 
 {$R *.res}
 
