@@ -30,7 +30,7 @@
           </Target>
           <SearchPaths>
             <IncludeFiles Value="$(ProjOutDir)"/>
-            <OtherUnitFiles Value="lib/dslayout;fpkeyring"/>
+            <OtherUnitFiles Value="fpkeyring"/>
             <UnitOutputDirectory Value="precompile/$(TargetCPU)-$(TargetOS)-$(LCLWidgetType)"/>
           </SearchPaths>
           <CodeGeneration>
@@ -111,22 +111,16 @@
       <FormatVersion Value="2"/>
       <Modes Count="0"/>
     </RunParams>
-    <RequiredPackages Count="5">
+    <RequiredPackages Count="3">
       <Item1>
-        <PackageName Value="weblaz"/>
+        <PackageName Value="AugControls"/>
       </Item1>
       <Item2>
-        <PackageName Value="lazrichview"/>
+        <PackageName Value="bgracontrols"/>
       </Item2>
       <Item3>
-        <PackageName Value="AugControls"/>
-      </Item3>
-      <Item4>
-        <PackageName Value="bgracontrols"/>
-      </Item4>
-      <Item5>
         <PackageName Value="LCL"/>
-      </Item5>
+      </Item3>
     </RequiredPackages>
     <Units Count="17">
       <Unit0>

@@ -859,7 +859,7 @@ begin
           Attachment.URL,
           STICKERS_PATH+'/'+Attachment.Name+'.png'
         );
-        Attachment.AttachType := atPhoto;  //замени на atSticker;
+        Attachment.AttachType := atSticker;  //замени на atSticker;
 
         Result.Attachments.Add(Attachment);
       end;

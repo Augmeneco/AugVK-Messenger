@@ -1,11 +1,11 @@
 object MessageFrame: TMessageFrame
   AnchorSideRight.Side = asrBottom
   Left = 0
-  Height = 106
+  Height = 72
   Top = 0
   Width = 409
   BorderSpacing.InnerBorder = 10
-  ClientHeight = 106
+  ClientHeight = 72
   ClientWidth = 409
   Constraints.MinHeight = 70
   OnMouseWheel = FrameMouseWheel
@@ -91,7 +91,7 @@ object MessageFrame: TMessageFrame
     AnchorSideRight.Control = Owner
     AnchorSideRight.Side = asrBottom
     Left = 65
-    Height = 0
+    Height = 1
     Top = 45
     Width = 334
     Anchors = [akTop, akLeft, akRight]
@@ -100,7 +100,7 @@ object MessageFrame: TMessageFrame
     BorderSpacing.Top = 5
     BorderSpacing.Right = 10
     BevelOuter = bvNone
-    ClientHeight = 0
+    ClientHeight = 1
     ClientWidth = 334
     Constraints.MaxWidth = 400
     DoubleBuffered = False
@@ -118,12 +118,32 @@ object MessageFrame: TMessageFrame
       Anchors = [akTop, akLeft, akRight]
       AutoSize = True
       BevelOuter = bvNone
+      Constraints.MaxHeight = 500
+      Constraints.MaxWidth = 500
       ControlList = <>
       DoubleBuffered = False
       FlowLayout = tlTop
       FlowStyle = fsLeftRightTopBottom
       ParentDoubleBuffered = False
       TabOrder = 0
+    end
+    object StickerImage: TImage
+      AnchorSideLeft.Control = AttachmentsPanel
+      AnchorSideTop.Control = ImagesFlow
+      AnchorSideRight.Control = ImagesFlow
+      AnchorSideRight.Side = asrBottom
+      Left = 0
+      Height = 0
+      Top = 0
+      Width = 256
+      AntialiasingMode = amOn
+      Anchors = [akTop, akLeft, akRight]
+      AutoSize = True
+      Constraints.MaxHeight = 128
+      Constraints.MaxWidth = 128
+      Proportional = True
+      Stretch = True
+      Transparent = True
     end
   end
 end

@@ -6,8 +6,7 @@ interface
 
 uses
   Classes, SysUtils, Forms, Controls, ExtCtrls, StdCtrls, Graphics, augvkapi,
-  AugImage, BGRAShape, atshapelinebgra, BCRoundedImage, BGRASpriteAnimation,
-  RichView, Types;
+  AugImage, BGRAShape, atshapelinebgra, BCRoundedImage, BGRASpriteAnimation, Types;
 
 type
 
@@ -17,6 +16,7 @@ type
     AvatarImage: TImage;
     BGRAShape1: TBGRAShape;
     DateTimeLabel: TLabel;
+    StickerImage: TImage;
     ImagesFlow: TFlowPanel;
     MessageTextLabel: TLabel;
 		NameLabel: TLabel;
@@ -175,17 +175,23 @@ var
 begin
   for Attach in MessageObject.Attachments do
   begin
-    if Attach.AttachType = atPhoto then
-    begin
-      Image := TAugImage.Create(Self);
-      Image.Parent := ImagesFlow;
-      Image.BorderSpacing.Around := 2;
-      Image.Center := True;
-      Image.Cover := True;
-      Image.AntialiasingMode := amOn;
-      Image.Picture := Attach.Preview;
-      Image.OnClick := @AttachmentClick;
-      Image.Tag := PtrInt(Pointer(Attach));
+    case Attach.AttachType of
+      atPhoto:
+      begin
+        Image := TAugImage.Create(Self);
+        Image.Parent := ImagesFlow;
+        Image.BorderSpacing.Around := 2;
+        Image.Center := True;
+        Image.Cover := True;
+        Image.AntialiasingMode := amOn;
+        Image.Picture := Attach.Preview;
+        Image.OnClick := @AttachmentClick;
+        Image.Tag := PtrInt(Pointer(Attach));
+      end;
+      atSticker:
+      begin
+        StickerImage.Picture := Attach.Preview;
+      end;
     end;
   end;
 end;
