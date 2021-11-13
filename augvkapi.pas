@@ -97,9 +97,6 @@ type
     function GetUsers(Ids: array of Integer): TUsersList;
 
     function GetChats(Count: Integer; Offset: Integer = 0): TChatsList;
-    function GetAllChats(Offset: Integer = 0): TChatsList;
-    function GetChat(Id: Integer): TChat;
-    function GetChatsById(Ids: array of Integer): TChatsList;
 
     function GetHistory(PeerId: Integer; Count: Integer; Offset: Integer; StartMessageId: Integer): TMSGsList;
     function GetHistory(PeerId: Integer; Count: Integer): TMSGsList; overload;
@@ -117,6 +114,8 @@ type
     procedure SendMessage(Text: String; PeerId: Integer); overload;
     procedure SendMessage(Text: String; PeerId: Integer; Reply: Integer); overload;
     procedure SendMessage(Text: String; PeerId: Integer; Attachments: TStringArray); overload;
+
+    function GetChat(Id: Integer): TChat;
 
     constructor Create(Token: String);
 end;
@@ -156,6 +155,11 @@ begin
   FreeAndNil(Self.Attachments);
 
   inherited;
+end;
+
+function TAugVKAPI.GetChat(Id: Integer): TChat;
+begin
+  Result := ChatsCache.KeyData[Id];
 end;
 
 procedure TAugVKAPI.SendMessage(Text: String; PeerId: Integer); overload;
@@ -276,63 +280,6 @@ begin
     Result.Add(
       parseMsg(TJSONObject(jsonEnum.Value))
     );
-  end;
-
-end;
-
-function TAugVKAPI.GetChat(Id: Integer): TChat;
-begin
-  Result := getChatsById([id])[0];
-end;
-
-function TAugVKAPI.GetChatsById(Ids: array of Integer): TChatsList;
-var
-  response: TJSONArray;
-  ChatObject: TJSONObject;
-  Chat: TChat;
-  jsonEnum: TJSONEnum;
-  idsstr: String;
-  id, index: Integer;
-  ResultVar: TChat;
-begin
-  idsstr := '';
-  Result := TChatsList.Create;
-  for id in ids do
-  begin
-    if ChatsCache.IndexOf(Id) <> -1 then
-    begin
-      Result.Add(ChatsCache.KeyData[Id]);
-      Continue;
-    end;
-
-    idsstr += IntToStr(id-2000000000)+',';
-  end;
-
-  response := TJSONArray(vkapi.call('messages.getChat',
-    TParams.Create
-      .add('chat_ids',idsstr)
-  ));
-  for jsonEnum in response do
-  begin
-    ChatObject := TJSONObject(jsonEnum.Value);
-
-    if ChatsCache.IndexOf(ChatObject.Integers['id']) <> -1 then
-    begin
-      Result.Add(ChatsCache.KeyData[ChatObject.Integers['id']]);
-      Continue;
-    end;
-
-    ResultVar := TChat.Create;
-    ResultVar.Name := ChatObject.Strings['title'];
-    ResultVar.Form := ChatObject.Strings['type'];
-    ResultVar.Id := ChatObject.Integers['id'];
-    ResultVar.PreviewMsg := Nil;
-    ResultVar.Image := LoadPhoto(
-      ChatObject['photo_50'].AsString,
-      Format(AVATARS_PATH+'/%d.jpg',[2000000000+ResultVar.id])
-    );
-
-    ChatsCache.Add(ResultVar.Id, ResultVar);
   end;
 
 end;
@@ -504,90 +451,6 @@ begin
     Result.Add(ResultVar);
 
     ChatsCache.Add(ResultVar.Id, ResultVar);
-  end;
-end;
-
-function TAugVKAPI.GetAllChats(Offset: Integer = 0): TChatsList;
-var
-  chatsArray, profilesArray: TJSONArray;
-  chatObject, profileObject, response: TJSONObject;
-  jsonEnum: TJSONEnum;
-  index: Integer;
-  previewMsg: TMSG;
-  userType: String;
-  Chat: TChat;
-  ResultVar: TChat;
-begin
-  Result := TChatsList.Create;
-
-  while True do
-  begin
-    response := TJSONObject(vkapi.call(
-       'messages.getConversations',
-       TParams.Create
-          .add('offset', offset)
-          .add('count', 200)
-          .add('extended', 1)
-    ));
-
-    DebugLn(Format('Loading chats %d / %d',[offset,response['count'].AsInteger]));
-
-    chatsArray := response.Arrays['items'];
-    if chatsArray.Count = 0 then break;
-
-    for userType in ['profiles','groups'] do
-    begin
-      if response.IndexOfName(userType) = -1 then continue;
-
-      profilesArray := response.Arrays[userType];
-      for jsonEnum in profilesArray do
-      begin
-        profileObject := TJSONObject(jsonEnum.Value);
-        parseUser(profileObject);
-      end;
-    end;
-
-    for jsonEnum in chatsArray do
-    begin
-      ChatObject := TJSONObject(jsonEnum.Value);
-
-      if ChatsCache.IndexOf(ChatObject.GetPath('conversation.peer.id').AsInteger) <> -1 then
-      begin
-        Result.Add(ChatsCache.KeyData[ChatObject.GetPath('conversation.peer.id').AsInteger]);
-        Continue;
-      end;
-
-      ResultVar := TChat.Create;
-      ResultVar.id := chatObject.GetPath('conversation.peer.id').AsInteger;
-      ResultVar.previewMsg := parseMsg(chatObject.Objects['last_message']);
-
-      if chatObject.GetPath('conversation.peer.type').AsString = 'chat' then
-      begin
-        ResultVar.name := chatObject.GetPath('conversation.chat_settings.title').AsString;
-
-        if ChatObject.Objects['conversation'].
-                      Objects['chat_settings'].IndexOfName('photo') = -1 then
-        begin
-          ResultVar.Image := ResultVar.PreviewMsg.FromId.Image;
-        end
-        else
-          ResultVar.Image := LoadPhoto(
-            ChatObject.GetPath('conversation.chat_settings.photo.photo_50').AsString,
-            Format(AVATARS_PATH+'/%d.jpg',[ResultVar.id])
-          );
-      end
-      else
-      begin
-        ResultVar.name := GetUser(ResultVar.id).name;
-        ResultVar.Image := GetUser(ResultVar.Id).Image;
-      end;
-
-      ChatsCache.Add(ResultVar.Id, ResultVar);
-      Result.Add(ResultVar);
-    end;
-
-    if response['count'].AsInteger <= 200 then break
-    else offset += 200;
   end;
 end;
 
@@ -929,7 +792,6 @@ begin
 
   VKAPI := TVKAPI.Create;
   VKAPI.Access_Token := Token;
-  //GetChats;
 end;
 
 initialization

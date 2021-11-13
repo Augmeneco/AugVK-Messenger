@@ -29,8 +29,8 @@ object MainForm: TMainForm
     Width = 100
     Anchors = [akTop, akLeft, akBottom]
     BevelOuter = bvNone
-    ClientHeight = 23
-    ClientWidth = 96
+    ClientHeight = 27
+    ClientWidth = 100
     TabOrder = 3
     OnMouseEnter = AttachButtonMouseEnter
     OnMouseLeave = AttachButtonMouseLeave
@@ -157,8 +157,8 @@ object MainForm: TMainForm
     Width = 800
     Align = alClient
     AutoSize = True
-    ClientHeight = 496
-    ClientWidth = 796
+    ClientHeight = 500
+    ClientWidth = 800
     TabOrder = 2
     OnClick = ShadowPanelClick
     object Image1: TImage
@@ -191,8 +191,8 @@ object MainForm: TMainForm
       Width = 300
       BevelOuter = bvNone
       BorderWidth = 10
-      ClientHeight = 296
-      ClientWidth = 296
+      ClientHeight = 300
+      ClientWidth = 300
       Color = clNone
       Constraints.MaxHeight = 300
       Constraints.MaxWidth = 300
@@ -213,8 +213,8 @@ object MainForm: TMainForm
       end
       object Panel7: TPanel
         Left = 10
-        Height = 1
-        Top = 289
+        Height = 0
+        Top = 290
         Width = 280
         Align = alBottom
         AutoSize = True
@@ -238,8 +238,16 @@ object MainForm: TMainForm
       AnchorSideBottom.Control = LoginFrameForm
       Left = 274
       Top = 100
-      ClientHeight = 296
-      ClientWidth = 248
+      inherited Label4: TLabel
+        Height = 30
+      end
+      inherited ValidCodeEdit: TEdit
+        Height = 28
+      end
+      inherited ForceSMSLabel: TLabel
+        Height = 15
+        Width = 165
+      end
     end
     inherited LoginPanel: TPanel
       AnchorSideLeft.Control = LoginFrameForm
@@ -248,8 +256,17 @@ object MainForm: TMainForm
       AnchorSideBottom.Control = LoginFrameForm
       Left = 275
       Top = 120
-      ClientHeight = 256
-      ClientWidth = 246
+      inherited LoginEdit: TEdit
+        Height = 28
+      end
+      inherited PasswordEdit: TEdit
+        Height = 28
+      end
+      inherited Label1: TLabel
+        Left = 65
+        Height = 54
+        Width = 121
+      end
     end
     inherited CaptchaPanel: TPanel
       AnchorSideLeft.Control = LoginFrameForm
@@ -258,8 +275,12 @@ object MainForm: TMainForm
       AnchorSideBottom.Control = LoginFrameForm
       Left = 293
       Top = 125
-      ClientHeight = 246
-      ClientWidth = 210
+      inherited Label2: TLabel
+        Height = 37
+      end
+      inherited CaptchaEdit: TEdit
+        Height = 28
+      end
     end
   end
   object Panel1: TPanel
@@ -269,8 +290,8 @@ object MainForm: TMainForm
     Width = 800
     Align = alClient
     BevelOuter = bvNone
-    ClientHeight = 496
-    ClientWidth = 796
+    ClientHeight = 500
+    ClientWidth = 800
     DoubleBuffered = False
     ParentDoubleBuffered = False
     TabOrder = 0
@@ -282,8 +303,8 @@ object MainForm: TMainForm
       Align = alLeft
       Anchors = []
       BevelOuter = bvNone
-      ClientHeight = 496
-      ClientWidth = 166
+      ClientHeight = 500
+      ClientWidth = 170
       Color = clNone
       Constraints.MinWidth = 70
       DoubleBuffered = False
@@ -328,7 +349,7 @@ object MainForm: TMainForm
           AnchorSideRight.Control = DialogsScroll
           AnchorSideRight.Side = asrBottom
           Left = 0
-          Height = 1
+          Height = 0
           Top = 0
           Width = 170
           Anchors = [akTop, akLeft, akRight]
@@ -370,8 +391,8 @@ object MainForm: TMainForm
       Align = alClient
       Anchors = []
       BevelOuter = bvNone
-      ClientHeight = 496
-      ClientWidth = 625
+      ClientHeight = 500
+      ClientWidth = 629
       Color = clNone
       Constraints.MinHeight = 300
       Constraints.MinWidth = 300
@@ -387,8 +408,8 @@ object MainForm: TMainForm
         Width = 629
         Align = alTop
         BevelOuter = bvNone
-        ClientHeight = 46
-        ClientWidth = 625
+        ClientHeight = 50
+        ClientWidth = 629
         Color = clWhite
         ParentColor = False
         ParentFont = False
@@ -400,7 +421,7 @@ object MainForm: TMainForm
           Top = 0
           Width = 52
           Align = alLeft
-          SVGString = '<?xml version="1.0" encoding="utf-8"?>'#10'<svg role="img" width="1em" xmlns="http://www.w3.org/2000/svg" height="1em" viewBox="0 0 16 16" aria-hidden="true" xmlns:xlink="http://www.w3.org/1999/xlink" preserveAspectRatio="xMidYMid meet">'#10'  <g fill="none">'#10'    <path d="M14 8a.75.75 0 0 1-.75.75H4.463l3.287 2.941a.75.75 0 1 1-1 1.118L2 8.559A.75.75 0 0 1 2 7.44l4.75-4.25a.75.75 0 1 1 1 1.118L4.463 7.25h8.787A.75.75 0 0 1 14 8z" fill="#5f8dd3"/>'#10'  </g>'#10'</svg>'#10
+          SVGString = '<?xml version="1.0" encoding="utf-8"?>'#13#10'<svg role="img" width="1em" xmlns="http://www.w3.org/2000/svg" height="1em" viewBox="0 0 16 16" aria-hidden="true" xmlns:xlink="http://www.w3.org/1999/xlink" preserveAspectRatio="xMidYMid meet">'#13#10'  <g fill="none">'#13#10'    <path d="M14 8a.75.75 0 0 1-.75.75H4.463l3.287 2.941a.75.75 0 1 1-1 1.118L2 8.559A.75.75 0 0 1 2 7.44l4.75-4.25a.75.75 0 1 1 1 1.118L4.463 7.25h8.787A.75.75 0 0 1 14 8z" fill="#5f8dd3"/>'#13#10'  </g>'#13#10'</svg>'#13#10
           DestDPI = 160
           x = 150
           y = 150
@@ -428,7 +449,7 @@ object MainForm: TMainForm
       end
       object ChatScroll: TAugScrollBox
         Left = 0
-        Height = 391
+        Height = 392
         Top = 51
         Width = 629
         HorzScrollBar.Page = 1
@@ -439,7 +460,7 @@ object MainForm: TMainForm
         VertScrollBar.Tracking = True
         Align = alClient
         BorderStyle = bsNone
-        ClientHeight = 391
+        ClientHeight = 392
         ClientWidth = 629
         Color = clWhite
         ParentColor = False
@@ -449,8 +470,8 @@ object MainForm: TMainForm
         OnVScroll = ChatScrollVScroll
         object ChatStack: TStackPanel
           Left = 0
-          Height = 1
-          Top = 390
+          Height = 0
+          Top = 392
           Width = 629
           Align = alBottom
           AutoSize = True
@@ -467,7 +488,7 @@ object MainForm: TMainForm
       object ShapeLineBGRA3: TShapeLineBGRA
         Left = 0
         Height = 1
-        Top = 442
+        Top = 443
         Width = 629
         Align = alBottom
         LineColor = clSilver
@@ -478,13 +499,13 @@ object MainForm: TMainForm
         AnchorSideBottom.Control = AttachmentsPanel
         Left = 0
         Height = 54
-        Top = 443
+        Top = 444
         Width = 629
         Align = alBottom
         AutoSize = True
         BevelOuter = bvNone
-        ClientHeight = 50
-        ClientWidth = 625
+        ClientHeight = 54
+        ClientWidth = 629
         Color = clWhite
         ParentColor = False
         ParentFont = False
@@ -501,7 +522,7 @@ object MainForm: TMainForm
           Top = 20
           Width = 34
           Anchors = [akRight, akBottom]
-          SVGString = '<?xml version="1.0" encoding="utf-8"?>'#10'<svg role="img" width="1em" xmlns="http://www.w3.org/2000/svg" height="1em" viewBox="0 0 16 16" aria-hidden="true" xmlns:xlink="http://www.w3.org/1999/xlink" preserveAspectRatio="xMidYMid meet">'#10'  <g fill="none">'#10'    <path d="M1.724 1.053a.5.5 0 0 0-.714.545l1.403 4.85a.5.5 0 0 0 .397.354l5.69.953c.268.053.268.437 0 .49l-5.69.953a.5.5 0 0 0-.397.354l-1.403 4.85a.5.5 0 0 0 .714.545l13-6.5a.5.5 0 0 0 0-.894l-13-6.5z" fill="#5f8dd3"/>'#10'  </g>'#10'</svg>'#10
+          SVGString = '<?xml version="1.0" encoding="utf-8"?>'#13#10'<svg role="img" width="1em" xmlns="http://www.w3.org/2000/svg" height="1em" viewBox="0 0 16 16" aria-hidden="true" xmlns:xlink="http://www.w3.org/1999/xlink" preserveAspectRatio="xMidYMid meet">'#13#10'  <g fill="none">'#13#10'    <path d="M1.724 1.053a.5.5 0 0 0-.714.545l1.403 4.85a.5.5 0 0 0 .397.354l5.69.953c.268.053.268.437 0 .49l-5.69.953a.5.5 0 0 0-.397.354l-1.403 4.85a.5.5 0 0 0 .714.545l13-6.5a.5.5 0 0 0 0-.894l-13-6.5z" fill="#5f8dd3"/>'#13#10'  </g>'#13#10'</svg>'#13#10
           DestDPI = 160
           x = 150
           y = 150
@@ -527,7 +548,7 @@ object MainForm: TMainForm
           Top = 20
           Width = 34
           Anchors = [akLeft, akBottom]
-          SVGString = '<?xml version="1.0" encoding="utf-8"?>'#10'<svg role="img" width="1em" xmlns="http://www.w3.org/2000/svg" height="1em" viewBox="0 0 16 16" aria-hidden="true" xmlns:xlink="http://www.w3.org/1999/xlink" preserveAspectRatio="xMidYMid meet">'#10'  <g fill="none">'#10'    <path d="M3.257 8.707l4.597-4.596a2.5 2.5 0 0 1 3.535 3.536L6.086 12.95a1 1 0 0 1-1.414-1.414l5.303-5.304a.5.5 0 0 0-.707-.707L3.964 10.83a2 2 0 1 0 2.829 2.828l5.303-5.303a3.5 3.5 0 0 0-4.95-4.95L2.55 8a.5.5 0 1 0 .707.707z" fill="#5f8dd3"/>'#10'  </g>'#10'</svg>'#10
+          SVGString = '<?xml version="1.0" encoding="utf-8"?>'#13#10'<svg role="img" width="1em" xmlns="http://www.w3.org/2000/svg" height="1em" viewBox="0 0 16 16" aria-hidden="true" xmlns:xlink="http://www.w3.org/1999/xlink" preserveAspectRatio="xMidYMid meet">'#13#10'  <g fill="none">'#13#10'    <path d="M3.257 8.707l4.597-4.596a2.5 2.5 0 0 1 3.535 3.536L6.086 12.95a1 1 0 0 1-1.414-1.414l5.303-5.304a.5.5 0 0 0-.707-.707L3.964 10.83a2 2 0 1 0 2.829 2.828l5.303-5.303a3.5 3.5 0 0 0-4.95-4.95L2.55 8a.5.5 0 1 0 .707.707z" fill="#5f8dd3"/>'#13#10'  </g>'#13#10'</svg>'#13#10
           Color = clWhite
           ColorOpacity = 128
           OnMouseEnter = AttachButtonMouseEnter
@@ -567,17 +588,17 @@ object MainForm: TMainForm
       object AttachmentsPanel: TPanel
         AnchorSideBottom.Control = ChatPanel
         Left = 0
-        Height = 3
-        Top = 497
+        Height = 2
+        Top = 498
         Width = 629
         Align = alBottom
         AutoSize = True
-        ClientHeight = 1
-        ClientWidth = 625
+        ClientHeight = 2
+        ClientWidth = 629
         TabOrder = 3
         object AttachmentsFlow: TFlowPanel
           Left = 1
-          Height = 1
+          Height = 0
           Top = 1
           Width = 627
           Align = alTop
