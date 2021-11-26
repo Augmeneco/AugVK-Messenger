@@ -89,6 +89,11 @@ type
     procedure Splitter1Moved(Sender: TObject);
     procedure TrayIcon1MouseUp(Sender: TObject; Button: TMouseButton;
       Shift: TShiftState; X, Y: Integer);
+    procedure AttachedPhotoClick(Sender: TObject);
+    procedure DetachButtonClick(Sender: TObject);
+    procedure DetachButtonMouseEnter(Sender: TObject);
+    procedure DetachButtonMouseLeave(Sender: TObject);
+
     procedure SetDialogsWidthPrcnt(AWidth: Real);
     function GetDialogsWidthPrcnt: Real;
   private
@@ -145,7 +150,8 @@ var
 implementation
 
 uses
-  LazLogger, URIParser, LCLIntf, LCLType, fpmimetypes, PhotoAttachFrameUnit, Clipbrd;
+  LazLogger, URIParser, LCLIntf, LCLType, fpmimetypes, PhotoAttachFrameUnit,
+  Clipbrd, MediaViewerFormUnit;
 
 {$R *.lfm}
 
@@ -414,17 +420,17 @@ end;
 procedure TMainForm.SendButtonClick(Sender: TObject);
 var
   AttachIDs: TStringArray;
-  AttachPath: String;
   AttachID: String;
   Item: TControl;
+  i: Integer;
 begin
   if SelectedChat <> -1 then
   begin
     if AttachedFiles.Count > 0 then
     begin
-      for AttachPath in AttachedFiles do
+      for i:=0 to AttachedFiles.Count-1 do
       begin
-        AttachID := AugVK.UploadPhoto(AttachPath);
+        AttachID := AugVK.UploadPhoto(AttachedFiles.ValueFromIndex[i]);
         Insert(AttachID, AttachIDs, Length(AttachIDs));
       end;
     end;
@@ -462,6 +468,28 @@ begin
       Hide
     else
       Show;
+end;
+
+procedure TMainForm.AttachedPhotoClick(Sender: TObject);
+begin
+  MediaViewerForm.AugImage1.Picture.LoadFromFile(AttachedFiles.Values[IntToStr(TControl(Sender).Tag)]);
+  MediaViewerForm.Show;
+end;
+
+procedure TMainForm.DetachButtonClick(Sender: TObject);
+begin
+  AttachedFiles.Delete(TComponent(Sender).Tag);
+  Application.ReleaseComponent(TComponent(Sender).Owner);
+end;
+
+procedure TMainForm.DetachButtonMouseEnter(Sender: TObject);
+begin
+  TBCSVGButton(Sender).ColorOpacity := 210;
+end;
+
+procedure TMainForm.DetachButtonMouseLeave(Sender: TObject);
+begin
+  TBCSVGButton(Sender).ColorOpacity := 127;
 end;
 
 procedure TMainForm.SetDialogsWidthPrcnt(AWidth: Real);
@@ -787,16 +815,44 @@ end;
 
 procedure TMainForm.AttachPhoto(Filename: String);
 var
+  Panel: TPanel;
   Image: TAugImage;
+  DetachButton: TBCSVGButton;
 begin
-  MainForm.AttachedFiles.Append(Filename);
-  Image := TAugImage.Create(MainForm);
-  Image.Parent := MainForm.AttachmentsFlow;
-  Image.Height := 50;
-  Image.Width := 50;
+  AttachedFiles.AddPair(IntToStr(AttachedFiles.Count), Filename);
+
+  Panel := TPanel.Create(Self);
+  Panel.Parent := AttachmentsFlow;
+  Panel.Height := 60;
+  Panel.Width := 60;
+  Panel.BevelOuter := bvNone;
+  Panel.Tag := AttachedFiles.Count-1;
+
+  Image := TAugImage.Create(Panel);
+  Image.Parent := Panel;
+  Image.Align := alClient;
   Image.Picture.LoadFromFile(Filename);
+  Image.OnClick := @AttachedPhotoClick;
   Image.Cover := True;
   Image.Center := True;
+  Image.Cursor := crHandPoint;
+  Image.AntialiasingMode := amOn;
+
+  DetachButton := TBCSVGButton.Create(Panel);
+  DetachButton.Parent := Panel;
+  DetachButton.SVGNormalXML.Text := '<?xml version="1.0" encoding="UTF-8"?><svg width="1em" height="1em" aria-hidden="true" role="img" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg"> <g fill="none"> <path d="M2.397 2.554l.073-.084a.75.75 0 0 1 .976-.073l.084.073L8 6.939l4.47-4.47a.75.75 0 1 1 1.06 1.061L9.061 8l4.47 4.47a.75.75 0 0 1 .072.976l-.073.084a.75.75 0 0 1-.976.073l-.084-.073L8 9.061l-4.47 4.47a.75.75 0 0 1-1.06-1.061L6.939 8l-4.47-4.47a.75.75 0 0 1-.072-.976l.073-.084l-.073.084z" fill="#fff"/> </g> </svg>';
+  DetachButton.Color := clGray;
+  DetachButton.ColorOpacity := 127;
+  DetachButton.Cursor := crHandPoint;
+  DetachButton.OnClick := @DetachButtonClick;
+  DetachButton.OnMouseEnter := @DetachButtonMouseEnter;
+  DetachButton.OnMouseLeave := @DetachButtonMouseLeave;
+  DetachButton.AnchorSideRight.Control := Panel;
+  DetachButton.AnchorSideRight.Side := asrRight;
+  DetachButton.AnchorSideTop.Control := Panel;
+  DetachButton.AnchorSideTop.Side := asrTop;
+  DetachButton.Height := 15;
+  DetachButton.Width := 15;
 end;
 
 procedure TMainForm.OnPasteFromClipboard;
