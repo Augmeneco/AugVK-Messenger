@@ -31,7 +31,10 @@ type
     AttachmentsPanel: TPanel;
     BCButton1: TBCButton;
     Image1: TImage;
+    Image2: TImage;
     Label1: TLabel;
+    Label2: TLabel;
+    Panel2: TPanel;
     ShadowPanel: TPanel;
     Panel6: TPanel;
     Panel7: TPanel;
@@ -107,12 +110,14 @@ type
     constructor Create(TheOwner: TComponent); override;
     destructor Destroy; override;
 
+    procedure ShowChat(AShow: Boolean);
     procedure ShowBothPanels;
     procedure ShowOnlyChat;
     procedure ShowOnlyDialogs;
 
-    procedure ShowDialog(Frame: TFrame; Title: String; Buttons: array of const; Callback: TNotifyEvent);
-    procedure CloseDialog;
+    procedure ShowDialogWindow(Frame: TFrame; Title: String; Buttons: array of const; Callback: TNotifyEvent);
+    procedure HideDialogWindow;
+    procedure FreeDialogWindow;
 
     procedure ClearChat;
     procedure LoadChat(Id: Integer; Page: Integer=0; StartMsg: Integer=-1;
@@ -125,6 +130,10 @@ type
       ScrollTo: TScrollTo=stNotScroll);
     procedure LoadDialogsCallback(Response: TObject; Data: Pointer);
 
+    procedure AttachPhoto(Filename: String);
+    procedure OnPasteFromClipboard;
+
+
     property DialogsWidthPrcnt: Real read GetDialogsWidthPrcnt write SetDialogsWidthPrcnt;
   end;
 
@@ -136,7 +145,7 @@ var
 implementation
 
 uses
-  LazLogger, URIParser, LCLIntf, fpmimetypes, PhotoAttachFrameUnit;
+  LazLogger, URIParser, LCLIntf, LCLType, fpmimetypes, PhotoAttachFrameUnit, Clipbrd;
 
 {$R *.lfm}
 
@@ -223,6 +232,8 @@ begin
   AttachedFiles := TStringList.Create;
 	Application.OnException := @CustomExceptionHandler;
   //CefLoginFrame1.OnLogined := @OnLogined;
+
+  ShowChat(False);
 
   // Получение токена
   TokenPath := Format('accounts[%d].token', [Config.Integers['active_account']]);
@@ -312,8 +323,8 @@ procedure TMainForm.BCButton1Click(Sender: TObject);
 var
   Frame: TPhotoAttachFrame;
 begin
-  Frame := TPhotoAttachFrame.Create(Self);
-  ShowDialog(Frame, 'Фотография', ['Отмена', 0], @Frame.DialogButtonClick);
+  Frame := TPhotoAttachFrame.Create(nil);
+  ShowDialogWindow(Frame, 'Фотография', ['Отмена', 0], @Frame.DialogButtonClick);
 end;
 
 procedure TMainForm.FormDropFiles(Sender: TObject;
@@ -376,11 +387,13 @@ begin
       Memo1.Clear;
     end;
   end;
+  if (Key = VK_V) and (ssCtrl in Shift) then
+    OnPasteFromClipboard;
 end;
 
 procedure TMainForm.ShadowPanelClick(Sender: TObject);
 begin
-  CloseDialog;
+  HideDialogWindow;
 end;
 
 procedure TMainForm.ShowMenuItemClick(Sender: TObject);
@@ -501,6 +514,16 @@ begin
   inherited Destroy;
 end;
 
+procedure TMainForm.ShowChat(AShow: Boolean);
+begin
+  Panel4.Visible:=AShow;
+  ShapeLineBGRA1.Visible:=AShow;
+  ShapeLineBGRA3.Visible:=AShow;
+  Panel5.Visible:=AShow;
+  AttachmentsPanel.Visible:=AShow;
+  Panel2.Visible:=not AShow;
+end;
+
 procedure TMainForm.ShowBothPanels;
 begin
   DialogsPanel.Show;
@@ -531,7 +554,7 @@ begin
   CompactView := True;
 end;
 
-procedure TMainForm.ShowDialog(Frame: TFrame; Title: String; Buttons: array of const; Callback: TNotifyEvent);
+procedure TMainForm.ShowDialogWindow(Frame: TFrame; Title: String; Buttons: array of const; Callback: TNotifyEvent);
 var
   Button: TButton;
   i: Integer = 0;
@@ -540,6 +563,8 @@ begin
   begin
     //error
   end;
+  if Assigned(ActiveDialogFrame) then
+    FreeDialogWindow;
   while i <= High(Buttons) do
   begin
     if (Buttons[i].VType <> vtString) and (Buttons[i+1].VType <> vtInteger) then
@@ -560,17 +585,24 @@ begin
   ShadowPanel.BringToFront;
 end;
 
-procedure TMainForm.CloseDialog;
+procedure TMainForm.HideDialogWindow;
+begin
+  ShadowPanel.SendToBack;
+end;
+
+procedure TMainForm.FreeDialogWindow;
 var
   Item: TControl;
 begin
-  while Panel7.ControlCount > 0 do
+  if Assigned(ActiveDialogFrame) then
   begin
-    Item := Panel7.Controls[0];
-    Item.Free;
+    while Panel7.ControlCount > 0 do
+    begin
+      Item := Panel7.Controls[0];
+      Item.Free;
+    end;
+    ActiveDialogFrame.Free;
   end;
-  ActiveDialogFrame.Free;
-  ShadowPanel.SendToBack;
 end;
 
 procedure TMainForm.ClearChat;
@@ -655,12 +687,19 @@ procedure TMainForm.OpenChat(Id: Integer; LastMessage: augvkapi.TMSG=nil);
 var
   Frame: TMessageFrame;
   MsgId: Integer = -1;
+  ChatInfo: TChat;
 begin
   if MainForm.CompactView then
     MainForm.ShowOnlyChat;
   if MainForm.SelectedChat = Id then
     exit;
   MainForm.SelectedChat := Id;
+
+  ShowChat(True);
+
+  ChatInfo := AugVK.GetChat(Id);
+  Label2.Caption := ChatInfo.Name;
+  Image2.Picture := ChatInfo.Image;
 
   // очистка чата
   ClearChat;
@@ -673,7 +712,6 @@ begin
   //  Frame.Parent := ChatStack;
   //  Frame.Fill(LastMessage);
   //end;
-
 
   LoadChat(Id, 0, MsgId);
 end;
@@ -745,6 +783,36 @@ begin
     DialogsPage -= 1;
   DialogsBlockLoad := False;
   Dispose(LoadDialogsData);
+end;
+
+procedure TMainForm.AttachPhoto(Filename: String);
+var
+  Image: TAugImage;
+begin
+  MainForm.AttachedFiles.Append(Filename);
+  Image := TAugImage.Create(MainForm);
+  Image.Parent := MainForm.AttachmentsFlow;
+  Image.Height := 50;
+  Image.Width := 50;
+  Image.Picture.LoadFromFile(Filename);
+  Image.Cover := True;
+  Image.Center := True;
+end;
+
+procedure TMainForm.OnPasteFromClipboard;
+var
+  Bitmap: TBitmap;
+  TempFile: String;
+begin
+  Bitmap := TBitmap.Create;
+  if Clipboard.HasFormat(PredefinedClipboardFormat(pcfBitmap)) then
+  begin
+    Bitmap.LoadFromClipboardFormat(CF_Bitmap);
+    TempFile := GetTempFileName+'.bmp';
+    Bitmap.SaveToFile(TempFile);
+    AttachPhoto(TempFile);
+  end;
+  Bitmap.Free;
 end;
 
 { Actions }

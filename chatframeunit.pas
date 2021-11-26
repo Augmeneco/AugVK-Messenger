@@ -108,7 +108,7 @@ end;
 
 destructor TChatFrame.Destroy;
 begin
-  FreeAndNil(ChatObject);
+  //FreeAndNil(ChatObject);
   inherited;
 end;
 

@@ -419,7 +419,7 @@ object MainForm: TMainForm
           Left = 0
           Height = 50
           Top = 0
-          Width = 52
+          Width = 50
           Align = alLeft
           SVGString = '<?xml version="1.0" encoding="utf-8"?>'#13#10'<svg role="img" width="1em" xmlns="http://www.w3.org/2000/svg" height="1em" viewBox="0 0 16 16" aria-hidden="true" xmlns:xlink="http://www.w3.org/1999/xlink" preserveAspectRatio="xMidYMid meet">'#13#10'  <g fill="none">'#13#10'    <path d="M14 8a.75.75 0 0 1-.75.75H4.463l3.287 2.941a.75.75 0 1 1-1 1.118L2 8.559A.75.75 0 0 1 2 7.44l4.75-4.25a.75.75 0 1 1 1 1.118L4.463 7.25h8.787A.75.75 0 0 1 14 8z" fill="#5f8dd3"/>'#13#10'  </g>'#13#10'</svg>'#13#10
           DestDPI = 160
@@ -436,6 +436,29 @@ object MainForm: TMainForm
           Position = 0
           Maximum = 0
         end
+        object Image2: TImage
+          Left = 50
+          Height = 50
+          Top = 0
+          Width = 50
+          AntialiasingMode = amOn
+          Align = alLeft
+        end
+        object Label2: TLabel
+          AnchorSideLeft.Control = Image2
+          AnchorSideLeft.Side = asrBottom
+          AnchorSideTop.Control = Image2
+          AnchorSideTop.Side = asrCenter
+          Left = 105
+          Height = 23
+          Top = 14
+          Width = 49
+          BorderSpacing.Left = 5
+          Caption = 'Label2'
+          Font.Height = -17
+          ParentColor = False
+          ParentFont = False
+        end
       end
       object ShapeLineBGRA1: TShapeLineBGRA
         Left = 0
@@ -449,7 +472,7 @@ object MainForm: TMainForm
       end
       object ChatScroll: TAugScrollBox
         Left = 0
-        Height = 392
+        Height = 394
         Top = 51
         Width = 629
         HorzScrollBar.Page = 1
@@ -460,7 +483,7 @@ object MainForm: TMainForm
         VertScrollBar.Tracking = True
         Align = alClient
         BorderStyle = bsNone
-        ClientHeight = 392
+        ClientHeight = 394
         ClientWidth = 629
         Color = clWhite
         ParentColor = False
@@ -471,7 +494,7 @@ object MainForm: TMainForm
         object ChatStack: TStackPanel
           Left = 0
           Height = 0
-          Top = 392
+          Top = 394
           Width = 629
           Align = alBottom
           AutoSize = True
@@ -488,7 +511,7 @@ object MainForm: TMainForm
       object ShapeLineBGRA3: TShapeLineBGRA
         Left = 0
         Height = 1
-        Top = 443
+        Top = 445
         Width = 629
         Align = alBottom
         LineColor = clSilver
@@ -499,7 +522,7 @@ object MainForm: TMainForm
         AnchorSideBottom.Control = AttachmentsPanel
         Left = 0
         Height = 54
-        Top = 444
+        Top = 446
         Width = 629
         Align = alBottom
         AutoSize = True
@@ -580,6 +603,7 @@ object MainForm: TMainForm
           Font.Name = 'Arial'
           HideSelection = False
           OnChange = Memo1Change
+          OnKeyDown = Memo1KeyDown
           ParentFont = False
           TabOrder = 0
           WantReturns = False
@@ -588,19 +612,20 @@ object MainForm: TMainForm
       object AttachmentsPanel: TPanel
         AnchorSideBottom.Control = ChatPanel
         Left = 0
-        Height = 2
-        Top = 498
+        Height = 0
+        Top = 500
         Width = 629
         Align = alBottom
         AutoSize = True
-        ClientHeight = 2
+        BevelOuter = bvNone
+        ClientHeight = 0
         ClientWidth = 629
         TabOrder = 3
         object AttachmentsFlow: TFlowPanel
-          Left = 1
+          Left = 0
           Height = 0
-          Top = 1
-          Width = 627
+          Top = 0
+          Width = 629
           Align = alTop
           AutoSize = True
           BevelOuter = bvNone
@@ -609,6 +634,22 @@ object MainForm: TMainForm
           FlowStyle = fsLeftRightTopBottom
           TabOrder = 0
         end
+      end
+      object Panel2: TPanel
+        AnchorSideLeft.Control = ChatScroll
+        AnchorSideLeft.Side = asrCenter
+        AnchorSideTop.Control = ChatScroll
+        AnchorSideTop.Side = asrCenter
+        AnchorSideRight.Side = asrBottom
+        AnchorSideBottom.Side = asrCenter
+        Left = 206
+        Height = 36
+        Top = 230
+        Width = 216
+        BevelOuter = bvNone
+        BorderStyle = bsSingle
+        Caption = 'Выберите чат для начала общения'
+        TabOrder = 4
       end
     end
   end

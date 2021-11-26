@@ -59,22 +59,15 @@ begin
   if OpenDialog1.Execute then
     for Filename in OpenDialog1.Files do
     begin
-      MainForm.AttachedFiles.Append(Filename);
-      Image := TAugImage.Create(MainForm);
-      Image.Height := 50;
-      Image.Width := 50;
-      Image.Picture.LoadFromFile(Filename);
-      Image.Cover := True;
-      Image.Center := True;
-      Image.Parent := MainForm.AttachmentsFlow;
+      MainForm.AttachPhoto(Filename)
     end;
-    //MainForm.CloseDialog;
+    MainForm.HideDialogWindow;
 end;
 
 procedure TPhotoAttachFrame.DialogButtonClick(Sender: TObject);
 begin
   if TButton(Sender).Tag = 0 then
-    MainForm.CloseDialog;
+    MainForm.HideDialogWindow;
 end;
 
 end.

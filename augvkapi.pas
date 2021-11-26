@@ -15,6 +15,10 @@ const
   IMAGE_PATH = 'data/images';
   STICKERS_PATH = 'data/stickers';
 
+//type
+//  generic TSecondClass<T> = class(specialize TMyFirstClass<T>, TInterfacedObject)
+//  end;
+
 
 type TMSG = class;
 type TUser = class;
@@ -22,7 +26,8 @@ type TUser = class;
 type
   TAttachType = (atPhoto, atVideo, atAudio, atDoc, atWall, atMarket, atPoll,
                  atSticker, atGIF, atURL);
-  TAttachment = class
+  // Никогда не хранить в GUI
+  TAttachment = class(TInterfacedObject)
     Name: String;
     URL: String;
     Preview: TPicture;
@@ -35,7 +40,8 @@ type TAttachmentsList = specialize TFPGList<TAttachment>;
 type TMSGsList = specialize TFPGList<TMSG>;
 
 type
-  TMSG = class
+  // Никогда не хранить в GUI
+  TMSG = class(TInterfacedObject)
     Id: Integer;
     Text: String;
     Date: Integer;
@@ -48,7 +54,8 @@ type
 end;
 
 type
-  TUser = class
+  // Никогда не хранить в GUI
+  TUser = class(TInterfacedObject)
     Name: String;
     Id: Integer;
     Image: TPicture;
@@ -56,7 +63,8 @@ end;
 type TUsersList = specialize TFPGList<TUser>;
 
 type
-  TChat = class
+  // Никогда не хранить в GUI
+  TChat = class(TInterfacedObject)
     Id: Integer;
     Name: String;
     PreviewMsg: TMSG;
@@ -157,6 +165,7 @@ begin
   inherited;
 end;
 
+// TODO: Доделать взятие не из кеша
 function TAugVKAPI.GetChat(Id: Integer): TChat;
 begin
   Result := ChatsCache.KeyData[Id];
@@ -571,6 +580,7 @@ begin
   end;
 end;
 
+// !!! ДОБАВИТЬ НОРМАЛЬНЫЙ ЗАПРОС, а не только кэш!!!
 function TAugVKAPI.GetMSGById(MsgId: Integer): TMSG;
 begin
   Result := getMSGsById([msgId])[0];
